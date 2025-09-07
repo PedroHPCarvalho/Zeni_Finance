@@ -1,0 +1,39 @@
+package com.zenifinance.core.service;
+
+import com.zenifinance.core.dto.FinancialRegistersCreateDTO;
+import com.zenifinance.core.dto.FinancialRegistersResponseDTO;
+import com.zenifinance.core.entity.FinancialRegisters;
+import com.zenifinance.core.entity.User;
+import com.zenifinance.core.mapper.FinancialRegisterResponseDTOMapper;
+import com.zenifinance.core.repository.FinancialRegistersRepository;
+import com.zenifinance.core.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class FinancialRegistersService {
+
+    @Autowired
+    private FinancialRegistersRepository financialRegistersRepository;
+    @Autowired
+    private FinancialRegisterResponseDTOMapper financialRegisterResponseDTOMapper;
+
+    public FinancialRegisters createFinancRegister(FinancialRegisters financialRegisters, User user){
+        financialRegisters.setIdUser(user);
+        financialRegisters.setDateCreateRegister(LocalDateTime.now());
+        return financialRegistersRepository.save(financialRegisters);
+    }
+
+    public List<FinancialRegisters> listFinancRegistersByUserId(User user){
+        List<FinancialRegisters> listRegistersOfUser = financialRegistersRepository.findByidUser(user);
+        return listRegistersOfUser;
+    }
+
+    public void deleteRegisterById(Long id){
+        financialRegistersRepository.deleteById(id);
+    }
+}
+
