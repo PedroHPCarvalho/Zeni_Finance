@@ -6,6 +6,7 @@ import com.zenifinance.core.entity.User;
 import com.zenifinance.core.mapper.FinancialRegisterResponseDTOMapper;
 import com.zenifinance.core.mapper.FinancialRegistersCreateDTOMapper;
 import com.zenifinance.core.service.FinancialRegistersService;
+import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,15 @@ public class FinancialRegistersController {
         var listOfRegisterDTOResponse = financialRegisterResponseDTOMapper.financialRegistersResponseDTOList(listOfRegister);
 
         return ResponseEntity.ok().body(listOfRegisterDTOResponse);
+    }
+
+    @PutMapping("/update/{id}")
+    @PermitAll // ou @PreAuthorize("permitAll()")
+    public ResponseEntity update(@RequestBody @Valid FinancialRegistersCreateDTO data, @PathVariable("id") Long id, @AuthenticationPrincipal User user){
+        var registryToEntity = financialRegistersCreateDTOMapper.financialRegistersCreateDTOToEntity(data);
+        var registryUpdated = financialRegistersService.updateFinancRegisterById(registryToEntity, id,user);
+
+        return ResponseEntity.status(HttpStatus.OK).body(registryUpdated);
     }
 
     @DeleteMapping("/delete/{id}")
