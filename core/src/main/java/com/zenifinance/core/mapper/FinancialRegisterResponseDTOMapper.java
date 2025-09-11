@@ -10,7 +10,7 @@ import java.util.List;
 @Component
 public class FinancialRegisterResponseDTOMapper {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public FinancialRegisterResponseDTOMapper (ModelMapper modelMapper){
         this.modelMapper = modelMapper;

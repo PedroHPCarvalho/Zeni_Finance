@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User implements UserDetails {
     // Primary Key Id auto incremental, unica, tem como objetivo indexar o usuario
     @Id
