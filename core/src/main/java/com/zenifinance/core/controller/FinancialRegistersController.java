@@ -1,6 +1,7 @@
 package com.zenifinance.core.controller;
 
 import com.zenifinance.core.dto.FinancialRegistersCreateDTO;
+import com.zenifinance.core.dto.FinancialRegistersResponseDTO;
 import com.zenifinance.core.entity.FinancialRegisters;
 import com.zenifinance.core.entity.User;
 import com.zenifinance.core.mapper.FinancialRegisterResponseDTOMapper;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,19 +20,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("financial-registers")
 public class FinancialRegistersController {
 
-    @Autowired
-    private FinancialRegistersService financialRegistersService;
-    @Autowired
-    private FinancialRegistersCreateDTOMapper financialRegistersCreateDTOMapper;
-    @Autowired
-    private FinancialRegisterResponseDTOMapper financialRegisterResponseDTOMapper;
+    private final FinancialRegistersService financialRegistersService;
+    private final FinancialRegistersCreateDTOMapper financialRegistersCreateDTOMapper;
+    private final FinancialRegisterResponseDTOMapper financialRegisterResponseDTOMapper;
 
-    @PostMapping("/create")
-    public ResponseEntity create(@RequestBody @Valid FinancialRegistersCreateDTO data, @AuthenticationPrincipal User user){
+    public FinancialRegistersController(
+            FinancialRegistersService financialRegistersService,
+            FinancialRegistersCreateDTOMapper financialRegistersCreateDTOMapper,
+            FinancialRegisterResponseDTOMapper financialRegisterResponseDTOMapper
+    ){
+        this.financialRegistersService = financialRegistersService;
+        this.financialRegistersCreateDTOMapper = financialRegistersCreateDTOMapper;
+        this.financialRegisterResponseDTOMapper = financialRegisterResponseDTOMapper;
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<FinancialRegistersResponseDTO> create(@RequestBody @Valid FinancialRegistersCreateDTO data, @AuthenticationPrincipal User user){
         var financialRegisterEntity = financialRegistersCreateDTOMapper.financialRegistersCreateDTOToEntity(data);
-        FinancialRegisters saved = financialRegistersService.createFinancRegister(financialRegisterEntity, user);
+        FinancialRegisters saved = financialRegistersService.createRegister(financialRegisterEntity, user);
+        FinancialRegistersResponseDTO financialDTOReturned = financialRegisterResponseDTOMapper.financialRegistersToDTO(saved);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        return ResponseEntity.status(HttpStatus.CREATED).body(financialDTOReturned);
     }
 
     @GetMapping("/list")
@@ -41,17 +51,18 @@ public class FinancialRegistersController {
         return ResponseEntity.ok().body(listOfRegisterDTOResponse);
     }
 
-    @PutMapping("/update/{id}")
-    @PermitAll // ou @PreAuthorize("permitAll()")
-    public ResponseEntity update(@RequestBody @Valid FinancialRegistersCreateDTO data, @PathVariable("id") Long id, @AuthenticationPrincipal User user){
+    @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<FinancialRegistersResponseDTO> update(@RequestBody @Valid FinancialRegistersCreateDTO data, @PathVariable("id") Long id, @AuthenticationPrincipal User user){
         var registryToEntity = financialRegistersCreateDTOMapper.financialRegistersCreateDTOToEntity(data);
-        var registryUpdated = financialRegistersService.updateFinancRegisterById(registryToEntity, id,user);
+        var registryUpdated = financialRegistersService.updateRegisterById(registryToEntity, id,user);
+        FinancialRegistersResponseDTO financialDTOResponseUPDTReturn = financialRegisterResponseDTOMapper.financialRegistersToDTO(registryUpdated);
 
-        return ResponseEntity.status(HttpStatus.OK).body(registryUpdated);
+        return ResponseEntity.status(HttpStatus.OK).body(financialDTOResponseUPDTReturn);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable("id") Long idForDelete){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long idForDelete){
         financialRegistersService.deleteRegisterById(idForDelete);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

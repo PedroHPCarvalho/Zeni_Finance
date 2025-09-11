@@ -12,7 +12,6 @@ public class RegisterDTOMapper {
 
     private final ModelMapper modelMapper;
 
-    @Autowired
     public RegisterDTOMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
