@@ -1,8 +1,11 @@
 package com.zenifinance.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -12,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "FinancialRegisters")
+@Table(name = "financial_registers")
 public class FinancialRegisters {
 
     @Id
@@ -26,7 +29,7 @@ public class FinancialRegisters {
     private String category;
 
     @Column(nullable = false)
-    private Float value;
+    private BigDecimal value;
 
     @Column(nullable = false)
     private String typeRegister;

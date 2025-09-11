@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationDTOMapper {
 
+    private final ModelMapper modelMapper;
 
-    private ModelMapper modelMapper;
-
-    @Autowired
     public AuthenticationDTOMapper(ModelMapper modelMapper){
         this.modelMapper = modelMapper;
     }

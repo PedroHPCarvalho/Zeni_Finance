@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Component
 public class FinancialRegistersCreateDTOMapper {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public FinancialRegistersCreateDTOMapper(ModelMapper modelMapper){
         this.modelMapper = modelMapper;

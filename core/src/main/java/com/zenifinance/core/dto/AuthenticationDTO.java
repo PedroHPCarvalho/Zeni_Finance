@@ -14,7 +14,6 @@ public class AuthenticationDTO{
     public String login(){
         return login;
     }
-
     public String password(){
         return  password;
     }
