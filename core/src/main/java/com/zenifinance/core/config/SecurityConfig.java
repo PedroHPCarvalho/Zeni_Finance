@@ -26,13 +26,14 @@ public class SecurityConfig {
     //Define as politicas utilizadas na aplicação
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                // 🔹 APIs REST com JWT não precisam de CSRF
         .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests( auth -> auth
                         .requestMatchers(
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html",
-                                "/auth/**").permitAll()
+                                "/auth/**",
+                                "/financial-registers/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

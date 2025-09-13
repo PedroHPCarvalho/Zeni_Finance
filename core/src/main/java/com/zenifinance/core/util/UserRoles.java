@@ -1,5 +1,8 @@
 package com.zenifinance.core.util;
 
+import lombok.Getter;
+
+@Getter
 public enum UserRoles {
     USER("user"),
     ADMIN("admin");
@@ -10,7 +13,4 @@ public enum UserRoles {
         this.role = role;
     }
 
-    public String getRole(){
-        return role;
-    }
 }
