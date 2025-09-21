@@ -29,7 +29,7 @@ public class AuthenticationService {
         if (userRepository.findByEmail(data.login()) != null){
             throw new EmailAlreadyUsedException(data.login());
         }
-        else if (userRepository.findByEmail(data.getPhone()) != null){
+        else if (userRepository.findByPhone(data.getPhone()) != null){
             throw new PhoneAlreadyUsedException(data.getPhone());
         }
 
