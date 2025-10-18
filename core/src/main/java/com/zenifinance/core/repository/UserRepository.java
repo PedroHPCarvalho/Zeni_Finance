@@ -8,5 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
     UserDetails findByEmail(String email);
+<<<<<<< HEAD
     UserDetails findByPhone(String phone);
+=======
+    User findByPhone(String phone);
+>>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
 }

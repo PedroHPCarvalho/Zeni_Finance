@@ -1,31 +1,21 @@
 package com.zenifinance.core.dto;
 
-<<<<<<< HEAD
-=======
 import com.fasterxml.jackson.annotation.JsonFormat;
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
-import com.zenifinance.core.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-<<<<<<< HEAD
-=======
-import java.time.LocalDate;
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FinancialRegistersCreateDTO {
+public class FinancialRegistersFromN8NRawDTO {
+    private String phone;
     private String description;
     private String category;
     private Float value;
     private String typeRegister;
-<<<<<<< HEAD
-=======
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
     private Date dateRegister;
 }
