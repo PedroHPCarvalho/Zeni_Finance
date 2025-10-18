@@ -8,6 +8,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+<<<<<<< HEAD
+=======
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+>>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,12 +31,21 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 // 🔹 APIs REST com JWT não precisam de CSRF
+<<<<<<< HEAD
         .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests( auth -> auth
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/auth/**",
                                 "/financial-registers/**"
+=======
+        .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests( auth -> auth
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/financial-registers/createFromWhats",
+                                "/auth/**"
+>>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
