@@ -41,6 +41,10 @@ public class User implements UserDetails {
     private String phone;
 
     // Papel do usuario, pode ser ADMIN ou USER, por padrao usuario registrado e USER
+<<<<<<< HEAD
+=======
+    @Enumerated(EnumType.STRING)
+>>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
     @Column(nullable = false)
     private UserRoles role;
 

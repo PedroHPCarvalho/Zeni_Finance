@@ -1,0 +1,59 @@
+services:
+  db:
+    image: postgres:17
+    container_name: zeni_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  core:
+    build: ./core
+    container_name: zeni_core
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      AZURE_OPENAI_KEY: ${AZURE_OPENAI_KEY}
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT}
+      AZURE_OPENAI_DEPLOYMENT: ${AZURE_OPENAI_DEPLOYMENT}
+
+  bff:
+    build: ./bff-django-web
+    container_name: zeni_bff
+    restart: always
+    depends_on:
+      - core
+    environment:
+      CORE_URL_REGISTER: ${CORE_URL_REGISTER}
+      CORE_URL_LOGIN: ${CORE_URL_LOGIN}
+      CORE_URL_CREATEN8N: ${CORE_URL_CREATEN8N}
+      ALLOWED_HOSTS: "localhost,127.0.0.1,bff"
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend-web
+    container_name: zeni_front
+    restart: always
+    depends_on:
+      - bff
+    environment:
+      REACT_APP_API_URL: ${REACT_APP_API_URL}
+      REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK: ${REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK}
+    ports:
+      - "3000:3000"
+
+volumes:
+  db_data:
