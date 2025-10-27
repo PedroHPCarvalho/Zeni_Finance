@@ -44,16 +44,15 @@ services:
       - "8000:8000"
 
   frontend:
-    build: ./frontend-web
-    container_name: zeni_front
-    restart: always
-    depends_on:
-      - bff
-    environment:
-      REACT_APP_API_URL: ${REACT_APP_API_URL}
-      REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK: ${REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK}
-    ports:
-      - "3000:3000"
+      build:
+        context: ./front_web
+        dockerfile: Dockerfile.prod
+      container_name: zeni_front
+      restart: always
+      ports:
+        - "80:80"
+      depends_on:
+        - bff
 
 volumes:
   db_data:

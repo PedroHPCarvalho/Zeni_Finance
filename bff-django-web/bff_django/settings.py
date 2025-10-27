@@ -9,11 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-<<<<<<< HEAD
-
-=======
 import os
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,12 +25,8 @@ SECRET_KEY = "django-insecure-m72fv1xi&d$cv&+@0cg*xt5j#hq*m-d#p9uj9j*((za4@#&=ob
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-<<<<<<< HEAD
-ALLOWED_HOSTS = []
-
-=======
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,bff").split(",")
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
+
 
 # Application definition
 

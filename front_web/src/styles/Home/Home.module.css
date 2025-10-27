@@ -1,0 +1,283 @@
+/* ======== RESET GERAL ======== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+.home_root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+.home_header {
+  background-color: var(--dark);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.home_logo {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+}
+
+.home_logo img {
+  width: 45px;
+  margin-right: 10px;
+}
+
+.home_logo h1 {
+  font-size: 24px;
+  white-space: nowrap;
+}
+
+.home_buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.home_button {
+  background-color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s, color 0.3s;
+}
+
+.home_button:hover {
+  background-color: var(--accent);
+  color: white;
+}
+
+/* ===== HERO ===== */
+.home_hero {
+  width: 100%;
+  min-height: 100vh; /* ocupa a tela inteira */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.home_heroContent {
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 40px 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.home_heroContent h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.home_cta {
+  background-color: var(--accent);
+  border: none;
+  color: white;
+  padding: 14px 30px;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.home_cta:hover {
+  background-color: #009d8d;
+}
+
+/* ===== CARDS ===== */
+.home_cards {
+  background-color: var(--accent);
+  width: 100%;
+  padding: 80px 0; /* remove padding lateral */
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  box-sizing: border-box;
+}
+
+.home_card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  padding: 25px;
+  transition: transform 0.3s;
+}
+
+.home_card:hover {
+  transform: translateY(-5px);
+}
+
+.home_card img {
+  width: 60px;
+  margin-right: 20px;
+}
+
+.home_card .icon {
+  margin-bottom: 16px;
+  color: #1abc9c; /* exemplo de cor */
+}
+
+/* ===== HISTÓRIA ===== */
+.home_historia {
+  background-color: white;
+  width: 100%;
+  padding: 100px 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.home_historia h2 {
+  color: var(--accent);
+  font-size: 34px;
+  margin-bottom: 20px;
+}
+
+.home_historia p {
+  font-size: 18px;
+  line-height: 1.7;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ===== FOOTER ===== */
+.home_footer {
+  background-color: var(--dark);
+  color: white;
+  text-align: center;
+  width: 100%;
+  padding: 25px 0;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .home_header {
+    padding: 15px 30px;
+  }
+
+  .home_card {
+    width: 90%;
+  }
+}
+
+/* Celulares */
+@media (max-width: 768px) {
+  .home_header {
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .home_hero {
+    padding: 40px 20px;
+  }
+
+  .home_heroContent {
+    width: 95%;
+    padding: 25px;
+  }
+
+  .home_heroContent h1 {
+    font-size: 24px;
+  }
+
+  .home_cta {
+    font-size: 15px;
+    padding: 10px 20px;
+  }
+
+  .home_card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 380px;
+  }
+
+  .home_card img {
+    margin-bottom: 15px;
+  }
+
+  .home_historia {
+    padding: 60px 20px;
+  }
+
+  .home_historia h2 {
+    font-size: 26px;
+  }
+
+  .home_historia p {
+    font-size: 16px;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 480px) {
+  .home_logo img {
+    width: 38px;
+  }
+
+  .home_logo h1 {
+    font-size: 20px;
+  }
+
+  .home_heroContent h1 {
+    font-size: 20px;
+  }
+
+  .home_cta {
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+
+  .home_historia {
+    padding: 40px 15px;
+  }
+
+  .home_historia h2 {
+    font-size: 22px;
+  }
+
+  .home_historia p {
+    font-size: 15px;
+  }
+
+  .home_footer {
+    font-size: 13px;
+    padding: 18px 8px;
+  }
+}

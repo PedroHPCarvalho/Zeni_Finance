@@ -62,10 +62,4 @@ public class AuthenticationController {
         authenticationService.register(data);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
 }

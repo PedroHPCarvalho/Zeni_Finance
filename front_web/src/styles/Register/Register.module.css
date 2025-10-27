@@ -1,0 +1,119 @@
+/* Register.module.css - seguindo o padrão e tokens usados na Home (variáveis em :root no index.css) */
+
+.register_root { /* wrapper opcional */
+  min-height: 100vh;
+  background: linear-gradient(135deg, #101010, var(--accent));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: var(--font-sans);
+  color: #fff;
+}
+
+.register_container {
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 30px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.register_h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+}
+
+.register_inputBox {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.register_inputBox input {
+  width: 100%;
+  padding: 15px 45px 15px 15px;
+  border-radius: 30px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  font-family: inherit;
+}
+
+.register_inputBox i {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 20px;
+}
+
+.register_inputBox input::placeholder {
+  color: #ddd;
+}
+
+.register_rememberForgot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.register_rememberForgot a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.register_rememberForgot a:hover {
+  text-decoration: underline;
+}
+
+.register_btn {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--dark);
+  border: none;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.register_btn:hover {
+  background-color: #0c0c0c;
+}
+
+.register_loginText {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.register_loginText a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* Responsividade alinhada com Home.module.css */
+@media (max-width: 500px) {
+  .register_container {
+    padding: 25px 20px;
+  }
+
+  .register_inputBox input {
+    font-size: 14px;
+  }
+
+  .register_btn {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,7 @@
+.dashboard_root { min-height: 100vh; }
+.launch_item { border-bottom: 1px solid rgba(75,85,99,0.6); padding-bottom: 0.5rem; }
+.remove_btn { display: inline-flex; align-items: center; }
+.remove_btn svg { transition: color 0.2s ease; }
+.remove_btn svg:hover { color: #f87171; }
+.no_launch_text { color: #9ca3af; }
+@media (max-width:640px){ .dashboard_root{ padding:1rem; } }
