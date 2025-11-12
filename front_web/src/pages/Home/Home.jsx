@@ -71,9 +71,84 @@ function Home() {
         </p>
       </section>
 
+      {/* ===== CONSCIENTIZAÇÃO SOBRE APOSTAS ===== */}
+      <section className={styles.home_gambling}>
+        {/* AVISO NO TOPO */}
+        <div className={styles.home_gamblingWarning}>
+          <div className={styles.home_gamblingWarningContent}>
+            <span className={styles.home_warningIcon}>⚠</span>
+            <div>
+              <h3>Conscientização: Cuidado com as Apostas Online</h3>
+              <p>Apostas online podem causar perdas financeiras e impactos pessoais. Nesta seção você encontra informações importantes para sua saúde financeira e bem estar.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* TÍTULO PRINCIPAL */}
+        <div className={styles.home_gamblingMain}>
+          <span className={styles.home_mainIcon}>⚠</span>
+          <h2>Atenção aos Riscos das Apostas Online</h2>
+          <p>Portanto, as apostas podem gerar uma forma rápida de ganhar dinheiro, mas também apresentam sérios riscos para sua saúde financeira e bem-estar.</p>
+        </div>
+
+        {/* CAIXA DE RISCOS */}
+        <div className={styles.home_gamblingRiskBox}>
+          <span className={styles.home_riskIcon}>⚠</span>
+          <h4>Por que as apostas são perigosas?</h4>
+          <p>
+            Apostadores de apostas em plataformas pouco confiáveis estão sujeitos. Use com cuidado das operações. Ainda das perdas financeiras, o vício em apostas pode danificar carreiras, relacionamentos e criar problemas graves de saúde mental. Muitas pessoas que começam "só por diversão" encontram dificuldades para parar.
+          </p>
+        </div>
+
+        {/* CARDS DE RISCOS */}
+        <div className={styles.home_gamblingCards}>
+          <div className={styles.home_riskCard}>
+            <span className={styles.home_cardIcon}>💰</span>
+            <h5>Perdas Financeiras</h5>
+            <p>As apostas podem levar a perdas significativas de dinheiro. O risco financeiro sempre está presente.</p>
+          </div>
+
+          <div className={styles.home_riskCard}>
+            <span className={styles.home_cardIcon}>💔</span>
+            <h5>Impacto emocional</h5>
+            <p>O vício em apostas pode causar ansiedade, depressão e afastar relacionamentos. Desesperação para recuperar perdas.</p>
+          </div>
+
+          <div className={styles.home_riskCard}>
+            <span className={styles.home_cardIcon}>📊</span>
+            <h5>Endividamento</h5>
+            <p>As dívidas acumulam rapidamente perdendo para conseguir recuperação de posição com apoio da. financeiro.</p>
+          </div>
+        </div>
+
+        {/* CHAMADA PARA AÇÃO */}
+        <div className={styles.home_gamblingCTA}>
+          <h4>Proteja suas finanças</h4>
+          <p>É um ato de amor em si mesmo, e uma ação educativa. Ao mesmo tempo a educação financeira e controla uma futuro sólido. Organize seus finanças, e manque tomácia base financeiras.</p>
+          <div className={styles.home_gamblingButtons}>
+            <button className={styles.home_cta} onClick={()=>navigate("/register")}>
+              Começar cadastro
+            </button>
+            <a href="https://wa.me/5511988783882" target="_blank" rel="noopener noreferrer" className={styles.home_ctaLink}>
+              Solicitar ajuda
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ===== FOOTER ===== */}
       <footer className={styles.home_footer}>
-        © 2025 Zeni Finanças — Todos os direitos reservados.
+        <div className={styles.home_footerContent}>
+          <span>© 2025 Zeni Finanças — Todos os direitos reservados.</span>
+          <a
+            href="https://projects-of-faculty.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.home_privacyButton}
+          >
+            Política de Privacidade
+          </a>
+        </div>
       </footer>
     </div>
   );

@@ -1,4 +1,5 @@
 # Production multi-stage Dockerfile for Vite + React
+##DOCKERFILE FRONT PROD
 # Build stage
 FROM node:22 as build
 WORKDIR /app

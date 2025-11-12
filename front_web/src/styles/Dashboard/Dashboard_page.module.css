@@ -1,7 +1,215 @@
-.dashboard_root { min-height: 100vh; }
-.launch_item { border-bottom: 1px solid rgba(75,85,99,0.6); padding-bottom: 0.5rem; }
-.remove_btn { display: inline-flex; align-items: center; }
-.remove_btn svg { transition: color 0.2s ease; }
-.remove_btn svg:hover { color: #f87171; }
-.no_launch_text { color: #9ca3af; }
-@media (max-width:640px){ .dashboard_root{ padding:1rem; } }
+/* ======== LAYOUT GERAL ======== */
+.dashboard-root {
+  background: linear-gradient(135deg, #0f2027, #00a6a6, #14b8a6);
+  min-height: 100vh;
+  padding: 2rem;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ======== CABEÇALHO ======== */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.dashboard-header p {
+  color: #d1d5db;
+  margin-top: 4px;
+  font-size: 0.95rem;
+}
+
+/* ======== MENU DO USUÁRIO ======== */
+/* ======== MENU DO USUÁRIO ======== */
+.user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e8fffb;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+}
+
+.user-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 12px rgba(20, 184, 166, 0.5);
+}
+
+.user-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 48px;
+  background: rgba(2, 44, 44, 0.9);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease;
+  z-index: 15;
+}
+
+.user-dropdown.show {
+  display: block;
+}
+
+.user-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user-dropdown li {
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: #e8fffb;
+  transition: background 0.2s ease;
+}
+
+.user-dropdown li:hover {
+  background: rgba(6, 77, 73, 0.7);
+}
+
+.logout {
+  color: #ff6b6b;
+}
+
+
+/* ======== CARDS ======== */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.card-resumo {
+  background: rgba(31, 41, 55, 0.75);
+  border-radius: 16px;
+  padding: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.card-resumo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px rgba(20, 184, 166, 0.5);
+}
+
+.text-green {
+  color: #10b981;
+}
+
+.text-red {
+  color: #ef4444;
+}
+
+.text-yellow {
+  color: #fbbf24;
+}
+
+.text-gray {
+  color: #9ca3af;
+}
+
+/* ======== GRÁFICOS ======== */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  .chart-card {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .card-resumo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-root { padding: 1rem; }
+  .dashboard-header h1 { font-size: 1.3rem; }
+  .chart-card h3 { font-size: 1rem; }
+}
+
+.chart-card {
+  background: rgba(31, 41, 55, 0.8);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  transition: 0.3s ease;
+}
+
+.chart-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 18px rgba(20, 184, 166, 0.5);
+}
+
+.chart-card h3 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-align: center;
+  color: #e5e7eb;
+}
+
+/* ======== ANIMAÇÕES ======== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

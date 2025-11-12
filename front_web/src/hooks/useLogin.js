@@ -1,31 +1,32 @@
 import { useState } from "react";
-import { API_ENDPOINTS } from "../../config/api.js";
+import api, { API_ENDPOINTS } from "../../config/api";
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const login = async (formData) => {
+  const login = async (credentials) => {
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
-      setError(null);
+      const response = await api.post(API_ENDPOINTS.login, credentials);
 
-      const response = await fetch(API_ENDPOINTS.login,{
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)  
-      });
+      const { token, user } = response.data;
 
-      const result = await response.json();
-      return { ok: response.ok, result};
-      
-    } catch (error) {
-      setError(error.message)
-      return { ok: false};
+      if (token) {
+        localStorage.setItem("token", token);
+        return { ok: true, result: { token, user } };
+      }
+
+      return { ok: false, result: { error: "Token não retornado" } };
+    } catch (err) {
+      const msg = err.response?.data?.error || "Erro ao fazer login";
+      setError(msg);
+      return { ok: false, result: { error: msg } };
     } finally {
       setLoading(false);
     }
   };
 
-  return { login, loading, error};
+  return { login, loading, error };
 }

@@ -117,3 +117,9 @@
     font-size: 14px;
   }
 }
+
+@media (max-width: 768px) {
+  .register_container { max-width: 440px; padding: 26px 22px; }
+  .register_inputBox input { padding: 14px 42px 14px 14px; }
+  .register_btn { padding: 12px; }
+}

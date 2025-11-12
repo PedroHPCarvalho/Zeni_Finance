@@ -65,10 +65,10 @@ class CreateJsonFromWhatsSerializer(serializers.Serializer):
 
     def validate_phone(self, value):
         value = str(value).strip()
-        if len(value) != 14:
-            raise serializers.ValidationError("O telefone deve conter 14 caracteres")
-        if not value.startswith("+55"):
-            raise serializers.ValidationError("O telefone deve começar com +55")
+        if len(value) != 13:  # 55 + DDD(2) + número(9) = 13
+            raise serializers.ValidationError("O telefone deve conter 13 caracteres (55 + DDD + número)")
+        if not value.startswith("55"):
+            raise serializers.ValidationError("O telefone deve começar com 55")
         return value
 
     def validate_description(self, value):

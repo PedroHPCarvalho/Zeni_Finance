@@ -1,13 +1,16 @@
 package com.zenifinance.core.service;
 
-import com.zenifinance.core.dto.FinancialRegistersFromN8NRawDTO;
+import com.zenifinance.core.dto.*;
 import com.zenifinance.core.entity.FinancialRegisters;
 import com.zenifinance.core.entity.User;
 import com.zenifinance.core.exception.PhoneNotFoundException;
 import com.zenifinance.core.mapper.FinancialRegisterCreateFromN8NDTOMapper;
 import com.zenifinance.core.repository.FinancialRegistersRepository;
 import com.zenifinance.core.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -66,6 +69,34 @@ public class FinancialRegistersService {
 
     public void deleteRegisterById(Long id){
         financialRegistersRepository.deleteById(id);
+    }
+
+    public FinancialRegisterResumeDTO getResumeRegister (User userId){
+        return financialRegistersRepository.findFinancialRegisterResumeByUserId(userId.getId());
+    }
+
+    public List<CategoryResumeDTO> getCategoryResume (Long userId){
+        return financialRegistersRepository.findCategoryResumeByUserId(userId);
+    }
+
+    public List<MonthResumeDTO> getMonthResume(Long userId) {
+        List<Object[]> results = financialRegistersRepository.findMonthResumeByUserId(userId);
+
+        return results.stream()
+                .map(obj -> new MonthResumeDTO(
+                        (String) obj[0],
+                        ((Number) obj[1]).doubleValue(), // expenses
+                        ((Number) obj[2]).doubleValue()  // revenue
+                ))
+                .toList();
+    }
+
+    public List<MonthResumeInvestmentDTO> getMonthResumeInvestment(Long userId){
+        return financialRegistersRepository.findMonthResumeInvestByUserId(userId);
+    }
+
+    public Page<FinancialRegisters> listFinancRegistersByUserId(User user, Pageable pageable) {
+        return financialRegistersRepository.findByidUser(user, pageable);
     }
 }
 

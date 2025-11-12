@@ -114,3 +114,10 @@
   .login_inputBox input { font-size: 14px; }
   .login_btn { font-size: 14px; }
 }
+
+/* Additional responsiveness for small tablets */
+@media (max-width: 768px) {
+  .login_container { max-width: 420px; padding: 28px 22px; }
+  .login_inputBox input { padding: 14px 42px 14px 14px; }
+  .login_btn { padding: 12px; }
+}

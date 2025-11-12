@@ -25,8 +25,8 @@ export default function Login() {
     });
 
     if (ok && result.token) {
-      localStorage.setItem("authToken", result.token);
-      navigate("/");
+      localStorage.setItem("token", result.token);
+      navigate("/dashboard");
     } else {
       alert(result?.error || "Credenciais inválidas!");
     }

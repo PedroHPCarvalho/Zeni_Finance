@@ -30,27 +30,49 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         String path = request.getServletPath();
-        var token = this.recoverToken(request);
+        System.out.println("🔹 Caminho: " + path);
 
-        // Ignora endpoints públicos
-        if(path.startsWith("/swagger-ui") || path.startsWith("/financial-registers/createFromWhats")){
+        // 🔹 Endpoints públicos
+        if (path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs") || path.startsWith("/auth") || path.equals("/financial-registers/create/whats")) {
+            System.out.println("✅ Liberando caminho público: " + path);
             filterChain.doFilter(request, response);
             return;
         }
 
-        if(token != null){
-            var subject =  tokenService.validateToken(token);
-            UserDetails user = userRepository.findByEmail(subject);
-
-
-            if(user != null){ // <<--- evita NullPointerException
-                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+        // 🔹 Validação do token
+        String token = recoverToken(request);
+        if(token == null){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("Token não fornecido");
+            return;
         }
-        filterChain.doFilter(request,response);
+
+        try {
+            String subject = tokenService.validateToken(token);
+            if(subject == null){
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write("Token inválido");
+                return;
+            }
+
+            UserDetails user = userRepository.findByEmail(subject);
+            if(user == null){
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write("Usuário não encontrado");
+                return;
+            }
+
+            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        } catch (Exception e){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("Erro ao validar token: " + e.getMessage());
+            return;
+        }
+
+        filterChain.doFilter(request, response);
     }
 
     private String recoverToken(HttpServletRequest request){

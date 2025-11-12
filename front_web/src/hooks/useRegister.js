@@ -1,27 +1,20 @@
 import { useState } from "react";
-import { API_ENDPOINTS } from "../../config/api.js";
+import api, { API_ENDPOINTS } from "../../config/api"; // 👈 Importando corretamente
 
 export function useRegister() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const register = async (formData) => {
+  const register = async (data) => {
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
-      setError(null);
-
-      const response = await fetch(API_ENDPOINTS.register, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      });
-
-      const result = await response.json();
-      return { ok: response.ok, result };
-      
+      const response = await api.post(API_ENDPOINTS.register, data);
+      return { ok: true, result: response.data };
     } catch (err) {
-      setError(err.message);
-      return { ok: false };
+      const msg = err.response?.data?.error || "Erro ao cadastrar usuário";
+      setError(msg);
+      return { ok: false, result: { error: msg } };
     } finally {
       setLoading(false);
     }

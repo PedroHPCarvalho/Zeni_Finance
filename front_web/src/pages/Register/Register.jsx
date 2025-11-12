@@ -82,7 +82,12 @@ export default function Cadastro() {
               placeholder="Celular (DDD+Número)"
               name="phone"
               value={formData.phone}
-              onChange={handleChange}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  phone: e.target.value.replace(/\D/g, ""),
+                }))
+              }
               required
             />
           </div>
