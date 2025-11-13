@@ -20,7 +20,7 @@ import {
   Cell,
   BarChart,
   Bar,
-  CartesianGrid,
+  CartesianGrid ,
   AreaChart,
   Area,
   Legend,
