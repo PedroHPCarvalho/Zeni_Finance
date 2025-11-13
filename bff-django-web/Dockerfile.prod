@@ -1,0 +1,33 @@
+# === Stage 1: Build dependencies ===
+FROM python:3.10-slim AS build
+
+WORKDIR /app
+
+# Copia apenas o requirements.txt primeiro para melhor cache
+COPY requirements.txt .
+
+# Instala dependências + gunicorn
+RUN pip install --no-cache-dir -r requirements.txt gunicorn
+
+# === Stage 2: Final image (menor, limpa e segura) ===
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Copia dependências já instaladas do estágio anterior
+COPY --from=build /usr/local/lib/python3.10 /usr/local/lib/python3.10
+COPY --from=build /usr/local/bin /usr/local/bin
+
+# Copia o código da aplicação
+COPY . .
+
+# Configura variáveis seguras
+ENV PYTHONUNBUFFERED=1 \
+    DJANGO_SETTINGS_MODULE=bff_django.settings \
+    PORT=8000
+
+# Expõe a porta do container
+EXPOSE 8000
+
+# Comando de inicialização (Gunicorn)
+CMD ["gunicorn", "bff_django.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
