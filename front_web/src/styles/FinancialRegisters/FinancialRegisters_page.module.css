@@ -1,0 +1,357 @@
+/* 🌊 Fundo global e container principal */
+.pageContainer {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(180deg, #06363a 0%, #0f6b67 30%, #0aa296 100%);
+  background-attachment: fixed;
+  color: #e8fffb;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 40px 0;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .content { width: 95%; max-width: 1000px; padding: 30px 0; }
+  .dashboardHeader { padding: 14px; }
+  .cardsGrid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+}
+
+@media (max-width: 768px) {
+  .content { gap: 20px; padding: 24px 0; }
+  .dashboardHeader { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .dashboardHeader h1 { font-size: 1.6rem; }
+  .chatContainer { height: auto; max-height: 60vh; }
+  .cardResumo { padding: 16px; }
+  .table th, .table td { padding: 10px 8px; font-size: 0.9rem; }
+}
+
+@media (max-width: 480px) {
+  .content { width: 98%; padding: 16px 0; }
+  .dashboardHeader { padding: 10px; }
+  .dashboardHeader h1 { font-size: 1.4rem; }
+  .chatContainer { height: auto; }
+  .table { font-size: 0.85rem; }
+  .addButton { width: 100%; }
+}
+
+/* 🧭 HEADER */
+.dashboardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.dashboardHeader h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0px;
+}
+
+.dashboardHeader p {
+  color: #b2fff1;
+  font-size: 0.9rem;
+  margin-top: 1px;
+}
+
+/* ⚙️ USER MENU */
+.userMenu {
+  position: relative;
+}
+
+.userButton {
+  background: #065d5a;
+  color: #e8fffb;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.3s ease;
+}
+
+.userButton:hover {
+  background: #0a7a74;
+}
+
+.userDropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background: #022c2c;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.userDropdown.show {
+  display: block;
+}
+
+.userDropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.userDropdown li {
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.userDropdown li:hover {
+  background: #064d49;
+}
+
+.logout {
+  color: #ff6b6b;
+}
+
+/* 💳 CARDS RESUMO */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.cardResumo {
+  background: rgba(2, 44, 44, 0.7);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.cardResumo:hover {
+  transform: translateY(-3px);
+}
+
+.cardResumo p {
+  color: #b2fff1;
+  font-size: 0.95rem;
+}
+
+/* 💬 CHAT ZENI */
+.chatContainer {
+  background: rgba(3, 53, 53, 0.479);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+}
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chatHeader h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.chatMessages {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 6px;
+}
+
+.chatPlaceholder {
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.chatBubble {
+  padding: 10px 14px;
+  border-radius: 16px;
+  max-width: 70%;
+  line-height: 1.4;
+}
+
+.userBubble {
+  background: #00c2a8;
+  align-self: flex-end;
+  color: #002b28;
+}
+
+.botBubble {
+  background: #034a46;
+  align-self: flex-start;
+}
+
+.chatInput {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.chatInput input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #e8fffb;
+  padding: 10px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.chatInput button {
+  background: #00c2a8;
+  border: none;
+  color: #002b28;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.chatInput button:hover {
+  background: #00d6b9;
+}
+
+/* 📊 TABELA DE REGISTROS */
+.tableContainer {
+  background: rgba(3, 53, 53, 0.479);
+  border-radius: 20px;
+  padding: 20px 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.tableHeader h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.tableHeader p {
+  color: #b2fff1;
+  font-size: 0.9rem;
+}
+
+.addButton {
+  background: #00c2a8;
+  border: none;
+  color: #002b28;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.addButton:hover {
+  background: #00d6b9;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 12px 10px;
+}
+
+.table th {
+  background: rgba(255, 255, 255, 0.05);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+.tableRow {
+  transition: background 0.2s ease;
+}
+
+.tableRow:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tipoEntrada {
+  color: #00ffb3;
+  font-weight: 600;
+}
+
+.tipoSaida {
+  color: #ff7070;
+  font-weight: 600;
+}
+
+.deleteButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.pagination button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 8px;
+  color: #e8fffb;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

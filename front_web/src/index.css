@@ -1,0 +1,26 @@
+
+:root {
+  --bg: #f4f4f4;
+  --text: #333;
+  --accent: #00a6a6;
+  --dark: #0b0c0c;
+  --font-sans: "Roboto", "Poppins", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0;         /* remove qualquer margem */
+  padding: 0;        /* remove espaçamento interno */
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden; /* evita rolagem lateral indesejada */
+}

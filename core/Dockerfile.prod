@@ -1,0 +1,14 @@
+FROM eclipse-temurin:17-jdk-jammy
+WORKDIR /app
+
+# Copia apenas o JAR gerado
+COPY target/*.jar app.jar
+
+# Configurações recomendadas
+ENV TZ=America/Sao_Paulo \
+    SPRING_PROFILES_ACTIVE=prod \
+    JAVA_OPTS="-Xms256m -Xmx512m"
+
+EXPOSE 8080
+
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

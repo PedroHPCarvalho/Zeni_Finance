@@ -1,19 +1,6 @@
 package com.zenifinance.core.controller;
 
-import com.zenifinance.core.dto.FinancialRegistersCreateDTO;
-<<<<<<< HEAD
-import com.zenifinance.core.dto.FinancialRegistersResponseDTO;
-import com.zenifinance.core.entity.FinancialRegisters;
-import com.zenifinance.core.entity.User;
-import com.zenifinance.core.mapper.FinancialRegisterResponseDTOMapper;
-import com.zenifinance.core.mapper.FinancialRegistersCreateDTOMapper;
-import com.zenifinance.core.service.FinancialRegistersService;
-import jakarta.annotation.security.PermitAll;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-=======
-import com.zenifinance.core.dto.FinancialRegistersFromN8NRawDTO;
-import com.zenifinance.core.dto.FinancialRegistersResponseDTO;
+import com.zenifinance.core.dto.*;
 import com.zenifinance.core.entity.FinancialRegisters;
 import com.zenifinance.core.entity.User;
 import com.zenifinance.core.mapper.FinancialRegisterCreateFromN8NDTOMapper;
@@ -24,81 +11,75 @@ import com.zenifinance.core.service.ZeniAIToolsService;
 import com.zenifinance.core.util.JsonUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-<<<<<<< HEAD
-=======
 import java.text.ParseException;
 import java.util.List;
 
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
 @RestController
-@RequestMapping("financial-registers")
+@RequestMapping("/financial-registers")
 public class FinancialRegistersController {
 
     private final FinancialRegistersService financialRegistersService;
     private final FinancialRegistersCreateDTOMapper financialRegistersCreateDTOMapper;
     private final FinancialRegisterResponseDTOMapper financialRegisterResponseDTOMapper;
-<<<<<<< HEAD
-=======
     private final FinancialRegisterCreateFromN8NDTOMapper financialRegisterCreateFromN8NDTOMapper;
     private final ZeniAIToolsService zeniAIToolsService;
-    private final JsonUtils jsonUtils;
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
 
     public FinancialRegistersController(
             FinancialRegistersService financialRegistersService,
             FinancialRegistersCreateDTOMapper financialRegistersCreateDTOMapper,
-<<<<<<< HEAD
-            FinancialRegisterResponseDTOMapper financialRegisterResponseDTOMapper
-=======
             FinancialRegisterResponseDTOMapper financialRegisterResponseDTOMapper,
             FinancialRegisterCreateFromN8NDTOMapper financialRegisterCreateFromN8NDTOMapper,
-            ZeniAIToolsService zeniAIToolsService,
-            JsonUtils jsonUtils
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
+            ZeniAIToolsService zeniAIToolsService
     ){
         this.financialRegistersService = financialRegistersService;
         this.financialRegistersCreateDTOMapper = financialRegistersCreateDTOMapper;
         this.financialRegisterResponseDTOMapper = financialRegisterResponseDTOMapper;
-<<<<<<< HEAD
-=======
         this.financialRegisterCreateFromN8NDTOMapper = financialRegisterCreateFromN8NDTOMapper;
         this.zeniAIToolsService = zeniAIToolsService;
-        this.jsonUtils = jsonUtils;
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
     }
 
-    @PostMapping("/")
+    // ===== CREATES ========
+
+
+    @PostMapping("/create")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<FinancialRegistersResponseDTO> create(@RequestBody @Valid FinancialRegistersCreateDTO data, @AuthenticationPrincipal User user){
-        var financialRegisterEntity = financialRegistersCreateDTOMapper.financialRegistersCreateDTOToEntity(data);
-        FinancialRegisters saved = financialRegistersService.createRegister(financialRegisterEntity, user);
-        FinancialRegistersResponseDTO financialDTOReturned = financialRegisterResponseDTOMapper.financialRegistersToDTO(saved);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(financialDTOReturned);
+        FinancialRegisters entity = financialRegistersCreateDTOMapper.financialRegistersCreateDTOToEntity(data);
+        FinancialRegisters saved = financialRegistersService.createRegister(entity, user);
+        FinancialRegistersResponseDTO dto = financialRegisterResponseDTOMapper.financialRegistersToDTO(saved);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
-<<<<<<< HEAD
-=======
-    @PostMapping("/aiCreate")
-    public ResponseEntity<List<FinancialRegistersResponseDTO>> createWithAI(@RequestBody String userMessageRegisters, @AuthenticationPrincipal User user) throws ParseException {
-       List<FinancialRegistersCreateDTO> dtosReturned  = zeniAIToolsService.categorizeWithOpenAi(userMessageRegisters);
-       List<FinancialRegistersResponseDTO> dtoListToResponseDTO = new java.util.ArrayList<>();
-       for(FinancialRegistersCreateDTO dto: dtosReturned){
-           FinancialRegisters saved = financialRegistersService.createRegister(financialRegistersCreateDTOMapper.financialRegistersCreateDTOToEntity(dto),user);
-           dtoListToResponseDTO.add(financialRegisterResponseDTOMapper.financialRegistersToDTO(saved));
-       }
-       return ResponseEntity.ok(dtoListToResponseDTO);
+    @PostMapping("/create/ia")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<FinancialRegistersResponseDTO>> createWithAI(@RequestBody String userMessageRegister, @AuthenticationPrincipal User user) throws ParseException {
+        List<FinancialRegistersCreateDTO> parseDtos = zeniAIToolsService.categorizeWithOpenAi(userMessageRegister);
+        if (parseDtos.isEmpty()) {
+            return ResponseEntity.badRequest().body(List.of());
+        }
+        List<FinancialRegistersResponseDTO> responses = parseDtos.stream().map(dto -> {
+            FinancialRegisters saved = financialRegistersService.createRegister(financialRegistersCreateDTOMapper.financialRegistersCreateDTOToEntity(dto), user);
+                    return financialRegisterResponseDTOMapper.financialRegistersToDTO(saved);
+                })
+                .toList();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responses);
     }
 
-    @PostMapping("/createFromWhats")
+    @PostMapping("/create/whats")
     public ResponseEntity<FinancialRegistersResponseDTO> createWithWhats(@RequestBody @Valid FinancialRegistersFromN8NRawDTO data, HttpServletRequest request){
+
         String key = request.getHeader("Api-Key");
+
         if (key == null || !key.equals("cnuiredhagujnhsdujaBASHd-563498651465")){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -109,14 +90,55 @@ public class FinancialRegistersController {
         return ResponseEntity.ok().body(returnDTO);
     }
 
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
-    @GetMapping("/list")
-    public ResponseEntity list(@AuthenticationPrincipal User user){
-        var listOfRegister = financialRegistersService.listFinancRegistersByUserId(user);
-        var listOfRegisterDTOResponse = financialRegisterResponseDTOMapper.financialRegistersResponseDTOList(listOfRegister);
+    // ===== READS ========
 
-        return ResponseEntity.ok().body(listOfRegisterDTOResponse);
+    @GetMapping("/list")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<FinancialRegistersResponseDTO>> list(@AuthenticationPrincipal User user){
+        List<FinancialRegisters> list = financialRegistersService.listFinancRegistersByUserId(user);
+        List<FinancialRegistersResponseDTO> dtos = financialRegisterResponseDTOMapper.financialRegistersResponseDTOList(list);
+        return ResponseEntity.ok().body(dtos);
     }
+
+    @GetMapping("/list/paged")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Page<FinancialRegistersResponseDTO>> list(@AuthenticationPrincipal User user, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("dateRegister").descending());
+        Page<FinancialRegisters> registersPage = financialRegistersService.listFinancRegistersByUserId(user, pageable);
+        Page<FinancialRegistersResponseDTO> dtoPage = registersPage.map(financialRegisterResponseDTOMapper::financialRegistersToDTO);
+        return ResponseEntity.ok(dtoPage);
+    }
+
+
+    @GetMapping("/resumeCards")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<FinancialRegisterResumeDTO> getUserResume(@AuthenticationPrincipal User user){
+        FinancialRegisterResumeDTO dtoResume = financialRegistersService.getResumeRegister(user);
+        return ResponseEntity.ok().body(dtoResume);
+    }
+
+    @GetMapping("/categoryresume")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<CategoryResumeDTO>> getCategoryResume(@AuthenticationPrincipal User user){
+        List<CategoryResumeDTO> listCategoryResume = financialRegistersService.getCategoryResume(user.getId());
+        return ResponseEntity.ok(listCategoryResume);
+    }
+
+    @GetMapping("/monthresume")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<MonthResumeDTO>> getMouthResume(@AuthenticationPrincipal User user){
+        List<MonthResumeDTO> listMouthResume = financialRegistersService.getMonthResume(user.getId());
+        return ResponseEntity.ok(listMouthResume);
+    }
+
+    @GetMapping("/monthresumeinvest")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<MonthResumeInvestmentDTO>> getMonthResumeInvest(@AuthenticationPrincipal User user){
+        List<MonthResumeInvestmentDTO> listMonInvest = financialRegistersService.getMonthResumeInvestment(user.getId());
+        return ResponseEntity.ok(listMonInvest);
+    }
+
+    // ===== UPDATE ========
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
@@ -125,13 +147,17 @@ public class FinancialRegistersController {
         var registryUpdated = financialRegistersService.updateRegisterById(registryToEntity, id,user);
         FinancialRegistersResponseDTO financialDTOResponseUPDTReturn = financialRegisterResponseDTOMapper.financialRegistersToDTO(registryUpdated);
 
-        return ResponseEntity.status(HttpStatus.OK).body(financialDTOResponseUPDTReturn);
+        return ResponseEntity.ok(financialDTOResponseUPDTReturn);
     }
+
+    // ===== DELETE ========
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> delete(@PathVariable("id") Long idForDelete){
         financialRegistersService.deleteRegisterById(idForDelete);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
+
+
 }

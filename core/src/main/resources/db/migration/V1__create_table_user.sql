@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-CREATE TABLE Users (
-=======
 CREATE TABLE IF NOT EXISTS users (
->>>>>>> 560cc00 (feat: Criação do Módulo de IA e ferramentas, Criação do endpoint para N8N)
-  id SERIAL PRIMARY KEY,
+  id BIGSERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
