@@ -1,0 +1,123 @@
+/* Login.module.css - escopo local, mantém visual idêntico à versão anterior */
+.login_root {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #101010, var(--accent));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: var(--font-sans);
+  color: #fff;
+}
+
+.login_container {
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 30px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.login_container h1 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* Form wrapper (sem alteração visual) */
+.login_form {
+  display: block;
+}
+
+/* Input box */
+.login_inputBox {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.login_inputBox input {
+  width: 100%;
+  padding: 15px 45px 15px 15px;
+  border-radius: 30px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  font-family: inherit;
+}
+
+.login_inputBox i {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 20px;
+}
+
+.login_inputBox input::placeholder {
+  color: #ddd;
+}
+
+/* Remember / forgot (kept for compatibility if needed) */
+.login_rememberForgot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.login_rememberForgot a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.login_rememberForgot a:hover {
+  text-decoration: underline;
+}
+
+/* Button */
+.login_btn {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--dark);
+  border: none;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login_btn:hover {
+  background-color: #0c0c0c;
+}
+
+/* Register link */
+.login_registerLink {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.login_registerLink a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* Responsiveness */
+@media (max-width: 500px) {
+  .login_container { padding: 25px 20px; }
+  .login_inputBox input { font-size: 14px; }
+  .login_btn { font-size: 14px; }
+}
+
+/* Additional responsiveness for small tablets */
+@media (max-width: 768px) {
+  .login_container { max-width: 420px; padding: 28px 22px; }
+  .login_inputBox input { padding: 14px 42px 14px 14px; }
+  .login_btn { padding: 12px; }
+}
