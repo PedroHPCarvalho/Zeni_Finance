@@ -31,6 +31,34 @@ import { useCategory } from "../../hooks/useCategory";
 import { useInvestments } from "../../hooks/useInvestments";
 import { useMonthResume } from "../../hooks/useMonthResume";
 
+const MOCK_DATA_CARDS = {
+  sumEntry: 15000.50,
+  sumExit: 8000.00,
+  balanceNow: 7000.50,
+};
+
+const MOCK_CATEGORIES = [
+  { category: "Alimentação", total: 2500 },
+  { category: "Transporte", total: 1200 },
+  { category: "Moradia", total: 3500 },
+  { category: "Lazer", total: 800 },
+];
+
+const MOCK_INVESTMENTS = [
+  { mes: "08/2024", valor_investido: 10000 },
+  { mes: "09/2024", valor_investido: 15000 },
+  { mes: "10/2024", valor_investido: 18000 },
+  { mes: "11/2024", valor_investido: 25000 },
+  { mes: "12/2024", valor_investido: 30000 },
+];
+
+const MOCK_MONTH_RESUME = [
+  { mes: "08/2024", despesas: 7000, receitas: 12000 },
+  { mes: "09/2024", despesas: 7500, receitas: 13000 },
+  { mes: "10/2024", despesas: 8500, receitas: 14000 },
+  { mes: "11/2024", despesas: 8000, receitas: 15000 },
+];
+
 // ===== CONSTANTES =====
 const COLORS = ["#FF6B6B", "#4ECDC4", "#FFE66D", "#95E1D3", "#C7CEEA", "#FF8B94", "#FFA502"];
 const CHART_HEIGHTS = { desktop: 320, tablet: 260, mobile: 220 };
@@ -101,18 +129,24 @@ const getChartHeight = (width) => {
 export default function Dashboard() {
   // ===== HOOKS DE DADOS =====
   const { user, loading } = useMe();
-  const { dataCards } = useCards();
+/*   const { dataCards } = useCards();
   const { categories } = useCategory();
   const { investments } = useInvestments();
-  const { monthResume } = useMonthResume();
+  const { monthResume } = useMonthResume(); */
+  const dataCards = MOCK_DATA_CARDS;
+  const categories = MOCK_CATEGORIES;
+  const investments = MOCK_INVESTMENTS;
+  const monthResume = MOCK_MONTH_RESUME;
   const navigate = useNavigate();
 
   // ===== REFS E ESTADO LOCAL =====
   const menuRef = useRef(null);
   const [menuAberto, setMenuAberto] = useState(false);
   const [hiddenKeys, setHiddenKeys] = useState({});
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+/*   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); */
+  const [selectedYear, setSelectedYear] = useState(2024);
+/*   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); */
+  const [selectedMonth, setSelectedMonth] = useState(11);
   const [chartHeight, setChartHeight] = useState(() => getChartHeight(typeof window !== "undefined" ? window.innerWidth : 1024));
 
   // ===== DADOS SEGUROS COM FALLBACK =====
@@ -375,11 +409,11 @@ export default function Dashboard() {
         className={styles["charts-grid"]}
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          //gridTemplateColumns: "1fr 1fr",
           gridTemplateRows: "1fr 1fr",
           gap: "1.5rem",
           flex: 1,
-          minHeight: "70vh",
+          //minHeight: "70vh",
         }}
       >
         <ChartCard title="📈 Histórico de Receita" height={chartHeight}>
@@ -418,7 +452,7 @@ export default function Dashboard() {
         </ChartCard>
 
         <ChartCard title="🥧 Distribuição de Gastos" height={chartHeight}>
-          <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+          <PieChart margin={{ top: 12, right: 0, left: 0, bottom: 0 }}>
             {(() => {
               const visible = safeCategories.filter((c) => !hiddenKeys[c.category]);
               return (
