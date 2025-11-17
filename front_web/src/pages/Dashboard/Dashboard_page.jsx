@@ -129,24 +129,24 @@ const getChartHeight = (width) => {
 export default function Dashboard() {
   // ===== HOOKS DE DADOS =====
   const { user, loading } = useMe();
-/*   const { dataCards } = useCards();
+  const { dataCards } = useCards();
   const { categories } = useCategory();
   const { investments } = useInvestments();
-  const { monthResume } = useMonthResume(); */
-  const dataCards = MOCK_DATA_CARDS;
+  const { monthResume } = useMonthResume();
+/*   const dataCards = MOCK_DATA_CARDS;
   const categories = MOCK_CATEGORIES;
   const investments = MOCK_INVESTMENTS;
-  const monthResume = MOCK_MONTH_RESUME;
+  const monthResume = MOCK_MONTH_RESUME; */
   const navigate = useNavigate();
 
   // ===== REFS E ESTADO LOCAL =====
   const menuRef = useRef(null);
   const [menuAberto, setMenuAberto] = useState(false);
   const [hiddenKeys, setHiddenKeys] = useState({});
-/*   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); */
-  const [selectedYear, setSelectedYear] = useState(2024);
-/*   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); */
-  const [selectedMonth, setSelectedMonth] = useState(11);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+/*   const [selectedYear, setSelectedYear] = useState(2024); */
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+/*   const [selectedMonth, setSelectedMonth] = useState(11); */
   const [chartHeight, setChartHeight] = useState(() => getChartHeight(typeof window !== "undefined" ? window.innerWidth : 1024));
 
   // ===== DADOS SEGUROS COM FALLBACK =====
