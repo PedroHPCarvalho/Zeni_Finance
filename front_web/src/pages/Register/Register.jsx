@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/Register/Register.module.css";
 import { useRegister } from "../../hooks/useRegister";
+import ConsentModal from "../../components/ConsentModal";
 
 export default function Cadastro() {
   const navigate = useNavigate();
   const { register, loading, error } = useRegister();
+  const [showConsentModal, setShowConsentModal] = useState(false);
+  const [hasConsent, setHasConsent] = useState(false);
+  const [pendingFormData, setPendingFormData] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     password: "",
@@ -20,10 +24,35 @@ export default function Cadastro() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Se não tem consentimento, abre modal
+    if (!hasConsent) {
+      setPendingFormData(formData);
+      setShowConsentModal(true);
+      return;
+    }
+
+    // Se tem consentimento, processa o cadastro
     const response = await register(formData);
     if (response && response.ok) {
       navigate("/login");
     }
+  };
+
+  const handleConsentAccept = async () => {
+    setHasConsent(true);
+    setShowConsentModal(false);
+    
+    // Registra com os dados pendentes
+    const response = await register(pendingFormData);
+    if (response && response.ok) {
+      navigate("/login");
+    }
+  };
+
+  const handleConsentCancel = () => {
+    setShowConsentModal(false);
+    setPendingFormData(null);
   };
 
   return (
@@ -103,6 +132,12 @@ export default function Cadastro() {
           </p>
         </form>
       </div>
+
+      <ConsentModal 
+        isOpen={showConsentModal}
+        onAccept={handleConsentAccept}
+        onCancel={handleConsentCancel}
+      />
     </div>
   );
 }

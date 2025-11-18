@@ -20,7 +20,7 @@ import {
   Cell,
   BarChart,
   Bar,
-  CartesianGrid ,
+  CartesianGrid,
   AreaChart,
   Area,
   Legend,
@@ -348,7 +348,7 @@ export default function Dashboard() {
               </li>
               <li
                 style={{ padding: '10px 14px', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center', color: '#ff6b6b' }}
-                onClick={() => { localStorage.removeItem("token"); navigate("/login"); }}
+                onClick={handleLogout}
                 role="menuitem"
               >
                 <LogOut size={16} /> Sair

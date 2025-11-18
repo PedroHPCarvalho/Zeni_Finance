@@ -5,8 +5,8 @@ import Hero from "../../assets/Hero.jpg";
 import Relatorios from "../../assets/Relatorios.png";
 import WhatsApphatsapp from "../../assets/Whatsapp.png";
 import Gastos from "../../assets/Gastos.png";
-import { useNavigate } from "react-router-dom";
-import { BarChart3, MessageSquare, PieChart } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import { BarChart3, MessageSquare, PieChart, FileText } from "lucide-react";
 
 function Home() {
   const navigate = useNavigate();
@@ -39,22 +39,28 @@ function Home() {
       {/* ===== CARDS ===== */}
       <section className={styles.home_cards}>
         <div className={styles.home_card}>
-          <BarChart3 size={48} className="icon" /> {/* tamanho parecido com a imagem */}
-          <p>
+          <div className={styles.card_iconWrap} aria-hidden>
+            <BarChart3 size={28} />
+          </div>
+          <p className={styles.card_text}>
             Registre gastos e peça relatórios direto no WhatsApp. Rápido e prático, sem complicações.
           </p>
         </div>
 
         <div className={styles.home_card}>
-          <MessageSquare size={48} className="icon" />
-          <p>
+          <div className={styles.card_iconWrap} aria-hidden>
+            <MessageSquare size={28} />
+          </div>
+          <p className={styles.card_text}>
             Tenha acesso a análises completas de suas finanças pela web ou WhatsApp, sempre que precisar.
           </p>
         </div>
 
         <div className={styles.home_card}>
-          <PieChart size={48} className="icon" />
-          <p>
+          <div className={styles.card_iconWrap} aria-hidden>
+            <PieChart size={28} />
+          </div>
+          <p className={styles.card_text}>
             Descubra onde e com o que você mais gasta para tomar decisões mais conscientes.
           </p>
         </div>
@@ -123,14 +129,13 @@ function Home() {
 
         {/* CHAMADA PARA AÇÃO */}
         <div className={styles.home_gamblingCTA}>
-          <h4>Proteja suas finanças</h4>
-          <p>É um ato de amor em si mesmo, e uma ação educativa. Ao mesmo tempo a educação financeira e controla uma futuro sólido. Organize seus finanças, e manque tomácia base financeiras.</p>
+          <h4> Fale com nosso agente</h4>
           <div className={styles.home_gamblingButtons}>
             <button className={styles.home_cta} onClick={()=>navigate("/register")}>
               Começar cadastro
             </button>
             <a href="https://wa.me/5511988783882" target="_blank" rel="noopener noreferrer" className={styles.home_ctaLink}>
-              Solicitar ajuda
+              Fale Conosco
             </a>
           </div>
         </div>
@@ -140,14 +145,14 @@ function Home() {
       <footer className={styles.home_footer}>
         <div className={styles.home_footerContent}>
           <span>© 2025 Zeni Finanças — Todos os direitos reservados.</span>
-          <a
-            href="https://projects-of-faculty.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/privacy"
             className={styles.home_privacyButton}
+            aria-label="Política de Privacidade"
           >
+            <FileText size={16} style={{ marginRight: 8 }} aria-hidden />
             Política de Privacidade
-          </a>
+          </Link>
         </div>
       </footer>
     </div>

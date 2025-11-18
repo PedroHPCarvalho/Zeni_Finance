@@ -122,45 +122,80 @@ html, body {
 .home_cards {
   background-color: var(--accent);
   width: 100%;
-  padding: 80px 0; /* remove padding lateral */
-  display: flex;
+  padding: 80px 0; /* ocupa a largura total sem margem lateral */
+  display: grid;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  gap: 28px;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 25px;
   box-sizing: border-box;
 }
 
 .home_card {
   background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(2, 14, 18, 0.08);
   display: flex;
   align-items: center;
-  padding: 25px;
-  transition: transform 0.3s;
-}
-
-/* Make images inside cards responsive */
-.home_card img,
-.home_card .icon {
-  max-width: 100%;
-  height: auto;
+  gap: 18px;
+  padding: 22px;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
 }
 
 .home_card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 14px 40px rgba(2, 14, 18, 0.12);
 }
 
+.card_iconWrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.03);
+  flex-shrink: 0;
+}
+
+.card_iconWrap svg {
+  color: var(--dark);
+}
+
+.card_text {
+  font-size: 18px;
+  line-height: 1.5;
+  color: #222;
+  margin: 0;
+}
+
+/* fallback for any image inside card */
 .home_card img {
-  width: 60px;
-  margin-right: 20px;
+  width: 64px;
+  height: auto;
+  margin: 0;
 }
 
-.home_card .icon {
-  margin-bottom: 16px;
-  color: #1abc9c; /* exemplo de cor */
+/* Responsividade dos cards */
+@media (max-width: 1024px) {
+  .home_cards {
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    padding: 60px 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .home_cards {
+    grid-template-columns: 1fr;
+    padding: 40px 14px;
+  }
+  .home_card {
+    flex-direction: row;
+    text-align: left;
+    padding: 18px;
+  }
+  .card_text {
+    font-size: 16px;
+  }
 }
 
 /* ===== HISTÓRIA ===== */
@@ -341,12 +376,16 @@ html, body {
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .home_gamblingCTA h4 {
   color: #1a1a1a;
   font-size: 22px;
-  margin: 0 0 12px 0;
+  margin: 0 0 16px 0;
 }
 
 .home_gamblingCTA p {
@@ -356,24 +395,102 @@ html, body {
   margin: 0 0 24px 0;
 }
 
+.home_ctaContent {
+  display: none;
+}
+
+.home_ctaQRSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.home_qrCode {
+  width: auto;
+  height: auto;
+  border: 2px solid #00bcd4;
+  border-radius: 8px;
+  padding: 8px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home_qrCode canvas {
+  width: 120px !important;
+  height: 120px !important;
+  display: block;
+}
+
+.home_qrText {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  margin: 0;
+  font-weight: 600;
+}
+
+.home_ctaTextSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.home_ctaTextSection p {
+  color: #1a1a1a;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+.home_ctaContactIcon {
+  width: 48px;
+  height: 48px;
+  background: #00bcd4;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home_ctaTextSection p {
+  color: #1a1a1a;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
 .home_gamblingButtons {
   display: flex;
   gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .home_ctaLink {
   background-color: white;
   border: 2px solid #00bcd4;
   color: #00bcd4;
-  padding: 12px 28px;
+  padding: 12px 20px;
   border-radius: 6px;
   text-decoration: none;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
   transition: background 0.3s, color 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
 }
 
 .home_ctaLink:hover {
@@ -385,6 +502,20 @@ html, body {
 @media (max-width: 768px) {
   .home_gambling {
     padding: 50px 16px;
+  }
+
+  .home_ctaContent {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .home_qrCode {
+    width: 100px;
+    height: 100px;
+  }
+
+  .home_gamblingCTA {
+    padding: 30px 20px;
   }
 
   .home_gamblingWarningContent {
@@ -446,7 +577,7 @@ html, body {
   color: white;
   text-align: center;
   width: 100%;
-  padding: 25px 0;
+  padding: 20px 15px;
   font-size: 15px;
   box-sizing: border-box;
 }
@@ -455,23 +586,32 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 12px;
   flex-wrap: wrap;
+  padding: 0 8px;
 }
 
 .home_privacyButton {
   background-color: transparent;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
   color: white;
   padding: 8px 14px;
   border-radius: 6px;
   text-decoration: none;
   font-weight: 600;
-  transition: background 0.2s, transform 0.12s;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  line-height: 1.4;
+  max-width: 160px;
+  word-wrap: break-word;
 }
 
 .home_privacyButton:hover {
-  background-color: rgba(255,255,255,0.06);
+  background-color: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.6);
   transform: translateY(-2px);
 }
 
@@ -498,8 +638,7 @@ html, body {
     gap: 8px;
   }
 
-  .home_buttons .home_button,
-  .home_buttons a.home_privacyButton {
+  .home_button {
     padding: 8px 12px;
     font-size: 14px;
   }
@@ -548,8 +687,7 @@ html, body {
     justify-content: center;
   }
 
-  .home_buttons .home_button,
-  .home_buttons a.home_privacyButton {
+  .home_button {
     width: 100%;
     box-sizing: border-box;
   }
@@ -603,6 +741,19 @@ html, body {
     padding: 18px 8px;
   }
 
+  .home_footerContent {
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 12px;
+  }
+
+  .home_privacyButton {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 14px;
+    text-align: center;
+  }
+
   .home_buttons {
     width: 100%;
     display: flex;
@@ -611,8 +762,7 @@ html, body {
     align-items: stretch;
   }
 
-  .home_buttons .home_button,
-  .home_buttons a.home_privacyButton {
+  .home_button {
     width: 100%;
   }
 
