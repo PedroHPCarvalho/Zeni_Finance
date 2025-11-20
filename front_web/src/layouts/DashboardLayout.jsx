@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { LogOut, Menu, LayoutDashboard, Table, User, Moon, Settings } from "lucide-react";
+import { LogOut, Menu, LayoutDashboard, Table, User, Moon, Settings, X } from "lucide-react";
 import styles from "../styles/DashboardLayout/DashboardLayout.module.css";
 import Logo from "../assets/Logo.png";
 
@@ -21,7 +21,6 @@ export default function DashboardLayout({ children }) {
       setSidebarOpen(false);
     }
   }, [location]);
-
 
   useEffect(() => {
     fetch("/me")
@@ -49,9 +48,9 @@ export default function DashboardLayout({ children }) {
   return (
     <div className={styles.container}>
       
-      {sidebarOpen && (
+      {sidebarOpen && window.innerWidth <= 768 && (
         <div 
-          //className={styles.overlay} 
+          className={styles.overlay} 
           onClick={() => setSidebarOpen(false)} 
         />
       )}
@@ -59,10 +58,20 @@ export default function DashboardLayout({ children }) {
       {/* SIDEBAR */}
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : styles.closed}`}>
         <div className={styles.logo}>
-          <img src={Logo} alt="Zeni" className={styles.logoIcon} />
-          <span className={`${styles.logoText} ${!sidebarOpen ? styles.hideText : ''}`}>
-            Zeni Finance
-          </span>
+          <div className={styles.logoContent}>
+            <img src={Logo} alt="Zeni" className={styles.logoIcon} />
+            <span className={`${styles.logoText} ${!sidebarOpen ? styles.hideText : ''}`}>
+              Zeni Finance
+            </span>
+          </div>
+
+          <button 
+            className={styles.closeMobileBtn} 
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Fechar menu"
+          >
+            <X size={24} />
+          </button>
         </div>
 
         <nav className={styles.menu}>
@@ -77,6 +86,7 @@ export default function DashboardLayout({ children }) {
           </a>
         </nav>
       </aside>
+
       {/* MAIN */}
       <div className={styles.main}>
         {/* HEADER */}
@@ -95,7 +105,6 @@ export default function DashboardLayout({ children }) {
 
             {dropdownOpen && (
               <div className={styles.dropdown}>
-                {/* Cabeçalho com nome */}
                 <div className={styles.dropdownHeader}>{user?.name || "Usuário"}</div>
                 <button className={styles.dropdownItem}><User size={18} /> <span>Perfil</span></button>
                 <button className={styles.dropdownItem}><Settings size={18} /> <span>Configurações</span></button>
