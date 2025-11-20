@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, LoginView, MeView, TableRegistersView, DeleteRegisterView, CreateWithN8NView , ResumeCardsView, CategoryResumeView, MouthResumeView, MouthResumeInvestmentView, AiCreateView
+from .views import RegisterView, LoginView, MeView, TableRegistersView, DeleteRegisterView, CreateWithN8NView , ResumeCardsView, CategoryResumeView, MouthResumeView, MouthResumeInvestmentView, AiCreateView, CreateView
 
 urlpatterns = [
     ##Autenticacao
@@ -14,6 +14,7 @@ urlpatterns = [
     path("financial-registers-bff/mouthresumeinvest", MouthResumeInvestmentView.as_view(), name="resume-month-invest"),
     path("financial-registers-bff/create/ia", AiCreateView.as_view(), name="createIA"),
     path("financial-registers-bff/create/whats", CreateWithN8NView.as_view(), name="whats"),
+    path("financial-registers-bff/create", CreateView.as_view(), name="create"),
     path("financial-registers-bff/listPaged", TableRegistersView.as_view(), name="listTable"),
     path("financial-registers-bff/<int:id>", DeleteRegisterView.as_view(), name="delete-register")
 ]

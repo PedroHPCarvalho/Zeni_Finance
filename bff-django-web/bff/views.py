@@ -166,6 +166,63 @@ class AiCreateView(APIView):
             return Response({"error": str(e)}, status=500)
 
         return Response(response.json(), status=response.status_code)
+    
+
+@method_decorator(csrf_exempt, name="dispatch")
+class CreateView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        # 1️⃣ Pegar os dados do corpo da requisição
+        description = request.data.get("description")
+        category = request.data.get("category")
+        value = request.data.get("value")
+        type_register = request.data.get("typeRegister")
+        date_register = request.data.get("dateRegister")
+
+        # 2️⃣ Validar campos obrigatórios
+        required_fields = {
+            "description": description,
+            "category": category,
+            "value": value,
+            "typeRegister": type_register,
+            "dateRegister": date_register,
+        }
+
+        missing_fields = [key for key, val in required_fields.items() if val is None]
+        if missing_fields:
+            return Response({"error": f"Campos obrigatórios ausentes: {', '.join(missing_fields)}"}, status=400)
+
+        # 3️⃣ Validar que value não é negativo
+        try:
+            value = float(value)
+        except (ValueError, TypeError):
+            return Response({"error": "Campo value deve ser um número"}, status=400)
+
+        if value < 0:
+            return Response({"error": "Campo value não pode ser negativo"}, status=400)
+
+        # 4️⃣ Enviar para o core
+        core_url = os.getenv("CORE_URL_CREATE", "http://localhost:8080/financial-registers/create")
+        token = request.headers.get("Authorization")
+        if not token:
+            return Response({"error": "Token não fornecido"}, status=401)
+
+        try:
+            headers = {"Authorization": token}
+            payload = {
+                "description": description,
+                "category": category,
+                "value": value,
+                "typeRegister": type_register,
+                "dateRegister": date_register,
+            }
+            response = requests.post(core_url, headers=headers, json=payload)
+            response.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            return Response({"error": str(e)}, status=500)
+
+        return Response(response.json(), status=response.status_code)
 
 
 @method_decorator(csrf_exempt, name="dispatch")

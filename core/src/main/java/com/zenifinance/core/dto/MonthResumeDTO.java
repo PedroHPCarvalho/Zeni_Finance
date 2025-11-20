@@ -11,4 +11,5 @@ public class MonthResumeDTO {
     private String mes;
     private Double despesas;
     private Double receitas;
+    private Integer ano;
 }

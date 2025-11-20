@@ -4,7 +4,7 @@ import { Edit, Trash2 } from "lucide-react";
 
 export default function HistoryTableCard({ data, onEdit, onDelete }) {
   const content = data?.content || [];
-  const totalElements = data?.totalElements || 0;
+  const totalElements = data?.totalElements || content.length;
   const pageSize = data?.pageable?.pageSize || 10;
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -35,9 +35,10 @@ export default function HistoryTableCard({ data, onEdit, onDelete }) {
               <th>Tipo</th>
               <th>Valor</th>
               <th>Data</th>
-              <th>Ações</th>
+              <th style={{ textAlign: "center" }}>Ações</th>
             </tr>
           </thead>
+
           <tbody>
             {pageContent.length === 0 ? (
               <tr>
@@ -49,12 +50,10 @@ export default function HistoryTableCard({ data, onEdit, onDelete }) {
               pageContent.map((row) => {
                 let rowClass = "";
                 const type = row.typeRegister?.toUpperCase();
-                switch (type) {
-                  case "DESPESA": rowClass = styles.typeExpenseRow; break;
-                  case "RECEITA": rowClass = styles.typeRevenueRow; break;
-                  case "INVESTIMENTO": rowClass = styles.typeInvestmentRow; break;
-                  default: rowClass = "";
-                }
+
+                if (type === "DESPESA") rowClass = styles.typeExpenseRow;
+                if (type === "RECEITA") rowClass = styles.typeRevenueRow;
+                if (type === "INVESTIMENTO") rowClass = styles.typeInvestmentRow;
 
                 return (
                   <tr key={row.id} className={rowClass}>
@@ -63,15 +62,16 @@ export default function HistoryTableCard({ data, onEdit, onDelete }) {
                     <td>{row.category}</td>
                     <td>{row.typeRegister}</td>
                     <td className={styles.valueCell}>
-                      R$ {Number(row.value).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      R$ {Number(row.value).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                     </td>
                     <td>{row.dateRegister?.split("T")[0]}</td>
-                    <td className={styles.actions}>
-                      <button onClick={() => onEdit(row)} className={styles.editBtn}>
-                        <Edit size={16} />
+
+                    <td className={styles.actionsCell}>
+                      <button onClick={() => onEdit(row)} className={styles.iconBtn}>
+                        <Edit size={18}/>
                       </button>
-                      <button onClick={() => onDelete(row.id)} className={styles.deleteBtn}>
-                        <Trash2 size={16} />
+                      <button onClick={() => onDelete(row.id)} className={styles.iconBtnDelete}>
+                        <Trash2 size={18}/>
                       </button>
                     </td>
                   </tr>
@@ -83,9 +83,17 @@ export default function HistoryTableCard({ data, onEdit, onDelete }) {
       </div>
 
       <div className={styles.pagination}>
-        <button onClick={handlePrev} disabled={currentPage === 0}>Anterior</button>
-        <span>Página {currentPage + 1} de {totalPages || 1}</span>
-        <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>Próxima</button>
+        <button onClick={handlePrev} disabled={currentPage === 0}>
+          Anterior
+        </button>
+
+        <span>
+          Página {currentPage + 1} de {totalPages || 1}
+        </span>
+
+        <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
+          Próxima
+        </button>
       </div>
     </div>
   );

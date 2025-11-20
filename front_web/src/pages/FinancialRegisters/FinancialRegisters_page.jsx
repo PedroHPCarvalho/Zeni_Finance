@@ -11,7 +11,7 @@ import MOCK_MONTHLY_RESUME from "../../utils/mock_mouth.js";
 import MOCK_INVESTMENTS from "../../utils/mock_investiments.js";
 import MOCK_HISTORY from "../../utils/mock_historic.js";
 
-export default function Dashboard() {
+export default function FinancialRegisters() {
   const columns = ["Categoria", "Valor", "Data"];
 
   const data = [
@@ -23,16 +23,22 @@ export default function Dashboard() {
   return (
     <DashboardLayout>
 
-    <ChatRegisterCard/>
-      
-      <ManualRegisterCard/>
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "24px"
+      }}>
+        <ChatRegisterCard/>
 
-      <HistoryTableCard
-        data={MOCK_HISTORY}
-        onEdit={(row) => console.log("Editar", row)}
-        onDelete={(id) => console.log("Deletar", id)}
-      />
-      
+        <ManualRegisterCard/>
+
+        <HistoryTableCard
+          data={MOCK_HISTORY}
+          onEdit={(row) => console.log("Editar", row)}
+          onDelete={(id) => console.log("Deletar", id)}
+        />
+      </div>
+
     </DashboardLayout>
   );
 }

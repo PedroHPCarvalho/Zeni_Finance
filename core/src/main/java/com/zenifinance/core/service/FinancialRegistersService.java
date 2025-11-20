@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -82,13 +83,12 @@ public class FinancialRegistersService {
     public List<MonthResumeDTO> getMonthResume(Long userId) {
         List<Object[]> results = financialRegistersRepository.findMonthResumeByUserId(userId);
 
-        return results.stream()
-                .map(obj -> new MonthResumeDTO(
-                        (String) obj[0],
-                        ((Number) obj[1]).doubleValue(), // expenses
-                        ((Number) obj[2]).doubleValue()  // revenue
-                ))
-                .toList();
+        return results.stream().map(row -> new MonthResumeDTO(
+                (String) row[1],      // ano
+                ((BigDecimal) row[2]).doubleValue(), // mes (TO_CHAR)
+                ((BigDecimal) row[3]).doubleValue(), // despesas
+                ((Number) row[0]).intValue()  // receitas
+                )).toList();
     }
 
     public List<MonthResumeInvestmentDTO> getMonthResumeInvestment(Long userId){

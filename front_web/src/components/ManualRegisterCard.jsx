@@ -39,7 +39,6 @@ export default function ManualRegisterCard({ onSubmit }) {
 
     onSubmit(payload);
 
-    // Resetar campos
     setDescription("");
     setCategory("");
     setTypeRegister("");
@@ -50,47 +49,67 @@ export default function ManualRegisterCard({ onSubmit }) {
   return (
     <div className={styles.card}>
       <span className={styles.title}>Registrar gasto manualmente</span>
+
       <form className={styles.form} onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Descrição"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          required
-        >
-          <option value="">Categoria</option>
-          {CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
-          ))}
-        </select>
-        <select
-          value={typeRegister}
-          onChange={(e) => setTypeRegister(e.target.value)}
-          required
-        >
-          <option value="">Tipo de Registro</option>
-          {TYPES.map((t) => (
-            <option key={t} value={t}>{t}</option>
-          ))}
-        </select>
-        <input
-          type="number"
-          placeholder="Valor"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          required
-        />
-        <input
-          type="date"
-          value={dateRegister}
-          onChange={(e) => setDateRegister(e.target.value)}
-        />
-        <button type="submit">Registrar</button>
+
+        <div className={styles.field}>
+          <label>Descrição</label>
+          <input
+            type="text"
+            placeholder="Ex: Mercado, Uber..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <label>Categoria</label>
+            <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+              <option value="">Selecione...</option>
+              {CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.field}>
+            <label>Tipo</label>
+            <select value={typeRegister} onChange={(e) => setTypeRegister(e.target.value)} required>
+              <option value="">Selecione...</option>
+              {TYPES.map((t) => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <label>Valor</label>
+            <input
+              type="number"
+              placeholder="0.00"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label>Data</label>
+            <input
+              type="date"
+              value={dateRegister}
+              onChange={(e) => setDateRegister(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <button type="submit" className={styles.submit}>
+          Registrar
+        </button>
       </form>
     </div>
   );

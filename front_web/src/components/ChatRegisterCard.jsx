@@ -2,50 +2,60 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "../styles/Card/ChatRegisterCard.module.css";
 
 export default function ChatRegisterCard({ onSubmit }) {
-  const [messages, setMessages] = useState([]); // histórico de mensagens
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Scroll automático para a última mensagem
+  // Scroll automático
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    const userMessage = { sender: "user", text: input };
+    const userMessage = {
+      sender: "user",
+      text: input,
+      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    };
+
     setMessages(prev => [...prev, userMessage]);
     setInput("");
     setLoading(true);
 
     try {
-      // Aqui você chamaria a função de IA para processar a mensagem
-      // Ex: const responseText = await sendToAI(input);
-      const responseText = `Processado IA: "${input}"`; // mock temporário
+      // Mock IA
+      const responseText = `Entendi! Vou registrar isso para você:\n"${input}"`;
 
-      const aiMessage = { sender: "ai", text: responseText };
-      setMessages(prev => [...prev, aiMessage]);
+      setTimeout(() => {
+        const aiMessage = {
+          sender: "ai",
+          text: responseText,
+          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+        };
 
-      // Exemplo de criar registro a partir da resposta
-      onSubmit([
-        {
-          description: "Gasto detectado IA",
-          category: "ALIMENTACAO",
-          value: 100,
-          typeRegister: "DESPESA",
-          dateRegister: new Date().toISOString(),
-        }
-      ]);
+        setMessages(prev => [...prev, aiMessage]);
+
+        // Registro mockado
+        onSubmit([
+          {
+            description: "Gasto detectado IA",
+            category: "ALIMENTACAO",
+            value: 42.5,
+            typeRegister: "DESPESA",
+            dateRegister: new Date().toISOString(),
+          }
+        ]);
+
+        setLoading(false);
+      }, 900);
 
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   const handleKeyPress = (e) => {
@@ -57,30 +67,49 @@ export default function ChatRegisterCard({ onSubmit }) {
 
   return (
     <div className={styles.card}>
-      <span className={styles.title}>Registrar gastos via Chatbot</span>
+      <div className={styles.header}>
+        <div className={styles.botAvatar}>🤖</div>
+        <div>
+          <p className={styles.botName}>ZeniBot - Inserir Registro</p>
+          <span className={styles.botStatus}>Online</span>
+        </div>
+      </div>
+
       <div className={styles.chatWindow}>
-        {messages.map((msg, idx) => (
+        {messages.map((msg, i) => (
           <div
-            key={idx}
+            key={i}
             className={`${styles.message} ${
               msg.sender === "user" ? styles.userMessage : styles.aiMessage
             }`}
           >
-            {msg.text}
+            <div className={styles.msgText}>{msg.text}</div>
+            <div className={styles.msgTime}>{msg.time}</div>
           </div>
         ))}
+
+        {loading && (
+          <div className={`${styles.message} ${styles.aiMessage}`}>
+            <div className={styles.typing}>
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        )}
+
         <div ref={messagesEndRef} />
       </div>
+
       <div className={styles.inputArea}>
         <textarea
-          placeholder="Digite seu gasto..."
+          placeholder="Descreva seu gasto... (Ex: 'gastei 30 reais no mercado')"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={handleKeyPress}
           disabled={loading}
         />
+
         <button onClick={handleSend} disabled={loading}>
-          {loading ? "Processando..." : "Enviar"}
+          {loading ? "..." : "Enviar"}
         </button>
       </div>
     </div>

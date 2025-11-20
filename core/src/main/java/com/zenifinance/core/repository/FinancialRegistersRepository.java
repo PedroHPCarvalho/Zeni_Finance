@@ -39,13 +39,19 @@ public interface FinancialRegistersRepository extends JpaRepository<FinancialReg
 
     @Query(value = """
         SELECT 
+            EXTRACT(YEAR FROM date_register) AS ano,
             TO_CHAR(date_register, 'Mon') AS mes,
             SUM(CASE WHEN type_register = 'DESPESA' THEN value ELSE 0 END) AS despesas,
             SUM(CASE WHEN type_register = 'RECEITA' THEN value ELSE 0 END) AS receitas
         FROM financial_registers
         WHERE id_user = :userId
-        GROUP BY TO_CHAR(date_register, 'Mon'), EXTRACT(MONTH FROM date_register)
-        ORDER BY EXTRACT(MONTH FROM date_register)
+        GROUP BY 
+            EXTRACT(YEAR FROM date_register),
+            TO_CHAR(date_register, 'Mon'),
+            EXTRACT(MONTH FROM date_register)
+        ORDER BY 
+            EXTRACT(YEAR FROM date_register),
+            EXTRACT(MONTH FROM date_register)
     """, nativeQuery = true)
     List<Object[]> findMonthResumeByUserId(@Param("userId") Long userId);
 
@@ -53,13 +59,20 @@ public interface FinancialRegistersRepository extends JpaRepository<FinancialReg
         SELECT
             category,
             CAST(SUM(value) AS DOUBLE PRECISION) AS valor_investido,
-            TO_CHAR(date_register, 'Mon') AS mes
+            TO_CHAR(date_register, 'Mon') AS mes,
+            EXTRACT(YEAR FROM date_register) AS ano
         FROM financial_registers
         WHERE id_user = :userId 
           AND category = 'INVESTIMENTOS' 
           AND type_register = 'RECEITA'
-        GROUP BY category, TO_CHAR(date_register, 'Mon'), EXTRACT(MONTH FROM date_register)
-        ORDER BY EXTRACT(MONTH FROM date_register)
+        GROUP BY 
+            category,
+            TO_CHAR(date_register, 'Mon'),
+            EXTRACT(MONTH FROM date_register),
+            EXTRACT(YEAR FROM date_register)
+        ORDER BY 
+            EXTRACT(YEAR FROM date_register),
+            EXTRACT(MONTH FROM date_register)
     """, nativeQuery = true)
     List<MonthResumeInvestmentDTO> findMonthResumeInvestByUserId(@Param("userId") Long userId);
 

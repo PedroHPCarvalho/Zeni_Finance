@@ -16,15 +16,17 @@
 
 .tableWrapper {
   overflow-x: auto;
+  width: 100%;
 }
 
+/* ===== Tabela sem overflow ===== */
 .table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 8px;
+  border-collapse: collapse;
   font-size: 14px;
 }
 
+/* Cabeçalho igual antes */
 .table th {
   background: #f5f5f5;
   font-weight: 600;
@@ -33,16 +35,24 @@
   border-radius: 6px;
 }
 
+/* Espaço entre linhas (simulando border-spacing) */
+.table tbody tr + tr {
+  margin-top: 6px;
+  display: table-row;
+}
+
+/* Células */
 .table td {
   padding: 12px;
   border-radius: 8px;
 }
 
+/* Hover sem aumentar largura */
 .table tbody tr:hover {
   background: rgba(33, 150, 243, 0.05);
 }
 
-/* Fundo colorido por tipo */
+/* ===== Cores ORIGINAIS mantidas ===== */
 .typeExpenseRow {
   background: rgba(244, 67, 54, 0.1);
 }
@@ -59,10 +69,11 @@
   font-weight: 600;
 }
 
-/* Paginação */
+/* ===== Paginação ===== */
 .pagination {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 12px;
 }
 
@@ -77,35 +88,55 @@
   transition: background 0.2s;
 }
 
+.pagination button:hover {
+  background-color: #1976d2;
+}
+
 .pagination button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
 .pagination span {
-  display: flex;
-  align-items: center;
   font-weight: 500;
 }
 
-.actions button {
+/* ===== Botões de ação ===== */
+.actionsCell {
+  display: flex;
+  gap: 10px;
+}
+
+.iconBtn,
+.iconBtnDelete {
   background: none;
   border: none;
   cursor: pointer;
-  margin-right: 8px;
-  padding: 4px;
-  border-radius: 4px;
+  padding: 5px;
+  border-radius: 6px;
   transition: background 0.2s;
 }
 
-.actions button:hover {
-  background: rgba(0,0,0,0.05);
+.iconBtn:hover {
+  background: rgba(33, 150, 243, 0.15);
 }
 
-.editBtn svg {
-  color: #2196F3;
+.iconBtnDelete:hover {
+  background: rgba(244, 67, 54, 0.15);
 }
 
-.deleteBtn svg {
-  color: #F44336;
+.iconBtn svg {
+  color: #2196f3;
 }
+
+.iconBtnDelete svg {
+  color: #f44336;
+}
+
+.emptyText {
+  text-align: center;
+  padding: 20px;
+  font-weight: 500;
+  color: #666;
+}
+
