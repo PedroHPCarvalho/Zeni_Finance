@@ -1,8 +1,7 @@
 import React from "react";
-import styles from "../styles/Card/TableCard.module.css";
+import styles from "../styles/Card/TableCard.module.css"; // Card padrão
 
-export default function CardTable({ title, icon, columns = [], data = [] }) {
-  // Função para formatar data por extenso
+export default function TableCard({ title, icon, columns = [], data = [] }) {
   const formatDate = (value) => {
     try {
       const date = new Date(value);
@@ -17,14 +16,16 @@ export default function CardTable({ title, icon, columns = [], data = [] }) {
   };
 
   return (
-    <div className={`${styles.card} contentCard`}>
-      {/* Header */}
-      <div className={styles.header}>
-        <span className={styles.title}>{title}</span>
-        {icon && <span className={styles.icon}>{icon}</span>}
-      </div>
+    <div className={styles.card}>
+      
+      {(title || icon) && (
+        <div className={styles.header}>
+          <span className={styles.title}>{title}</span>
+          {icon && <span className={styles.icon}>{icon}</span>}
+        </div>
+      )}
 
-      {/* Table */}
+      {/* Wrapper correto para tabelas */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
@@ -44,32 +45,26 @@ export default function CardTable({ title, icon, columns = [], data = [] }) {
               </tr>
             ) : (
               data.map((row, i) => {
-                let rowClass = "";
-                const type = typeof row[2] === "string" ? row[2].toUpperCase() : "";
+                const type = String(row[2] || "").toUpperCase();
 
-                switch (type) {
-                  case "DESPESA":
-                  case "CASA_DE_APOSTA":
-                    rowClass = styles.typeExpenseRow;
-                    break;
-                  case "RECEITA":
-                    rowClass = styles.typeRevenueRow;
-                    break;
-                  case "INVESTIMENTO":
-                    rowClass = styles.typeInvestmentRow;
-                    break;
-                  default:
-                    rowClass = "";
-                }
+                let rowClass =
+                  type === "DESPESA" || type === "CASA_DE_APOSTA"
+                    ? styles.typeExpenseRow
+                    : type === "RECEITA"
+                    ? styles.typeRevenueRow
+                    : type === "INVESTIMENTO"
+                    ? styles.typeInvestmentRow
+                    : "";
 
                 return (
                   <tr key={i} className={rowClass}>
                     {row.map((value, j) => {
-                      // Coluna de valor
+                      // Valor formatado
                       if (j === 3) {
                         return (
                           <td key={j} className={styles.valueCell}>
-                            R$ {Number(value).toLocaleString("pt-BR", {
+                            R$
+                            {Number(value).toLocaleString("pt-BR", {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             })}
@@ -77,7 +72,7 @@ export default function CardTable({ title, icon, columns = [], data = [] }) {
                         );
                       }
 
-                      // Coluna de data
+                      // Data formatada
                       if (j === 4) {
                         return <td key={j}>{formatDate(value)}</td>;
                       }

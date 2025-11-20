@@ -13,20 +13,31 @@ export default function FilterCard({ categories = [], onFilter }) {
 
   return (
     <div className={styles.card}>
-      <div className={styles.header}>Filtrar Data Registros</div>
-      <div className={styles.filters}>
+      {/* Header padrão */}
+      <div className={styles.header}>
+        <span className={styles.title}>Filtrar Data Registros</span>
+      </div>
 
-        <input
-          type="month"
-          value={month && year ? `${year}-${month}` : ""}
-          onChange={(e) => {
-            const [y, m] = e.target.value.split("-");
-            setYear(y);
-            setMonth(m);
-          }}
-        />
+      {/* Área de conteúdo padrão */}
+      <div className={styles.children}>
+        <div className={styles.filters}>
 
-        <button onClick={handleApply}>Aplicar</button>
+          <input
+            type="month"
+            className={styles.input}
+            value={month && year ? `${year}-${month}` : ""}
+            onChange={(e) => {
+              const [y, m] = e.target.value.split("-");
+              setYear(y);
+              setMonth(m);
+            }}
+          />
+
+          <button className={styles.applyBtn} onClick={handleApply}>
+            Aplicar
+          </button>
+
+        </div>
       </div>
     </div>
   );
