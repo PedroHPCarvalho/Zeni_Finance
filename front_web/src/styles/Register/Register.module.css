@@ -207,6 +207,133 @@
   text-decoration: underline;
 }
 
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; 
+}
+
+.modal_container {
+  background-color: #fff;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal_header {
+  background-color: #00a6a6; 
+  padding: 20px;
+  color: #fff;
+}
+
+.modal_header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.modal_content {
+  padding: 20px 25px;
+}
+
+.modal_content h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.modal_desc {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.modal_quote_box {
+  background-color: #f0fdfd; 
+  border-left: 4px solid #00a6a6;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.modal_quote_box p {
+  margin: 0;
+  font-style: italic;
+  color: #444;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.modal_privacy_box {
+  background-color: #fff9e6; 
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #fceabb;
+}
+
+.modal_privacy_box p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #5c4e2d;
+  line-height: 1.4;
+}
+
+.modal_footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 25px;
+  border-top: 1px solid #eee;
+  gap: 15px;
+}
+
+.btn_refuse, .btn_accept {
+  flex: 1;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  border: none;
+  transition: all 0.2s;
+}
+
+.btn_refuse {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.btn_refuse:hover {
+  background-color: #e6e6e6;
+}
+
+.btn_accept {
+  background-color: #00a6a6;
+  color: #fff;
+}
+
+.btn_accept:hover {
+  background-color: #008c8c;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .left_side {

@@ -7,6 +7,7 @@ import Logo from "../../assets/Logo.png";
 export default function Cadastro() {
   const navigate = useNavigate();
   const { register, loading, error } = useRegister();
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     password: "",
@@ -24,16 +25,75 @@ export default function Cadastro() {
     setFormData((prev) => ({ ...prev, phone: onlyNums }));
   };
 
-  const handleSubmit = async (e) => {
+  const handlePreSubmit = (e) => {
     e.preventDefault();
+    if (formData.password !== formData.password_confirmed) {
+        alert("As senhas não coincidem."); 
+        return;
+    }
+    setShowModal(true);
+  };
+
+  const handleConfirmRegister = async () => {
     const response = await register(formData);
     if (response && response.ok) {
+      setShowModal(false);
       navigate("/login");
+    } else {
+       setShowModal(false); 
     }
   };
 
   return (
     <div className={styles.register_root}>
+
+      {showModal && (
+        <div className={styles.modal_overlay}>
+          <div className={styles.modal_container}>
+            
+            <div className={styles.modal_header}>
+              <h3>Autorização de Dados</h3>
+            </div>
+
+            <div className={styles.modal_content}>
+              <h4>Obtenção de Consentimento</h4>
+              <p className={styles.modal_desc}>
+                Antes do usuário começar a usar o assistente financeiro, uma mensagem que receberá o consentimento do usuário será disparada. Sem esse consentimento, o serviço não será iniciado.
+              </p>
+
+              <div className={styles.modal_quote_box}>
+                <p>
+                  "Para continuar, precisamos de sua autorização para usar seus dados com o objetivo de organizar suas finanças. Seus dados não serão compartilhados com terceiros. Deseja continuar?"
+                </p>
+              </div>
+
+              <div className={styles.modal_privacy_box}>
+                <p>
+                  <strong>Privacidade:</strong> Seus dados serão utilizados apenas para análise financeira pessoal e nunca serão compartilhados com terceiros sem sua autorização explícita.
+                </p>
+              </div>
+            </div>
+
+            <div className={styles.modal_footer}>
+              <button 
+                className={styles.btn_refuse} 
+                onClick={() => setShowModal(false)}
+                disabled={loading}
+              >
+                Recusar
+              </button>
+              <button 
+                className={styles.btn_accept} 
+                onClick={handleConfirmRegister}
+                disabled={loading}
+              >
+                {loading ? "Carregando..." : "Autorizar e Continuar"}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
 
       <section className={styles.left_side}>
         <div className={styles.hero_content}>
@@ -56,7 +116,7 @@ export default function Cadastro() {
             <span className={styles.accent_line}></span>
           </div>
 
-          <form onSubmit={handleSubmit} className={styles.register_form}>
+          <form onSubmit={handlePreSubmit} className={styles.register_form}>
             
             <div className={styles.input_group}>
               <label htmlFor="name">Nome completo</label>
@@ -131,7 +191,7 @@ export default function Cadastro() {
             </div>
 
             <button type="submit" className={styles.register_btn} disabled={loading}>
-              {loading ? "CADASTRANDO..." : "CADASTRAR"}
+              CADASTRAR
             </button>
 
             {error && <p className={styles.register_error}>{error}</p>}
