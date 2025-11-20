@@ -33,32 +33,31 @@ export default function TopCategoriesCard({ title, data = [], type = "DESPESA" }
 
       <div className={styles.list}>
         {sorted.map((item, index) => {
-          const percent = ((item.total / total) * 100).toFixed(1);
+          const percent = total > 0 ? ((item.total / total) * 100).toFixed(1) : 0;
           return (
             <div key={index} className={styles.item}>
               <div className={styles.icon}>
                 {index === 0 && <Trophy size={20} className={styles.gold} />}
                 {index === 1 && <Trophy size={20} className={styles.silver} />}
                 {index === 2 && <Trophy size={20} className={styles.bronze} />}
+                {index > 2 && <span className={styles.rank}>#{index + 1}</span>}
               </div>
 
-              <div className={styles.info}>
-                <span className={styles.category}>{item.category}</span>
-                <span className={styles.value}>
-                  R${" "}
-                  {Number(item.total).toLocaleString("pt-BR", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}{" "}
-                  ({percent}%)
-                </span>
-              </div>
+              <div className={styles.content}>
+                <div className={styles.info}>
+                  <span className={styles.category}>{item.category}</span>
+                  <span className={styles.value}>
+                    R$ {Number(item.total).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                    <small className={styles.percent}> ({percent}%)</small>
+                  </span>
+                </div>
 
-              <div className={styles.barWrapper}>
-                <div
-                  className={styles.bar}
-                  style={{ width: `${percent}%`, backgroundColor: color }}
-                />
+                <div className={styles.barWrapper}>
+                  <div
+                    className={styles.bar}
+                    style={{ width: `${percent}%`, backgroundColor: color }}
+                  />
+                </div>
               </div>
             </div>
           );

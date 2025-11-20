@@ -21,6 +21,21 @@
   border: none;
   cursor: pointer;
   color: #c62828;
+  
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.header button:hover {
+  background-color: rgba(198, 40, 40, 0.1); 
+}
+
+.header button:focus {
+  outline: none;
 }
 
 .content {

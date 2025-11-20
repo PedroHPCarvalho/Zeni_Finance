@@ -16,16 +16,40 @@ export default function CategoryPieChart({ data }) {
             data={formatted}
             dataKey="total"
             nameKey="label"
-            outerRadius={100}
-            label
+            cx="50%"
+            cy="50%"
+            //innerRadius={60}
+            outerRadius={80}
+            //paddingAngle={5}
+            label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
+            labelLine={{ stroke: '#ccc', strokeWidth: 1 }}
           >
             {formatted.map((item, index) => (
-              <Cell key={index} fill={getCategoryColor(item.category)} />
+              <Cell 
+                key={`cell-${index}`} 
+                fill={getCategoryColor(item.category)} 
+                stroke="none"
+              />
             ))}
           </Pie>
 
-          <Tooltip formatter={(v) => `R$ ${v.toFixed(2)}`} />
-          <Legend />
+          <Tooltip 
+            formatter={(v) => `R$ ${v.toFixed(2)}`}
+            contentStyle={{ 
+              backgroundColor: '#fff', 
+              borderRadius: '8px', 
+              border: 'none', 
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)' 
+            }}
+            itemStyle={{ color: '#333' }}
+          />
+          
+          <Legend 
+            verticalAlign="bottom" 
+            height={80}
+            iconType="circle"
+            wrapperStyle={{ fontSize: "16px", paddingTop: "10px" }}
+          />
         </PieChart>
       </ResponsiveContainer>
     </div>
