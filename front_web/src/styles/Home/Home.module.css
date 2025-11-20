@@ -1,622 +1,564 @@
-/* ======== RESET GERAL ======== */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  font-family: "Poppins", sans-serif;
-  overflow-x: hidden;
+/* ===== VARIÁVEIS E RESET ===== */
+:root {
+  --primary: #00897B; 
+  --primary-dark: #00695C;
+  --primary-light: #E0F2F1;
+  --accent: #00897B;     
+  --text-main: #1F2937;   
+  --text-light: #6B7280;  
+  --bg-light: #F9FAFB;    
+  --white: #FFFFFF;
+  
+  --warning-bg: #FFF7ED;   
+  --warning-border: #FFEDD5;
+  --warning-text: #9A3412;
 }
 
 .home_root {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-main);
+  background-color: var(--white);
+  overflow-x: hidden;
   width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
-/* ===== HEADER ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .home_header {
-  background-color: var(--dark);
-  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 40px;
-  flex-wrap: wrap;
-  width: 100%;
+  padding: 0 40px;
+  z-index: 1000;
   box-sizing: border-box;
 }
 
-.home_logo {
+.home_logoContainer {
   display: flex;
   align-items: center;
-  margin-right: auto;
-}
-
-.home_logo img {
-  width: 45px;
-  margin-right: 10px;
-}
-
-.home_logo h1 {
-  font-size: 24px;
-  white-space: nowrap;
-}
-
-.home_buttons {
-  display: flex;
   gap: 10px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
 }
 
-/* Make header buttons responsive */
-.home_buttons .home_button,
-.home_buttons a.home_privacyButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.home_button {
-  background-color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s, color 0.3s;
-}
-
-.home_button:hover {
-  background-color: var(--accent);
-  color: white;
-}
-
-/* ===== HERO ===== */
-.home_hero {
-  width: 100%;
-  min-height: 80vh; /* ocupa a tela inteira (reduzido para mobile) */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 60px 20px;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.home_heroContent {
-  background-color: rgba(255, 255, 255, 0.85);
-  padding: 40px 30px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 600px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.home_heroContent h1 {
-  font-size: 32px;
-  margin-bottom: 20px;
-  line-height: 1.3;
-}
-
-.home_cta {
-  background-color: var(--accent);
-  border: none;
-  color: white;
-  padding: 14px 30px;
-  border-radius: 5px;
-  font-size: 18px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.home_cta:hover {
-  background-color: #009d8d;
-}
-
-/* ===== CARDS ===== */
-.home_cards {
-  background-color: var(--accent);
-  width: 100%;
-  padding: 80px 0; /* remove padding lateral */
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 25px;
-  box-sizing: border-box;
-}
-
-.home_card {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
-  display: flex;
-  align-items: center;
-  padding: 25px;
-  transition: transform 0.3s;
-}
-
-/* Make images inside cards responsive */
-.home_card img,
-.home_card .icon {
-  max-width: 100%;
+.home_logoImg {
+  width: 32px;
   height: auto;
 }
 
-.home_card:hover {
-  transform: translateY(-5px);
-}
-
-.home_card img {
-  width: 60px;
-  margin-right: 20px;
-}
-
-.home_card .icon {
-  margin-bottom: 16px;
-  color: #1abc9c; /* exemplo de cor */
-}
-
-/* ===== HISTÓRIA ===== */
-.home_historia {
-  background-color: white;
-  width: 100%;
-  padding: 100px 0;
-  text-align: center;
-  box-sizing: border-box;
-}
-
-.home_historia h2 {
-  color: var(--accent);
-  font-size: 34px;
-  margin-bottom: 20px;
-}
-
-.home_historia p {
-  font-size: 18px;
-  line-height: 1.7;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-/* ===== CONSCIENTIZAÇÃO SOBRE APOSTAS ===== */
-.home_gambling {
-  background-color: #f5f5f5;
-  width: 100%;
-  padding: 80px 20px;
-  text-align: center;
-  box-sizing: border-box;
-}
-
-/* Aviso no topo */
-.home_gamblingWarning {
-  background: linear-gradient(135deg, #00bcd4, #26c6da);
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 40px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.home_gamblingWarningContent {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  color: white;
-}
-
-.home_warningIcon {
-  font-size: 32px;
-  flex-shrink: 0;
-  margin-top: 4px;
-}
-
-.home_gamblingWarningContent h3 {
-  font-size: 18px;
-  margin: 0 0 8px 0;
-  text-align: left;
-}
-
-.home_gamblingWarningContent p {
-  font-size: 14px;
-  margin: 0;
-  text-align: left;
-  line-height: 1.5;
-}
-
-/* Título principal */
-.home_gamblingMain {
-  margin-bottom: 40px;
-}
-
-.home_mainIcon {
-  font-size: 48px;
-  display: block;
-  margin-bottom: 12px;
-}
-
-.home_gamblingMain h2 {
-  color: #1a1a1a;
-  font-size: 32px;
-  margin: 0 0 12px 0;
-}
-
-.home_gamblingMain p {
-  font-size: 16px;
-  color: #d9534f;
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-
-/* Caixa de riscos */
-.home_gamblingRiskBox {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 30px;
-  margin-bottom: 40px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: left;
-}
-
-.home_riskIcon {
-  font-size: 24px;
-  display: inline-block;
-  margin-bottom: 12px;
-}
-
-.home_gamblingRiskBox h4 {
-  color: #1a1a1a;
-  font-size: 18px;
-  margin: 0 0 12px 0;
-}
-
-.home_gamblingRiskBox p {
-  color: #666;
-  font-size: 14px;
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* Cards de riscos */
-.home_gamblingCards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-bottom: 40px;
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.home_riskCard {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 24px;
-  text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.home_riskCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
-}
-
-.home_cardIcon {
-  font-size: 40px;
-  display: block;
-  margin-bottom: 12px;
-}
-
-.home_riskCard h5 {
-  color: #1a1a1a;
-  font-size: 16px;
-  margin: 0 0 8px 0;
-}
-
-.home_riskCard p {
-  color: #666;
-  font-size: 13px;
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* Chamada para ação */
-.home_gamblingCTA {
-  background: #f0f8f9;
-  border: 1px solid #00bcd4;
-  border-radius: 12px;
-  padding: 40px 30px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.home_gamblingCTA h4 {
-  color: #1a1a1a;
+.home_logoText {
   font-size: 22px;
-  margin: 0 0 12px 0;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin: 0;
 }
 
-.home_gamblingCTA p {
-  color: #666;
-  font-size: 14px;
-  line-height: 1.6;
-  margin: 0 0 24px 0;
-}
-
-.home_gamblingButtons {
+.home_navButtons {
   display: flex;
   gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 
-.home_ctaLink {
-  background-color: white;
-  border: 2px solid #00bcd4;
-  color: #00bcd4;
-  padding: 12px 28px;
-  border-radius: 6px;
-  text-decoration: none;
+.btn_primary {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s;
+  transition: all 0.2s ease;
 }
 
-.home_ctaLink:hover {
-  background-color: #00bcd4;
+.btn_primary:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 137, 123, 0.2);
+}
+
+.btn_outline {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn_outline:hover {
+  background-color: var(--primary-light);
+}
+
+/* ===== HERO SECTION ===== */
+.home_hero {
+  height: 90vh;
+  min-height: 600px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 0;
+  padding-top: 70px;
+}
+
+.home_heroContent {
+  max-width: 800px;
+  padding: 20px;
+  color: var(--text-main);
+  animation: fadeIn Up 0.8s ease-out;
+}
+
+.home_heroContent h1 {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.home_heroContent p {
+  font-size: 20px;
+  margin-bottom: 40px;
+  opacity: 0.9;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.btn_hero {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 16px 40px;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 137, 123, 0.2);
+}
+
+.btn_hero:hover {
+  transform: scale(1.05);
+  background-color: #07ad9d;
+}
+
+/* ===== FEATURES SECTION ===== */
+.home_features {
+  padding: 100px 0;
+  background-color: var(--bg-light);
+}
+
+.section_header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section_header h2 {
+  font-size: 36px;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.section_header p {
+  font-size: 18px;
+  color: var(--text-light);
+}
+
+.features_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.feature_card {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.feature_card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: var(--primary-light);
+}
+
+.icon_box {
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: inline-flex;
+}
+
+.feature_card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-main);
+}
+
+.feature_card p {
+  color: var(--text-light);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* ===== STORY SECTION ===== */
+.home_story {
+  padding: 80px 0;
+  background-color: white;
+  text-align: center;
+}
+
+.story_content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.story_content h2 {
+  font-size: 32px;
+  color: var(--primary-dark);
+  margin-bottom: 30px;
+}
+
+.story_content p {
+  font-size: 18px;
+  color: var(--text-light);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+/* ===== GAMBLING SECTION ===== */
+.home_gambling {
+  padding: 80px 0;
+  background-color: #FFF1F2;
+  border-top: 1px solid #FECDD3;
+}
+
+.gambling_header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.warning_icon_lg {
+  color: #E11D48;
+  margin-bottom: 16px;
+}
+
+.gambling_header h2 {
+  font-size: 32px;
+  color: #9F1239;
+  margin-bottom: 16px;
+}
+
+.gambling_header p {
+  color: #BE123C;
+  font-size: 18px;
+}
+
+.gambling_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.risk_card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  border-left: 4px solid #E11D48;
+  box-shadow: 0 4px 6px rgba(225, 29, 72, 0.05);
+}
+
+.risk_icon {
+  color: #E11D48;
+  margin-bottom: 16px;
+}
+
+.risk_card h4 {
+  font-size: 18px;
+  color: #881337;
+  margin-bottom: 10px;
+}
+
+.risk_card p {
+  font-size: 14px;
+  color: #4B5563;
+  line-height: 1.6;
+}
+
+.gambling_cta_box {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+}
+
+.shield_icon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.gambling_cta_content {
+  flex: 1;
+  min-width: 250px;
+}
+
+.gambling_cta_content h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.gambling_cta_content p {
+  color: var(--text-light);
+}
+
+.btn_outline_dark {
+  display: inline-block;
+  padding: 12px 24px;
+  border: 2px solid var(--text-main);
+  color: var(--text-main);
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn_outline_dark:hover {
+  background-color: var(--text-main);
   color: white;
 }
 
-/* Ajustes de responsividade */
-@media (max-width: 768px) {
-  .home_gambling {
-    padding: 50px 16px;
-  }
-
-  .home_gamblingWarningContent {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .home_gamblingWarningContent h3,
-  .home_gamblingWarningContent p {
-    text-align: center;
-  }
-
-  .home_gamblingMain h2 {
-    font-size: 24px;
-  }
-
-  .home_gamblingCards {
-    grid-template-columns: 1fr;
-  }
-
-  .home_gamblingCTA {
-    padding: 30px 20px;
-  }
-
-  .home_gamblingButtons {
-    flex-direction: column;
-  }
+/* ===== BOT SECTION (NOVO) ===== */
+.home_bot {
+  background-color: var(--primary-dark);
+  padding: 80px 0;
+  color: white;
+  position: relative;
+  overflow: hidden;
 }
 
-@media (max-width: 480px) {
-  .home_gambling {
-    padding: 40px 12px;
-  }
+.home_bot::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+  pointer-events: none;
+}
 
-  .home_gamblingWarning {
-    padding: 16px;
-  }
+.bot_card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  position: relative;
+  z-index: 1;
+}
 
-  .home_gamblingMain h2 {
-    font-size: 20px;
-  }
+.bot_content {
+  flex: 1;
+  max-width: 600px;
+}
 
-  .home_gamblingRiskBox {
-    padding: 20px;
-  }
+.bot_badge {
+  background-color: var(--accent);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-block;
+  margin-bottom: 20px;
+}
 
-  .home_riskCard {
-    padding: 16px;
-  }
+.bot_content h2 {
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
 
-  .home_gamblingCTA {
-    padding: 20px 16px;
-  }
+.bot_content p {
+  font-size: 18px;
+  opacity: 0.9;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.bot_features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bot_feature_item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 16px 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: transform 0.3s;
+}
+
+.bot_feature_item:hover {
+  transform: translateX(10px);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.bot_feature_item span {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.bot_qrcode_wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qrcode_card {
+  background: white;
+  padding: 20px;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+  text-align: center;
+  z-index: 2;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+.qrcode_img {
+  width: 200px;
+  height: 200px;
+  display: block;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.qrcode_instruction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-size: 15px;
+  padding-top: 12px;
+  border-top: 2px dashed #eee;
+}
+
+.smartphone_mockup {
+  position: absolute;
+  right: -80px;
+  bottom: -50px;
+  transform: rotate(-15deg);
+  z-index: 1;
+  opacity: 0.2;
+  pointer-events: none;
 }
 
 /* ===== FOOTER ===== */
 .home_footer {
-  background-color: var(--dark);
-  color: white;
-  text-align: center;
-  width: 100%;
-  padding: 25px 0;
-  font-size: 15px;
-  box-sizing: border-box;
+  background-color: #111827;
+  color: #9CA3AF;
+  padding: 40px 0;
+  font-size: 14px;
 }
 
-.home_footerContent {
+.footer_content {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
-.home_privacyButton {
-  background-color: transparent;
-  border: 1px solid rgba(255,255,255,0.15);
-  color: white;
-  padding: 8px 14px;
-  border-radius: 6px;
+.footer_links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer_link {
+  color: #D1D5DB;
   text-decoration: none;
-  font-weight: 600;
-  transition: background 0.2s, transform 0.12s;
+  transition: color 0.2s;
 }
 
-.home_privacyButton:hover {
-  background-color: rgba(255,255,255,0.06);
-  transform: translateY(-2px);
+.footer_link:hover {
+  color: white;
+  text-decoration: underline;
 }
 
 /* ===== RESPONSIVIDADE ===== */
-
-/* Tablets */
-@media (max-width: 1024px) {
-  .home_header {
-    padding: 15px 30px;
-  }
-
-  .home_card {
-    width: 90%;
-  }
-
-  /* Tablet adjustments */
-  .home_hero {
-    min-height: 60vh;
-    padding: 40px 18px;
-  }
-
-  .home_buttons {
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .home_buttons .home_button,
-  .home_buttons a.home_privacyButton {
-    padding: 8px 12px;
-    font-size: 14px;
-  }
+@media (max-width: 900px) {
+   .bot_card { flex-direction: column; text-align: center; }
+   .bot_feature_item { justify-content: center; text-align: left; }
+   .smartphone_mockup { display: none; }
+   .home_heroContent h1 { font-size: 36px; }
 }
 
-/* Celulares */
 @media (max-width: 768px) {
-  .home_header {
-    flex-direction: column;
-    align-items: center;
-    padding: 15px;
-    gap: 12px;
-  }
-
-  .home_hero {
-    padding: 40px 20px;
-  }
-
-  .home_heroContent {
-    width: 95%;
-    padding: 25px;
-  }
-
-  .home_heroContent h1 {
-    font-size: 24px;
-  }
-
-  .home_cta {
-    font-size: 15px;
-    padding: 10px 20px;
-  }
-
-  .home_card {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    max-width: 380px;
-  }
-
-  .home_card img {
-    margin-bottom: 15px;
-  }
-
-  .home_buttons {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .home_buttons .home_button,
-  .home_buttons a.home_privacyButton {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .home_historia {
-    padding: 60px 20px;
-  }
-
-  .home_historia h2 {
-    font-size: 26px;
-  }
-
-  .home_historia p {
-    font-size: 16px;
-  }
+  .home_header { padding: 0 20px; }
+  .home_hero { height: auto; padding-top: 120px; padding-bottom: 80px; }
+  .gambling_cta_box { flex-direction: column; text-align: center; }
+  .footer_content { flex-direction: column; text-align: center; }
+  .home_navButtons .btn_outline { display: none; }
 }
 
-/* Celulares pequenos */
+/* Pequenos Celulares */
 @media (max-width: 480px) {
-  .home_logo img {
-    width: 38px;
-  }
-
-  .home_logo h1 {
-    font-size: 20px;
-  }
-
-  .home_heroContent h1 {
-    font-size: 20px;
-  }
-
-  .home_cta {
-    font-size: 13px;
-    padding: 8px 14px;
-  }
-
-  .home_historia {
-    padding: 40px 15px;
-  }
-
-  .home_historia h2 {
-    font-size: 22px;
-  }
-
-  .home_historia p {
-    font-size: 15px;
-  }
-
-  .home_footer {
-    font-size: 13px;
-    padding: 18px 8px;
-  }
-
-  .home_buttons {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: stretch;
-  }
-
-  .home_buttons .home_button,
-  .home_buttons a.home_privacyButton {
-    width: 100%;
-  }
-
-  .home_cta {
-    width: 100%;
-  }
+  .home_navButtons .btn_outline { display: none; }
+  .home_logoText { display: block; font-size: 18px; }
 }
