@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/Register/Register.module.css";
 import { useRegister } from "../../hooks/useRegister";
+import Logo from "../../assets/Logo.png";
 
 export default function Cadastro() {
   const navigate = useNavigate();
@@ -18,6 +19,11 @@ export default function Cadastro() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const handlePhoneChange = (e) => {
+    const onlyNums = e.target.value.replace(/\D/g, "");
+    setFormData((prev) => ({ ...prev, phone: onlyNums }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await register(formData);
@@ -28,81 +34,114 @@ export default function Cadastro() {
 
   return (
     <div className={styles.register_root}>
-      <div className={styles.register_container}>
-        <h1 className={styles.register_h1}>Cadastrar-se</h1>
 
-        <form onSubmit={handleSubmit}>
-          <div className={styles.register_inputBox}>
-            <input
-              type="text"
-              placeholder="Nome completo"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
+      <section className={styles.left_side}>
+        <div className={styles.hero_content}>
+           <div className={styles.zen_brand_container}>
+             <img src={Logo} alt="Logo Zeni" className={styles.hero_logo_img} />
+             <h1 className={styles.zen_title}>ZENI</h1>
+           </div>
+        </div>
+      </section>
+
+      <main className={styles.right_side}>
+        <div className={styles.form_container}>
+          
+          <div className={styles.brand_header}>
+             <img src={Logo} alt="Logo Zeni" className={styles.logo_img_small} />
           </div>
 
-          <div className={styles.register_inputBox}>
-            <input
-              type="email"
-              placeholder="E-mail"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+          <div className={styles.welcome_header}>
+            <h1 className={styles.title_text}>Crie sua conta</h1>
+            <span className={styles.accent_line}></span>
           </div>
 
-          <div className={styles.register_inputBox}>
-            <input
-              type="password"
-              placeholder="Senha"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <form onSubmit={handleSubmit} className={styles.register_form}>
+            
+            <div className={styles.input_group}>
+              <label htmlFor="name">Nome completo</label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Nome completo"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                className={styles.input_field}
+              />
+            </div>
 
-          <div className={styles.register_inputBox}>
-            <input
-              type="password"
-              placeholder="Confirmar senha"
-              name="password_confirmed"
-              value={formData.password_confirmed}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <div className={styles.input_group}>
+              <label htmlFor="email">E-mail</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="E-mail"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className={styles.input_field}
+              />
+            </div>
 
-          <div className={styles.register_inputBox}>
-            <input
-              type="tel"
-              placeholder="Celular (DDD+Número)"
-              name="phone"
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  phone: e.target.value.replace(/\D/g, ""),
-                }))
-              }
-              required
-            />
-          </div>
+            <div className={styles.input_group}>
+              <label htmlFor="phone">Celular</label>
+              <input
+                id="phone"
+                type="tel"
+                placeholder="(99) 99999-9999"
+                name="phone"
+                value={formData.phone}
+                onChange={handlePhoneChange}
+                required
+                className={styles.input_field}
+              />
+            </div>
 
-          <button type="submit" className={styles.register_btn} disabled={loading}>
-            {loading ? "Cadastrando..." : "Cadastrar"}
-          </button>
+            <div className={styles.row_inputs}>
+              <div className={styles.input_group}>
+                <label htmlFor="password">Senha</label>
+                <input
+                  id="password"
+                  type="password"
+                  placeholder="Senha"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  className={styles.input_field}
+                />
+              </div>
 
-          {error && <p className={styles.register_error}>{error}</p>}
+              <div className={styles.input_group}>
+                <label htmlFor="password_confirmed">Confirmar</label>
+                <input
+                  id="password_confirmed"
+                  type="password"
+                  placeholder="Confirmar senha"
+                  name="password_confirmed"
+                  value={formData.password_confirmed}
+                  onChange={handleChange}
+                  required
+                  className={styles.input_field}
+                />
+              </div>
+            </div>
 
-          <p className={styles.register_loginText}>
-            Já tem conta? <a href="/login">Faça login</a>
-          </p>
-        </form>
-      </div>
+            <button type="submit" className={styles.register_btn} disabled={loading}>
+              {loading ? "CADASTRANDO..." : "CADASTRAR"}
+            </button>
+
+            {error && <p className={styles.register_error}>{error}</p>}
+
+            <p className={styles.register_loginText}>
+              Já tem conta? <a href="/login">Faça login</a>
+            </p>
+          </form>
+        </div>
+      </main>
     </div>
   );
 }
