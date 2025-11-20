@@ -18,6 +18,23 @@
   color: #fff;
 }
 
+.register_loginText {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.register_loginText a {
+  color: #00a6a6;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register_loginText a:hover {
+  text-decoration: underline;
+}
+
 .hero_content {
   height: 100%;
   display: flex;

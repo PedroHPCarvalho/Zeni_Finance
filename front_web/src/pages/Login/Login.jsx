@@ -95,9 +95,9 @@ export default function Login() {
 
             {error && <p className={styles.login_error}>{error}</p>}
 
-            <div className={styles.login_registerLink}>
+            <p className={styles.register_loginText}>
               Não tem conta? <a href="/register">Registre-se</a>
-            </div>
+            </p>
           </form>
         </div>
       </main>
