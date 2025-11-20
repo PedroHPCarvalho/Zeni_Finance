@@ -1,0 +1,111 @@
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #022c2c;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  font-size: 14px;
+}
+
+.table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  padding: 12px;
+  text-align: left;
+  border-radius: 6px;
+}
+
+.table td {
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.table tbody tr:hover {
+  background: rgba(33, 150, 243, 0.05);
+}
+
+/* Fundo colorido por tipo */
+.typeExpenseRow {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.typeRevenueRow {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.typeInvestmentRow {
+  background: rgba(33, 150, 243, 0.1);
+}
+
+.valueCell {
+  font-weight: 600;
+}
+
+/* Paginação */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: #2196f3;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 8px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.actions button:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+.editBtn svg {
+  color: #2196F3;
+}
+
+.deleteBtn svg {
+  color: #F44336;
+}
