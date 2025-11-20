@@ -1,35 +1,52 @@
 .card {
-  background: #fff;
-  border-radius: 12px;
-  /* box-shadow: 0 6px 16px rgba(0,0,0,0.08); */
+  background: #f4f4f4;
+  border-radius: 16px;
   padding: 20px;
-  width: 100%; 
-  height: 100%;
-  
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.05);
+
   display: flex;
   flex-direction: column;
+  gap: 12px;
+
+  width: 100%;
+  min-height: 340px;
+  align-items: stretch;
   box-sizing: border-box;
-  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.35);
 }
 
 .header {
-  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .title {
-  font-size: 1.1rem;
+  font-size: 15px;
+  color: #0b0c0c;
   font-weight: 600;
-  color: #333;
+  opacity: 0.8;
+}
+
+.children {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  align-items: stretch;
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 5px;
+  gap: 12px;
+  width: 100%;
 }
 
 .item {
@@ -39,74 +56,69 @@
   width: 100%;
 }
 
-.icon {
-  width: 32px;
-  height: 32px;
+.rankWrapper {
+  flex-shrink: 0;
+  width: 36px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  flex-shrink: 0;
 }
 
-.gold { color: #FFD700; fill: #FFD700; fill-opacity: 0.2; }
-.silver { color: #C0C0C0; fill: #C0C0C0; fill-opacity: 0.2; }
-.bronze { color: #CD7F32; fill: #CD7F32; fill-opacity: 0.2; }
-.rank { font-weight: bold; color: #999; font-size: 0.9rem; }
+.gold { color: #FFD700; }
+.silver { color: #C0C0C0; }
+.bronze { color: #CD7F32; }
+.rank { font-weight: bold; color: #999; }
 
-.content {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
+.miniDonut {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.percentLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #333;
 }
 
 .info {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  flex: 1;
   min-width: 0;
 }
 
 .category {
   font-weight: 600;
-  color: #444;
-  font-size: 0.9rem;
-  white-space: nowrap;
+  color: #333;
+  font-size: 0.95rem;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .value {
-  font-size: 0.9rem;
-  color: #333;
-  white-space: nowrap;
+  font-size: 0.85rem;
+  color: #555;
 }
 
 .barWrapper {
-  width: 80px;
-  height: 8px;
-  background-color: #f0f0f0;
-  border-radius: 4px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.bar {
-  height: 100%;
-  border-radius: 4px;
+  display: none; /* opcional: barra pode ser removida se usar mini-donut */
 }
 
 @media (max-width: 480px) {
-  .content {
+  .item {
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
   }
-  
-  .barWrapper {
-    width: 100%;
+
+  .miniDonut {
+    width: 40px;
+    height: 40px;
   }
 }

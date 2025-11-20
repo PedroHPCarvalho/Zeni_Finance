@@ -74,12 +74,12 @@ export default function Dashboard() {
         gap: "24px",
         marginBottom: "24px"
       }}>
-        <StatCard title="Receitas" value="R$ 8.900" icon={<ArrowUpRight className="text-green-600" />} />
-        <StatCard title="Despesas" value="R$ 3.750" icon={<ArrowDownRight className="text-red-600" />} />
-        <StatCard title="Saldo" value="R$ 5.150" icon={<PiggyBank className="text-blue-600" />} />
+        <StatCard title="Receitas" value="R$ 8.900" icon={<ArrowUpRight className="text-green-600" />}  variant="income" />
+        <StatCard title="Despesas" value="R$ 3.750" icon={<ArrowDownRight className="text-red-600" />} variant="expense"/>
+        <StatCard title="Saldo" value="R$ 5.150" icon={<PiggyBank className="text-blue-600" />}  variant="balance"/>
       </div>
 
-      <div style={{ marginBottom: "24px" }}>
+      <div style={{ marginBottom: "10px" }}>
         <FilterCard />
       </div>
 
@@ -96,19 +96,16 @@ export default function Dashboard() {
       <div style={sectionGridStyle}>
 
           <ContentCard title="Distribuição por Categoria">
-              <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                  <div style={{ width: '100%', maxWidth: '350px' }}>
-                    <CategoryPieChart data={MOCK_CATEGORIES} />
-                  </div>
-              </div>
+            <div style={{ width: "100%", height: "320px" }}> {/* altura fixa ou responsiva */}
+              <CategoryPieChart data={MOCK_CATEGORIES} />
+            </div>
           </ContentCard>
 
-          <ContentCard title="Gastos por Categoria">
-            <TopCategoriesCard 
-                data={MOCK_CATEGORIES}
-                type="DESPESA"
-            />
-          </ContentCard>
+          <TopCategoriesCard
+              title="Top 5 Categorias de Gastos" 
+              data={MOCK_CATEGORIES}
+              type="DESPESA"
+          />
       </div>
 
       <div style={{ marginBottom: "30px" }}>

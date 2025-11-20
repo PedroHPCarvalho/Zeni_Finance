@@ -2,8 +2,22 @@ import React from "react";
 import styles from "../styles/Card/TableCard.module.css";
 
 export default function CardTable({ title, icon, columns = [], data = [] }) {
+  // Função para formatar data por extenso
+  const formatDate = (value) => {
+    try {
+      const date = new Date(value);
+      return date.toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
+    } catch {
+      return value;
+    }
+  };
+
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} contentCard`}>
       {/* Header */}
       <div className={styles.header}>
         <span className={styles.title}>{title}</span>
@@ -30,13 +44,12 @@ export default function CardTable({ title, icon, columns = [], data = [] }) {
               </tr>
             ) : (
               data.map((row, i) => {
-                // Definir classe da linha inteira de forma segura
                 let rowClass = "";
                 const type = typeof row[2] === "string" ? row[2].toUpperCase() : "";
 
                 switch (type) {
                   case "DESPESA":
-                  case "CASA_DE_APOSTA": // tratar casas de aposta como despesa
+                  case "CASA_DE_APOSTA":
                     rowClass = styles.typeExpenseRow;
                     break;
                   case "RECEITA":
@@ -52,7 +65,7 @@ export default function CardTable({ title, icon, columns = [], data = [] }) {
                 return (
                   <tr key={i} className={rowClass}>
                     {row.map((value, j) => {
-                      // Coluna de valor formatado
+                      // Coluna de valor
                       if (j === 3) {
                         return (
                           <td key={j} className={styles.valueCell}>
@@ -63,6 +76,12 @@ export default function CardTable({ title, icon, columns = [], data = [] }) {
                           </td>
                         );
                       }
+
+                      // Coluna de data
+                      if (j === 4) {
+                        return <td key={j}>{formatDate(value)}</td>;
+                      }
+
                       return <td key={j}>{value}</td>;
                     })}
                   </tr>

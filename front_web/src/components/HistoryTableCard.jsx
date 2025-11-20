@@ -29,7 +29,6 @@ export default function HistoryTableCard({ data, onEdit, onDelete }) {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>ID</th>
               <th>Descrição</th>
               <th>Categoria</th>
               <th>Tipo</th>
@@ -57,7 +56,6 @@ export default function HistoryTableCard({ data, onEdit, onDelete }) {
 
                 return (
                   <tr key={row.id} className={rowClass}>
-                    <td>{row.id}</td>
                     <td>{row.description}</td>
                     <td>{row.category}</td>
                     <td>{row.typeRegister}</td>

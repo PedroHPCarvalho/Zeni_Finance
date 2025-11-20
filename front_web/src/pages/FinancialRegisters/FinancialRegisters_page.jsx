@@ -5,6 +5,7 @@ import { ArrowUpRight, ArrowDownRight, PiggyBank, Clock } from "lucide-react";
 import ChatRegisterCard from "../../components/ChatRegisterCard.jsx";
 import ManualRegisterCard from "../../components/ManualRegisterCard.jsx";
 import HistoryTableCard from "../../components/HistoryTableCard.jsx";
+import FilterCard from "../../components/FilterCard.jsx";
 
 import MOCK_CATEGORIES from "../../utils/mock_category.js";
 import MOCK_MONTHLY_RESUME from "../../utils/mock_mouth.js";
@@ -31,6 +32,10 @@ export default function FinancialRegisters() {
         <ChatRegisterCard/>
 
         <ManualRegisterCard/>
+
+        <div style={{ marginBottom: "5px" }}>
+                <FilterCard />
+        </div>
 
         <HistoryTableCard
           data={MOCK_HISTORY}
