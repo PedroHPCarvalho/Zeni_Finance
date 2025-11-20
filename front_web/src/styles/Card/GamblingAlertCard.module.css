@@ -1,0 +1,29 @@
+.card {
+  background: #fff3f3;
+  border-left: 4px solid #F44336;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: #c62828;
+  margin-bottom: 8px;
+}
+
+.header button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #c62828;
+}
+
+.content {
+  color: #822222;
+  font-weight: 500;
+}
