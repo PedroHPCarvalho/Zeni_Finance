@@ -38,15 +38,16 @@ export default function Dashboard() {
 
   useEffect(() => {
     // Calcular total gasto em casas de aposta
-    const total = data
-      .filter((item) => item[1] === "CASA_DE_APOSTA")
-      .reduce((acc, item) => acc + Number(item[3]), 0);
+    const gamblingItems = data.filter((item) => item[1] === "CASA_DE_APOSTA");
+    const total = gamblingItems.reduce((acc, item) => acc + Number(item[3]), 0);
 
     if (total > 0) {
       setGamblingAmount(total);
       setShowGamblingCard(true);
+    } else {
+      setShowGamblingCard(false);
     }
-  }, []);
+  }, [data]);
 
   const sectionGridStyle = {
     display: "grid",
