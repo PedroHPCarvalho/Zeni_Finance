@@ -312,8 +312,7 @@ class MouthResumeInvestmentView(APIView):
 
         response = requests.get(core_url, headers=headers)
         response.raise_for_status()
-        return Response(response.json())    
-
+        return Response(response.json())       
 
 @method_decorator(csrf_exempt, name="dispatch")
 class TableRegistersView(APIView):
@@ -366,3 +365,71 @@ class DeleteRegisterView(APIView):
                 return Response(response.json(), status=response.status_code)
         except requests.exceptions.RequestException as err:
             return Response({"error": str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+@method_decorator(csrf_exempt, name="dispatch")
+class UpdateRegisterView(APIView):
+    permission_classes = [AllowAny]
+
+    def put(self, request, id=None):
+        if not id:
+            return Response({"error": "ID não fornecido"}, status=400)
+
+        token = request.headers.get("Authorization")
+        if not token:
+            return Response({"error": "Token não fornecido"}, status=401)
+
+        # Campos aceitos no UPDATE (os mesmos do Core)
+        description = request.data.get("description")
+        category = request.data.get("category")
+        value = request.data.get("value")
+        type_register = request.data.get("typeRegister")
+        date_register = request.data.get("dateRegister")
+
+        # Validação básica
+        required = {
+            "category": category,
+            "value": value,
+            "typeRegister": type_register,
+            "dateRegister": date_register
+        }
+
+        missing = [field for field, val in required.items() if val is None]
+        if missing:
+            return Response(
+                {"error": f"Campos obrigatórios ausentes: {', '.join(missing)}"},
+                status=400
+            )
+
+        # Validação value
+        try:
+            value = float(value)
+        except:
+            return Response({"error": "Campo value deve ser um número"}, status=400)
+
+        # Monta URL do Core
+        core_base_url = os.getenv("CORE_URL_UPDATE_REGISTER") or "http://localhost:8080/financial-registers/"
+        core_url = f"{core_base_url}{id}"
+
+        payload = {
+            "description": description,
+            "category": category,
+            "value": value,
+            "typeRegister": type_register,
+            "dateRegister": date_register,
+        }
+
+        headers = {"Authorization": token}
+
+        try:
+            response = requests.put(core_url, json=payload, headers=headers)
+            response.raise_for_status()
+        except requests.exceptions.HTTPError:
+            try:
+                return Response(response.json(), status=response.status_code)
+            except:
+                return Response({"error": response.text}, status=response.status_code)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+
+        return Response(response.json(), status=response.status_code)

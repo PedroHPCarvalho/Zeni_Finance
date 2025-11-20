@@ -91,8 +91,15 @@ public class FinancialRegistersService {
                 )).toList();
     }
 
-    public List<MonthResumeInvestmentDTO> getMonthResumeInvestment(Long userId){
-        return financialRegistersRepository.findMonthResumeInvestByUserId(userId);
+    public List<MonthResumeInvestmentDTO> getMonthResumeInvestment(Long userId) {
+        List<Object[]> results = financialRegistersRepository.findMonthResumeInvestByUserId(userId);
+
+        return results.stream().map(row -> new MonthResumeInvestmentDTO(
+                (String) row[0],                    // category
+                ((Number) row[1]).doubleValue(),// valor_investido
+                (String) row[2],                    // mes
+                ((Number) row[3]).intValue()        // ano
+        )).toList();
     }
 
     public Page<FinancialRegisters> listFinancRegistersByUserId(User user, Pageable pageable) {

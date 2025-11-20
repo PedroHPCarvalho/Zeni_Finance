@@ -74,7 +74,7 @@ public interface FinancialRegistersRepository extends JpaRepository<FinancialReg
             EXTRACT(YEAR FROM date_register),
             EXTRACT(MONTH FROM date_register)
     """, nativeQuery = true)
-    List<MonthResumeInvestmentDTO> findMonthResumeInvestByUserId(@Param("userId") Long userId);
+    List<Object[]> findMonthResumeInvestByUserId(@Param("userId") Long userId);
 
     Page<FinancialRegisters> findByidUser(User user, Pageable pageable);
 }
