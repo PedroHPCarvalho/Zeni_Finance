@@ -1,55 +1,76 @@
+/* CARD — agora igual ao ContentCard */
 .card {
-  width: 100%;
-  background: white;
-  border-radius: 18px;
+  background: #f4f4f4;
+  border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 4px 12px #00000015;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.05);
+
   display: flex;
   flex-direction: column;
+  gap: 12px;
+
+  width: 100%;
+  min-height: 340px;
+  align-items: stretch;
+
+  transition: 0.2s ease;
 }
 
-/* HEADER */
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+}
+
+/* HEADER — igual ao ContentCard */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
 }
 
 .title {
-  font-size: 1.15rem;
+  font-size: 15px;
+  color: #0b0c0c;
   font-weight: 600;
-  color: #222;
+  opacity: 0.8;
 }
 
 /* LISTA */
+.children {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .list {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-/* CADA ITEM */
+/* ITEM DA LISTA */
 .item {
   display: flex;
   align-items: center;
-  padding: 12px 10px;
-  background: #fafafa;
+  padding: 12px 12px;
+  background: white;
   border-radius: 14px;
-  gap: 12px;
+  gap: 14px;
   transition: background .2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .item:hover {
   background: #f1f1f1;
 }
 
-/* PRIMEIRO DO RANK */
+/* PRIMEIRO LUGAR */
 .firstItem {
   background: #fff4d2;
 }
 
-/* RANK / MEDALHA */
+/* RANK */
 .rankWrapper {
   width: 35px;
   display: flex;
@@ -62,17 +83,11 @@
   color: #333;
 }
 
-.gold {
-  color: #f7b700;
-}
-.silver {
-  color: #c5c5c5;
-}
-.bronze {
-  color: #cd7f32;
-}
+.gold { color: #f7b700; }
+.silver { color: #c5c5c5; }
+.bronze { color: #cd7f32; }
 
-/* MINI DONUT */
+/* DONUT */
 .miniDonut {
   position: relative;
   width: 55px;
@@ -88,11 +103,10 @@
   font-weight: 600;
 }
 
-/* INFO */
+/* TEXTO DA CATEGORIA */
 .info {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   flex: 1;
 }
 
@@ -108,14 +122,12 @@
   color: #444;
 }
 
-/* --------------------------- */
-/*         MOBILE FIX          */
-/* --------------------------- */
+/* MOBILE IMPROVED */
 @media (max-width: 600px) {
   .item {
-    padding: 14px;
-    gap: 16px;
-    border-radius: 18px;
+    padding: 16px;
+    gap: 18px;
+    border-radius: 20px;
   }
 
   .miniDonut {
@@ -124,14 +136,14 @@
   }
 
   .percentLabel {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 
   .category {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   .value {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 }

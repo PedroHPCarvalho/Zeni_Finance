@@ -22,6 +22,7 @@ export default function TopCategoriesCard({ title, data = [], type = "DESPESA" }
             const percent = total > 0 ? (item.total / total) * 100 : 0;
             return (
               <div key={index} className={`${styles.item} ${index === 0 ? styles.firstItem : ""}`}>
+                {/* Ranking */}
                 <div className={styles.rankWrapper}>
                   {index === 0 ? <Trophy className={styles.gold} /> :
                    index === 1 ? <Trophy className={styles.silver} /> :
@@ -29,6 +30,7 @@ export default function TopCategoriesCard({ title, data = [], type = "DESPESA" }
                    <span className={styles.rank}>#{index + 1}</span>}
                 </div>
 
+                {/* Mini Donut */}
                 <div className={styles.miniDonut}>
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -46,6 +48,7 @@ export default function TopCategoriesCard({ title, data = [], type = "DESPESA" }
                   <span className={styles.percentLabel}>{percent.toFixed(0)}%</span>
                 </div>
 
+                {/* Category Info */}
                 <div className={styles.info}>
                   <span className={styles.category}>{item.category}</span>
                   <span className={styles.value}>

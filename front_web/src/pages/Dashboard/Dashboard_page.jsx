@@ -38,18 +38,25 @@ export default function Dashboard() {
   // Estado para card de apostas
   const [showGamblingCard, setShowGamblingCard] = useState(false);
   const [gamblingAmount, setGamblingAmount] = useState(0);
+  const [lastGamblingId, setLastGamblingId] = useState(null);
 
-  useEffect(() => {
+ useEffect(() => {
     const gamblingItems = data.filter((item) => item[1] === "CASA_DE_APOSTA");
-    const total = gamblingItems.reduce((acc, item) => acc + Number(item[3]), 0);
 
-    if (total > 0) {
+    if (gamblingItems.length === 0) return; // nenhum gasto, nada a fazer
+
+    // pegar o ID do último gasto de aposta (ou gerar timestamp)
+    const latestGambling = gamblingItems[gamblingItems.length - 1];
+    const latestId = latestGambling[4]; // aqui estou usando a data como id, pode ser outro identificador único
+
+    // só mostrar se for um novo gasto
+    if (latestId !== lastGamblingId) {
+      const total = gamblingItems.reduce((acc, item) => acc + Number(item[3]), 0);
       setGamblingAmount(total);
       setShowGamblingCard(true);
-    } else {
-      setShowGamblingCard(false);
+      setLastGamblingId(latestId);
     }
-  }, [data]);
+  }, [data, lastGamblingId]);
 
   const sectionGridStyle = {
     display: "grid",
@@ -79,12 +86,13 @@ export default function Dashboard() {
       {showGamblingCard && (
         <div style={{ marginBottom: "24px" }}>
           <GamblingAlertCard
+            key={lastGamblingId}  // força re-mount quando muda o gasto
             amount={gamblingAmount}
             onClose={() => setShowGamblingCard(false)}
           />
         </div>
       )}
-
+      
       <div
         style={{
           display: "grid",
