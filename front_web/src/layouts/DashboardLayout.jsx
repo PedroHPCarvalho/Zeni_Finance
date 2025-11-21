@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Outlet, Link } from "react-router-dom";
 import { LogOut, Menu, LayoutDashboard, Table, User, Moon, Settings, X } from "lucide-react";
 import styles from "../styles/DashboardLayout/DashboardLayout.module.css";
 import Logo from "../assets/Logo.png";
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 768);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -16,12 +16,14 @@ export default function DashboardLayout({ children }) {
     return localStorage.getItem("darkMode") === "true";
   });
 
+  // Fecha a sidebar ao trocar de página no mobile
   useEffect(() => {
     if (window.innerWidth <= 768) {
       setSidebarOpen(false);
     }
   }, [location]);
 
+  // Carregar usuário
   useEffect(() => {
     fetch("/me")
       .then(async (res) => {
@@ -48,6 +50,7 @@ export default function DashboardLayout({ children }) {
   return (
     <div className={styles.container}>
       
+      {/* Overlay para mobile */}
       {sidebarOpen && window.innerWidth <= 768 && (
         <div 
           className={styles.overlay} 
@@ -75,15 +78,15 @@ export default function DashboardLayout({ children }) {
         </div>
 
         <nav className={styles.menu}>
-          <a className={`${styles.link} ${isActive("/dashboard") ? styles.active : ""}`} href="/dashboard">
+          <Link className={`${styles.link} ${isActive("/dashboard") ? styles.active : ""}`} to="/dashboard">
             <LayoutDashboard size={20} />
             <span className={!sidebarOpen ? styles.hideText : ''}>Dashboard</span>
-          </a>
+          </Link>
 
-          <a className={`${styles.link} ${isActive("/registers") ? styles.active : ""}`} href="/registers">
+          <Link className={`${styles.link} ${isActive("/registers") ? styles.active : ""}`} to="/registers">
             <Table size={20} />
             <span className={!sidebarOpen ? styles.hideText : ''}>Registros</span>
-          </a>
+          </Link>
         </nav>
       </aside>
 
@@ -106,8 +109,6 @@ export default function DashboardLayout({ children }) {
             {dropdownOpen && (
               <div className={styles.dropdown}>
                 <div className={styles.dropdownHeader}>{user?.name || "Usuário"}</div>
-                <button className={styles.dropdownItem}><User size={18} /> <span>Perfil</span></button>
-                <button className={styles.dropdownItem}><Settings size={18} /> <span>Configurações</span></button>
                 <button className={styles.dropdownItem} onClick={toggleDarkMode}><Moon size={18} /> <span>Modo Noturno</span></button>
                 <button className={styles.dropdownItem} onClick={handleLogout}><LogOut size={18} /> <span className={styles.logout}>Sair</span></button>
               </div>
@@ -116,7 +117,9 @@ export default function DashboardLayout({ children }) {
         </header>
 
         {/* CONTENT */}
-        <div className={styles.content}>{children}</div>
+        <div className={styles.content}>
+          <Outlet />
+        </div>
       </div>
     </div>
   );

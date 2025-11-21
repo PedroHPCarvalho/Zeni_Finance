@@ -21,7 +21,7 @@ export default function TopCategoriesCard({ title, data = [], type = "DESPESA" }
           {sorted.map((item, index) => {
             const percent = total > 0 ? (item.total / total) * 100 : 0;
             return (
-              <div key={index} className={styles.item}>
+              <div key={index} className={`${styles.item} ${index === 0 ? styles.firstItem : ""}`}>
                 <div className={styles.rankWrapper}>
                   {index === 0 ? <Trophy className={styles.gold} /> :
                    index === 1 ? <Trophy className={styles.silver} /> :

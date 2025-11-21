@@ -22,8 +22,6 @@ export default function FinancialRegisters() {
   ];
 
   return (
-    <DashboardLayout>
-
       <div style={{
         display: "flex",
         flexDirection: "column",
@@ -43,7 +41,5 @@ export default function FinancialRegisters() {
           onDelete={(id) => console.log("Deletar", id)}
         />
       </div>
-
-    </DashboardLayout>
   );
 }
