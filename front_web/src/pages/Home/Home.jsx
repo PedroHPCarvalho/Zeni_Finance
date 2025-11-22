@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../../styles/Home/Home.module.css";
 import Logo from "../../assets/Logo.png";
-import Hero2 from "../../assets/Hero.jpg";
+import Hero2 from "../../assets/content.png";
 import qrcode from "../../assets/qrcode.png";
 import { useNavigate } from "react-router-dom";
 import { 
@@ -166,6 +166,17 @@ function Home() {
                   <span>Escaneie para iniciar</span>
                 </div>
               </div>
+
+              <a 
+                href="https://wa.me/5511999999999?text=Olá,%20quero%20iniciar%20o%20controle%20financeiro!" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className={styles.btn_whatsapp}
+              >
+                <MessageSquare size={20} />
+                Abrir no WhatsApp
+              </a>
+
               <div className={styles.smartphone_mockup}>
                 <Smartphone size={140} strokeWidth={0.5} color="rgba(255,255,255,0.2)" />
               </div>
