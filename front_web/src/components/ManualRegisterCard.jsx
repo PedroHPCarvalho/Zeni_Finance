@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "../styles/Card/ManualRegisterCard.module.css";
+import { useManualRegister } from "../hooks/useManualRegister";
 
 const CATEGORIES = [
   "ALIMENTACAO", "TRANSPORTE", "MORADIA", "SAUDE", "EDUCACAO",
@@ -17,7 +18,9 @@ export default function ManualRegisterCard({ onSubmit }) {
   const [value, setValue] = useState("");
   const [dateRegister, setDateRegister] = useState("");
 
-  const handleSubmit = (e) => {
+  const { sendManualRegister, loading, error } = useManualRegister();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!description || !category || !typeRegister || !value) {
@@ -27,23 +30,30 @@ export default function ManualRegisterCard({ onSubmit }) {
 
     const date = dateRegister || new Date().toISOString().split("T")[0];
 
-    const payload = [
-      {
+    const payload = {
         description,
         category,
         value: Number(value),
         typeRegister,
-        dateRegister: date
-      }
-    ];
+        dateRegister: date,
+      };
+    
 
-    onSubmit(payload);
+    const result = await sendManualRegister(payload);
 
-    setDescription("");
-    setCategory("");
-    setTypeRegister("");
-    setValue("");
-    setDateRegister("");
+    if (result) {
+      onSubmit?.(result);
+      alert("Registro inserido com sucesso!");
+
+      // limpar inputs
+      setDescription("");
+      setCategory("");
+      setTypeRegister("");
+      setValue("");
+      setDateRegister("");
+    } else {
+      alert("Erro ao registrar!");
+    }
   };
 
   return (
@@ -51,7 +61,6 @@ export default function ManualRegisterCard({ onSubmit }) {
       <span className={styles.title}>Registrar gasto manualmente</span>
 
       <form className={styles.form} onSubmit={handleSubmit}>
-
         <div className={styles.field}>
           <label>Descrição</label>
           <input

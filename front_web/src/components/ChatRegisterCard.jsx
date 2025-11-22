@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "../styles/Card/ChatRegisterCard.module.css";
+import { useChatRegister } from "../hooks/useChatRegister";
 
 export default function ChatRegisterCard({ onSubmit }) {
   const [messages, setMessages] = useState([]);
@@ -7,55 +8,68 @@ export default function ChatRegisterCard({ onSubmit }) {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
+  const { sendToIA, loading: loadingIA } = useChatRegister();
+
   // Scroll automático
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || loadingIA) return;
 
+    const userText = input;
+
+    // adiciona msg do usuário
     const userMessage = {
       sender: "user",
-      text: input,
-      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      text: userText,
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      }),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setLoading(true);
 
-    try {
-      // Mock IA
-      const responseText = `Entendi! Vou registrar isso para você:\n"${input}"`;
+    // =============== CHAMADA REAL PARA IA ==================
+    const iaResult = await sendToIA(userText);
 
-      setTimeout(() => {
-        const aiMessage = {
+    // caso a IA não entenda
+    if (!iaResult) {
+      setMessages((prev) => [
+        ...prev,
+        {
           sender: "ai",
-          text: responseText,
-          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-        };
-
-        setMessages(prev => [...prev, aiMessage]);
-
-        // Registro mockado
-        onSubmit([
-          {
-            description: "Gasto detectado IA",
-            category: "ALIMENTACAO",
-            value: 42.5,
-            typeRegister: "DESPESA",
-            dateRegister: new Date().toISOString(),
-          }
-        ]);
-
-        setLoading(false);
-      }, 900);
-
-    } catch (err) {
-      console.error(err);
+          text: "Desculpe, não consegui entender o registro.",
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        },
+      ]);
       setLoading(false);
+      return;
     }
+
+    // Mensagem de sucesso da IA
+    const aiMessage = {
+      sender: "ai",
+      text: "Registro detectado! Já inseri no seu Histórico.",
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+
+    setMessages((prev) => [...prev, aiMessage]);
+
+    // retorna o registro para ser inserido no histórico
+    onSubmit(iaResult);
+
+    setLoading(false);
   };
 
   const handleKeyPress = (e) => {

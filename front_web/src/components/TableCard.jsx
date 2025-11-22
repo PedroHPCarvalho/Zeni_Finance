@@ -1,18 +1,22 @@
 import React from "react";
 import styles from "../styles/Card/TableCard.module.css"; // Card padrão
 
+
 export default function TableCard({ title, icon, columns = [], data = [] }) {
-  const formatDate = (value) => {
-    try {
-      const date = new Date(value);
-      return date.toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      });
-    } catch {
-      return value;
-    }
+ const formatDate = (value) => {
+    if (!value) return value;
+
+    // Pega só a parte da data, ignorando horário
+    const datePart = value.split("T")[0]; // "2025-11-22"
+    const [year, month, day] = datePart.split("-");
+
+    // Meses por extenso em pt-BR
+    const months = [
+      "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+      "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+    ];
+
+    return `${parseInt(day)} de ${months[parseInt(month) - 1]} de ${year}`;
   };
 
   return (
