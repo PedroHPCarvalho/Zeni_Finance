@@ -2,26 +2,35 @@ import { useEffect, useState } from "react";
 import { useAuthToken } from "./useUser";
 import api, { API_ENDPOINTS } from "../../config/api";
 
-export function useInvestments(){
+export function useInvestments() {
   const [investments, setInvestments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const headers = useAuthToken();
 
   useEffect(() => {
+    if (!headers || !headers.Authorization) return;
+
     async function fetchInvestments() {
-      try{
-        const response = await api.get(API_ENDPOINTS.mouthResumeInvest, { headers });
-        if(Array.isArray(response.data)){
-          setInvestments(response.data);
-        } else {
-          console.warn("Resposta inesperada da API, retornando lista vazia");
-          setInvestments([]);
-        } 
+      try {
+        const { data } = await api.get(API_ENDPOINTS.mouthResumeInvest, {
+          headers,
+        });
+
+        // garante array
+        setInvestments(Array.isArray(data) ? data : []);
       } catch (err) {
-          console.log("Erro ao carregar investimentos:", err);
-          setInvestments([]);
+        console.error("Erro ao carregar investimentos:", err);
+        setError("Erro ao carregar investimentos");
+        setInvestments([]);
+      } finally {
+        setLoading(false);
       }
     }
+
     fetchInvestments();
-  }, []);
-  return { investments };
+  }, [headers]);
+
+  return { investments, loading, error };
 }
