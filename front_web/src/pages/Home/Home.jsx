@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../../styles/Home/Home.module.css";
 import Logo from "../../assets/Logo.png";
 import Hero2 from "../../assets/content.png";
-import qrcode from "../../assets/qrcode.png";
+import qrcode from "../../assets/qrcode2.png";
 import { useNavigate } from "react-router-dom";
 import { 
   BarChart3, 
@@ -168,7 +168,7 @@ function Home() {
               </div>
 
               <a 
-                href="https://wa.me/5511999999999?text=Olá,%20quero%20iniciar%20o%20controle%20financeiro!" 
+                href="https://wa.me/5511988783882" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className={styles.btn_whatsapp}
