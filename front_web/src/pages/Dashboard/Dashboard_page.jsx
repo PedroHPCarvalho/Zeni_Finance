@@ -86,6 +86,7 @@ export default function Dashboard() {
   // dados exibidos
   const [filteredData, setFilteredData] = useState([]);
   const [filteredInvestments, setFilteredInvestments] = useState([]);
+  const [filteredCategories, setFilteredCategories] = useState([]);
 
   // inicializa dados ao carregar API
   useEffect(() => {
@@ -100,6 +101,10 @@ export default function Dashboard() {
     }
   }, [loadingInv, investments]);
 
+  useEffect(() => {
+    if (Array.isArray(categories)) setFilteredCategories(categories);
+  }, [categories]);
+
   // ================================
   //   HANDLE FILTER
   // ================================
@@ -108,6 +113,7 @@ export default function Dashboard() {
       setFilters({ mes: null, ano: null });
       setFilteredData(monthResume.slice(-12));
       setFilteredInvestments(investments);
+      setFilteredCategories(categories);
       return;
     }
 
@@ -126,8 +132,15 @@ export default function Dashboard() {
       return okM && okA;
     });
 
+    const catResult = categories.filter((i) => {
+      const okM = mes ? i.mes === mes : true;
+      const okA = ano ? Number(i.ano) === Number(ano) : true;
+      return okM && okA;
+    });
+
     setFilteredData(resumeResult);
     setFilteredInvestments(invResult);
+    setFilteredCategories(catResult);
   };
 
   const ChartFallback = (
@@ -152,7 +165,6 @@ export default function Dashboard() {
   const [gamblingAmount, setGamblingAmount] = useState(0);
 
   useEffect(() => {
-    // garanta que dataRegistries.content existe
     if (Array.isArray(dataRegistries?.content) && dataRegistries.content.length > 0) {
       const recentRecords = dataRegistries.content.slice(0, 5);
 
@@ -285,14 +297,14 @@ export default function Dashboard() {
         <ContentCard title="Distribuição por Categoria">
           <ErrorBoundary>
             <Suspense fallback={ChartFallback}>
-              <CategoryPieChart data={categories || []} />
+              <CategoryPieChart data={filteredCategories || []} />
             </Suspense>
           </ErrorBoundary>
         </ContentCard>
 
         <TopCategoriesCard
           title="Top Categorias de Gastos"
-          data={categories || []}
+          data={filteredCategories || []}
           type="DESPESA"
         />
       </div>
