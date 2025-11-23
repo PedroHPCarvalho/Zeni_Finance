@@ -5,7 +5,6 @@ import styles from "../styles/Card/TopCategoriesCard.module.css";
 
 export default function TopCategoriesCard({ title, data = [], type = "DESPESA", filterMonth = null, filterYear = null }) {
 
-  // 1️⃣ Agregar categorias
   const aggregated = useMemo(() => {
     if (!data || data.length === 0) return [];
 
@@ -13,7 +12,7 @@ export default function TopCategoriesCard({ title, data = [], type = "DESPESA", 
       if (filterMonth && filterYear) {
         return item.mes === filterMonth && item.ano === filterYear;
       }
-      return true; // sem filtro, pega todos os meses
+      return true;
     });
 
     const grouped = filteredData.reduce((acc, item) => {
@@ -47,7 +46,6 @@ export default function TopCategoriesCard({ title, data = [], type = "DESPESA", 
             const percent = total > 0 ? (item.total / total) * 100 : 0;
             return (
               <div key={index} className={`${styles.item} ${index === 0 ? styles.firstItem : ""}`}>
-                {/* Ranking */}
                 <div className={styles.rankWrapper}>
                   {index === 0 ? <Trophy className={styles.gold} /> :
                    index === 1 ? <Trophy className={styles.silver} /> :
@@ -55,13 +53,12 @@ export default function TopCategoriesCard({ title, data = [], type = "DESPESA", 
                    <span className={styles.rank}>#{index + 1}</span>}
                 </div>
 
-                {/* Mini Donut */}
                 <div className={styles.miniDonut}>
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={[{ value: percent }, { value: 100 - percent }]}
-                        innerRadius="60%"
+                        innerRadius="55%"
                         outerRadius="100%"
                         dataKey="value"
                       >
@@ -73,7 +70,6 @@ export default function TopCategoriesCard({ title, data = [], type = "DESPESA", 
                   <span className={styles.percentLabel}>{percent.toFixed(0)}%</span>
                 </div>
 
-                {/* Category Info */}
                 <div className={styles.info}>
                   <span className={styles.category}>{item.category}</span>
                   <span className={styles.value}>

@@ -20,6 +20,20 @@ export default function HistoryTableCard({
     if (currentPage < totalPages - 1) onPageChange(currentPage + 1);
   };
 
+  // Função para formatar data igual à TableCard
+  const formatDate = (value) => {
+    if (!value) return value;
+    const datePart = value.split("T")[0]; // "2025-11-22"
+    const [year, month, day] = datePart.split("-");
+
+    const months = [
+      "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+      "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+    ];
+
+    return `${parseInt(day)} de ${months[parseInt(month) - 1]} de ${year}`;
+  };
+
   // Verifica se algum registro tem categoria "Investimentos"
   const hasInvestmentCategory = content.some(
     (r) => r.category?.toUpperCase() === "INVESTIMENTOS"
@@ -51,7 +65,6 @@ export default function HistoryTableCard({
               </tr>
             ) : (
               content.map((row) => {
-                // Checa apenas a categoria para investimentos
                 const isInvestmentCategory = row.category?.toUpperCase() === "INVESTIMENTOS";
 
                 let rowClass = "";
@@ -70,7 +83,7 @@ export default function HistoryTableCard({
                         minimumFractionDigits: 2,
                       })}
                     </td>
-                    <td>{row.dateRegister?.split("T")[0]}</td>
+                    <td>{formatDate(row.dateRegister)}</td> {/* 🔥 Data formatada */}
                     <td className={styles.actionsCell}>
                       <button onClick={() => onEdit(row)} className={styles.iconBtn}>
                         <Edit size={18} />
