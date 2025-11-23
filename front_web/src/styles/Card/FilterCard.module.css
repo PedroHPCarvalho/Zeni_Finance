@@ -68,7 +68,7 @@
 
 .applyBtn {
   background: var(--btn-primary-bg);
-  color: var(--text-main);
+  color: #fff;
   border: none;
   padding: 10px 18px;
   border-radius: 10px;
@@ -78,5 +78,20 @@
 }
 
 .applyBtn:hover {
+  background: var(--btn-primary-bg-hover);
+}
+
+.clearBtn {
+  background: var(--btn-primary-bg);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.clearBtn:hover {
   background: var(--btn-primary-bg-hover);
 }

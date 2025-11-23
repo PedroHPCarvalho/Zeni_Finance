@@ -5,27 +5,31 @@
   width: 100vw;
   height: 100vh;
   backdrop-filter: blur(4px);
-  background: #00000050;
+  background: rgba(0, 0, 0, 0.5); 
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
+  padding: 16px; 
 }
 
 .modal {
-  background: white;
-  width: 480px;
+  background-color: var(--bg-white); 
+  width: 100%;
+  max-width: 480px;
   padding: 24px;
   border-radius: 18px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-shadow: 0 4px 16px #00000025;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
 }
 
 .title {
   font-size: 20px;
   font-weight: 600;
+  color: var(--text-main);
 }
 
 .form {
@@ -62,9 +66,14 @@ select {
 .cancel {
   padding: 10px 16px;
   background: #e5e5e5;
+  color: red;
   border: none;
   border-radius: 12px;
   cursor: pointer;
+}
+
+.cancel:hover {
+  background: #cecccc !important;
 }
 
 .save {
@@ -75,4 +84,28 @@ select {
   border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column; 
+    gap: 16px;
+  }
+
+  .modal {
+    padding: 20px; 
+  }
+  
+  .buttons {
+    flex-direction: column-reverse;
+  }
+
+  .save, .cancel {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .cancel {
+      border: none;
+  }
 }

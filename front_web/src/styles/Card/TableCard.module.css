@@ -3,7 +3,7 @@
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 6px 15px var(--bg-card-shadow);
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -36,7 +36,6 @@
   font-size: 22px;
 }
 
-/* ===== TABELA ===== */
 .tableWrapper {
   width: 100%;
   overflow-x: auto;
@@ -50,7 +49,7 @@
 }
 
 .table th {
-  display: none;
+  display: none; /* Oculto no design deste card específico desktop, conforme seu original */
 }
 
 .table td {
@@ -61,30 +60,83 @@
   font-weight: 500;
 }
 
-.table tbody tr:hover td {
-  background: rgba(33, 150, 243, 0.1); /* poderia criar variável para hover de linha */
-}
+/* Cores Desktop (apenas na célula) */
+.typeExpenseRow td { background: rgba(244, 67, 54, 0.1); }
+.typeRevenueRow td { background: rgba(76, 175, 80, 0.1); }
+.typeInvestmentRow td { background: rgba(33, 150, 243, 0.1); }
 
-/* Fundo por tipo */
-.typeExpenseRow td {
-  background: rgba(244, 67, 54, 0.1); /* poderia usar variável: --card-expense-bg com alpha */
-}
-
-.typeRevenueRow td {
-  background: rgba(76, 175, 80, 0.1); /* poderia criar --card-income-bg com alpha */
-}
-
-.typeInvestmentRow td {
-  background: rgba(33, 150, 243, 0.1); /* poderia criar --card-investment-bg */
-}
-
-.valueCell {
-  font-weight: 600;
-}
+.valueCell { font-weight: 600; }
 
 .emptyText {
   text-align: center;
   padding: 20px;
   color: var(--text-light);
   font-style: italic;
+}
+
+
+@media (max-width: 768px) {
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-light); 
+  }
+
+  .typeExpenseRow {
+    background: rgba(244, 67, 54, 0.1) !important;
+    border-color: rgba(244, 67, 54, 0.3) !important; 
+  }
+
+  .typeRevenueRow {
+    background: rgba(76, 175, 80, 0.1) !important;
+    border-color: rgba(76, 175, 80, 0.3) !important;
+  }
+
+  .typeInvestmentRow {
+    background: rgba(33, 150, 243, 0.1) !important;
+    border-color: rgba(33, 150, 243, 0.3) !important;
+  }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    background: transparent !important; 
+    border-radius: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    text-align: right;
+  }
+
+  .table td:last-child {
+    border-bottom: none;
+  }
+
+  .table td::before {
+    content: attr(data-label); 
+    font-weight: 600;
+    color: var(--text-light); 
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .valueCell {
+    font-size: 1.1rem; 
+    color: var(--text-main);
+  }
+  
+  .table td:nth-child(1) {
+     font-weight: 600;
+     font-size: 1rem;
+  }
 }

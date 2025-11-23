@@ -73,7 +73,7 @@ select:focus {
   cursor: pointer;
   font-weight: 600;
   background: var(--btn-primary-bg);
-  color: var(--bg-white);
+  color: #fff;
   transition: 0.2s ease;
 }
 

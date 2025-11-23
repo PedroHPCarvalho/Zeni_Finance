@@ -107,7 +107,7 @@ export default function HistoryTableCard({
         <span>
           Página {currentPage + 1} de {totalPages || 1}
         </span>
-        <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
+        <button  style={{ color: 'white' }} onClick={handleNext} disabled={currentPage >= totalPages - 1}>
           Próxima
         </button>
       </div>
