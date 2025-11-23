@@ -1,38 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Outlet, Link } from "react-router-dom";
-import { LogOut, Menu, LayoutDashboard, Table, User, Moon, Settings, X } from "lucide-react";
+import { LogOut, Menu, LayoutDashboard, Table, Moon, X } from "lucide-react";
 import styles from "../styles/DashboardLayout/DashboardLayout.module.css";
 import Logo from "../assets/Logo.png";
+import { useMe } from "../hooks/useMe";
 
 export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 768);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem("darkMode") === "true");
 
   const location = useLocation();
   const isActive = (path) => location.pathname.startsWith(path);
 
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("darkMode") === "true";
-  });
+  const { user, loading } = useMe();
 
   // Fecha a sidebar ao trocar de página no mobile
   useEffect(() => {
-    if (window.innerWidth <= 768) {
-      setSidebarOpen(false);
-    }
+    if (window.innerWidth <= 768) setSidebarOpen(false);
   }, [location]);
 
-  // Carregar usuário
+  // Aplica modo noturno
   useEffect(() => {
-    fetch("/me")
-      .then(async (res) => {
-        if (!res.ok) return null;
-        return await res.json();
-      })
-      .then(data => setUser(data))
-      .catch(() => setUser(null));
-  }, []);
+    if (darkMode) document.body.classList.add("dark-mode");
+    else document.body.classList.remove("dark-mode");
+  }, [darkMode]);
 
   const handleLogout = () => console.log("Logout");
 
@@ -42,20 +34,25 @@ export default function DashboardLayout() {
     localStorage.setItem("darkMode", newValue);
   };
 
-  useEffect(() => {
-    if (darkMode) document.body.classList.add("dark-mode");
-    else document.body.classList.remove("dark-mode");
-  }, [darkMode]);
+  
+
+  // Calcula iniciais do usuário
+  const getUserInitials = () => {
+    if (user?.name) {
+      return user.name
+        .split(" ")
+        .map(n => n[0].toUpperCase())
+        .slice(0, 2)
+        .join("");
+    }
+    return "U";
+  };
 
   return (
     <div className={styles.container}>
-      
       {/* Overlay para mobile */}
       {sidebarOpen && window.innerWidth <= 768 && (
-        <div 
-          className={styles.overlay} 
-          onClick={() => setSidebarOpen(false)} 
-        />
+        <div className={styles.overlay} onClick={() => setSidebarOpen(false)} />
       )}
 
       {/* SIDEBAR */}
@@ -63,13 +60,13 @@ export default function DashboardLayout() {
         <div className={styles.logo}>
           <div className={styles.logoContent}>
             <img src={Logo} alt="Zeni" className={styles.logoIcon} />
-            <span className={`${styles.logoText} ${!sidebarOpen ? styles.hideText : ''}`}>
+            <span className={`${styles.logoText} ${!sidebarOpen ? styles.hideText : ""}`}>
               Zeni Finance
             </span>
           </div>
 
-          <button 
-            className={styles.closeMobileBtn} 
+          <button
+            className={styles.closeMobileBtn}
             onClick={() => setSidebarOpen(false)}
             aria-label="Fechar menu"
           >
@@ -80,12 +77,12 @@ export default function DashboardLayout() {
         <nav className={styles.menu}>
           <Link className={`${styles.link} ${isActive("/dashboard") ? styles.active : ""}`} to="/dashboard">
             <LayoutDashboard size={20} />
-            <span className={!sidebarOpen ? styles.hideText : ''}>Dashboard</span>
+            <span className={!sidebarOpen ? styles.hideText : ""}>Dashboard</span>
           </Link>
 
           <Link className={`${styles.link} ${isActive("/registers") ? styles.active : ""}`} to="/registers">
             <Table size={20} />
-            <span className={!sidebarOpen ? styles.hideText : ''}>Registros</span>
+            <span className={!sidebarOpen ? styles.hideText : ""}>Registros</span>
           </Link>
         </nav>
       </aside>
@@ -101,16 +98,18 @@ export default function DashboardLayout() {
           {/* MENU DO USUÁRIO */}
           <div className={styles.userMenu}>
             <button className={styles.userBtn} onClick={() => setDropdownOpen(!dropdownOpen)}>
-              <div className={styles.userAvatar}>
-                {user?.name ? user.name[0].toUpperCase() : "U"}
-              </div>
+              <div className={styles.userAvatar}>{getUserInitials()}</div>
             </button>
 
             {dropdownOpen && (
               <div className={styles.dropdown}>
-                <div className={styles.dropdownHeader}>{user?.name || "Usuário"}</div>
-                <button className={styles.dropdownItem} onClick={toggleDarkMode}><Moon size={18} /> <span>Modo Noturno</span></button>
-                <button className={styles.dropdownItem} onClick={handleLogout}><LogOut size={18} /> <span className={styles.logout}>Sair</span></button>
+                <div className={styles.dropdownHeader}>{!loading && user?.name ? user.name : "Usuário"}</div>
+                <button className={styles.dropdownItem} onClick={toggleDarkMode}>
+                  <Moon size={18} /> <span>Modo Noturno</span>
+                </button>
+                <button className={styles.dropdownItem} onClick={handleLogout}>
+                  <LogOut size={18} /> <span className={styles.logout}>Sair</span>
+                </button>
               </div>
             )}
           </div>

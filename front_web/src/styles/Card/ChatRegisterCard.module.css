@@ -1,3 +1,4 @@
+/* CARD PRINCIPAL */
 .card {
   background: #f4f4f4;
   border-radius: 16px;
@@ -6,10 +7,9 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-
   box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: 0.25s ease;
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
@@ -23,7 +23,6 @@
   gap: 12px;
   align-items: center;
   padding: 14px 18px;
-
   background: #022c2c;
   color: #e8fffb;
 }
@@ -35,7 +34,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: #0ab8a2;
   border-radius: 50%;
 }
@@ -63,20 +61,20 @@
   border-bottom: 1px solid #dadada;
 }
 
-/* Mensagens */
+/* MENSAGENS */
 .message {
   max-width: 75%;
   padding: 12px 14px;
   border-radius: 12px;
   font-size: 14px;
   line-height: 1.4;
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  position: relative;
 }
 
-/* USER */
+/* USER MESSAGE */
 .userMessage {
   align-self: flex-end;
   background: #2196f3;
@@ -84,23 +82,23 @@
   border-bottom-right-radius: 0;
 }
 
-/* AI */
+/* AI MESSAGE */
 .aiMessage {
   align-self: flex-start;
-  background: white;
+  background: #fff;
   color: #022c2c;
   border-bottom-left-radius: 0;
   border: 1px solid #dadada;
 }
 
-/* Hora */
+/* HORA */
 .msgTime {
   font-size: 11px;
   opacity: 0.55;
   align-self: flex-end;
 }
 
-/* Animação digitando */
+/* DIGITANDO */
 .typing {
   display: flex;
   gap: 4px;
@@ -124,9 +122,8 @@
 }
 
 @keyframes blink {
-  0% { opacity: 0.2; }
+  0%,100% { opacity: 0.2; }
   50% { opacity: 1; }
-  100% { opacity: 0.2; }
 }
 
 /* INPUT AREA */
@@ -135,6 +132,7 @@
   gap: 10px;
   padding: 14px;
   background: #f4f4f4;
+  border-top: 1px solid #dadada;
 }
 
 textarea {
@@ -143,7 +141,7 @@ textarea {
   border-radius: 12px;
   border: 1px solid #ccc;
   resize: none;
-  background: white;
+  background: #fff;
   font-size: 14px;
   transition: 0.2s ease;
 }
@@ -173,4 +171,23 @@ button:hover {
 button:disabled {
   background-color: #7bd7ca;
   cursor: not-allowed;
+}
+
+/* MENSAGEM DE STATUS (SUCESSO / ERRO) */
+.messageStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  animation: fadeIn 0.25s forwards;
+}
+
+.successMsg {
+  background-color: #e6ffed;
+  color: #2b7a0b;
+  border: 1p;
 }

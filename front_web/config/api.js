@@ -12,6 +12,7 @@ export const API_ENDPOINTS = {
   login: "/auth/login",
   me: "/me",
   financialRegisters: "/financial-registers-bff",
+  update: "/financial-registers-bff/update/",
   resumeCards: "/financial-registers-bff/resumecards",
   categoryResume: "/financial-registers-bff/categoryresume",
   mouthResume: "/financial-registers-bff/mouthresume",

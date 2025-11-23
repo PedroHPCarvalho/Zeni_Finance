@@ -12,8 +12,21 @@ export default function HistoryTableCard({
 }) {
   const content = data?.content || [];
 
+  const handlePrev = () => {
+    if (currentPage > 0) onPageChange(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages - 1) onPageChange(currentPage + 1);
+  };
+
+  // Verifica se algum registro tem categoria "Investimentos"
+  const hasInvestmentCategory = content.some(
+    (r) => r.category?.toUpperCase() === "INVESTIMENTOS"
+  );
+
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${hasInvestmentCategory ? styles.cardInvestment : ""}`}>
       <span className={styles.title}>Histórico de Registros</span>
 
       <div className={styles.tableWrapper}>
@@ -29,21 +42,22 @@ export default function HistoryTableCard({
             </tr>
           </thead>
 
-          <tbody>
+         <tbody>
             {content.length === 0 ? (
               <tr>
-                <td colSpan={7} className={styles.emptyText}>
+                <td colSpan={6} className={styles.emptyText}>
                   Nenhum registro encontrado.
                 </td>
               </tr>
             ) : (
               content.map((row) => {
-                let rowClass = "";
-                const type = row.typeRegister?.toUpperCase();
+                // Checa apenas a categoria para investimentos
+                const isInvestmentCategory = row.category?.toUpperCase() === "INVESTIMENTOS";
 
-                if (type === "DESPESA") rowClass = styles.typeExpenseRow;
-                if (type === "RECEITA") rowClass = styles.typeRevenueRow;
-                if (type === "INVESTIMENTO") rowClass = styles.typeInvestmentRow;
+                let rowClass = "";
+                if (isInvestmentCategory) rowClass = styles.typeInvestmentRow;
+                else if (row.typeRegister?.toUpperCase() === "DESPESA") rowClass = styles.typeExpenseRow;
+                else if (row.typeRegister?.toUpperCase() === "RECEITA") rowClass = styles.typeRevenueRow;
 
                 return (
                   <tr key={row.id} className={rowClass}>
@@ -51,20 +65,17 @@ export default function HistoryTableCard({
                     <td>{row.category}</td>
                     <td>{row.typeRegister}</td>
                     <td className={styles.valueCell}>
-                      R$ {Number(row.value).toLocaleString("pt-BR", {
+                      R${" "}
+                      {Number(row.value).toLocaleString("pt-BR", {
                         minimumFractionDigits: 2,
                       })}
                     </td>
                     <td>{row.dateRegister?.split("T")[0]}</td>
-
                     <td className={styles.actionsCell}>
                       <button onClick={() => onEdit(row)} className={styles.iconBtn}>
                         <Edit size={18} />
                       </button>
-                      <button
-                        onClick={() => onDelete(row.id)}
-                        className={styles.iconBtnDelete}
-                      >
+                      <button onClick={() => onDelete(row.id)} className={styles.iconBtnDelete}>
                         <Trash2 size={18} />
                       </button>
                     </td>
@@ -77,21 +88,13 @@ export default function HistoryTableCard({
       </div>
 
       <div className={styles.pagination}>
-        <button
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 0}
-        >
+        <button onClick={handlePrev} disabled={currentPage === 0}>
           Anterior
         </button>
-
         <span>
           Página {currentPage + 1} de {totalPages || 1}
         </span>
-
-        <button
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage >= totalPages - 1}
-        >
+        <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>
           Próxima
         </button>
       </div>

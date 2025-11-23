@@ -9,32 +9,22 @@ export function useChatRegister() {
   const headers = useAuthToken();
 
   async function sendToIA(userString) {
-    if (!headers || !headers.Authorization) {
-      console.log("Token não encontrado");
-      return null;
-    }
+    if (!userString.trim() || !headers?.Authorization) return false;
 
     setLoading(true);
     setError(null);
 
     try {
-      const body = { userString };
-
-      const response = await api.post(
-        API_ENDPOINTS.aiCreate,
-        body,
-        { headers }
-      );
-
-      return response.data;  // 🔥 AGORA FUNCIONA
+      await api.post(API_ENDPOINTS.aiCreate, { userString }, { headers });
+      return true; // sucesso
     } catch (err) {
       console.error("Erro ao enviar IA:", err);
       setError("Erro ao processar mensagem para IA");
-      return null;
+      return false;
     } finally {
       setLoading(false);
     }
   }
 
-  return { sendToIA, loading, error }; // 🔥 nome corrigido
+  return { sendToIA, loading, error };
 }
