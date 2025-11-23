@@ -28,7 +28,7 @@
   --bot-feature-border: rgba(255,255,255,0.2);
 
   /* botões */
-  --btn-primary-bg: var(--primary);
+  --btn-primary-bg: #00D1B2;
   --btn-primary-bg-hover: var(--primary-dark);
   --btn-outline-bg-hover: var(--primary-light);
   --btn-whatsapp-bg: #128C7E;
@@ -68,6 +68,10 @@
   --alert-bg: #fff3f3;
   /* icon container */
   --icon-bg: rgba(255, 255, 255, 0.25);
+
+  --border-color: #E5E7EB;
+  --table-head-bg: #e8e8e8;
+  --label-color: #00695C;
 }
 
 
@@ -116,4 +120,28 @@ body.dark-mode {
   --alert-link-color: #fca5a5;
 
   color-scheme: dark;
+
+  --border-color: #374151;
+  --table-head-bg: #374151;
+
+  --btn-primary-bg: var(--primary-dark); 
+  --btn-primary-bg-hover: var(--primary);
+
+  --label-color: #FFFFFF;
+}
+
+input,
+select,
+textarea,
+button,
+table,
+th,
+td,
+hr {
+  border-color: var(--border-color);
+}
+
+label {
+  color: var(--label-color);
+  font-weight: 500; 
 }

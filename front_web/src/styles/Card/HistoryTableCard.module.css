@@ -36,7 +36,8 @@
 }
 
 .table thead th {
-  background: #e8e8e8; /* opcional: criar variável --table-header-bg */
+  background-color: var(--table-head-bg);
+  color: var(--text-main);
   padding: 12px;
   text-align: left;
   font-weight: 600;
@@ -115,6 +116,7 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 12px;
+  color: var(--text-main);
 }
 
 .pagination button {
@@ -122,7 +124,7 @@
   border-radius: 10px;
   border: none;
   background-color: var(--btn-primary-bg);
-  color: var(--bg-white);
+  color: #666;
   cursor: pointer;
   font-weight: 600;
   transition: background 0.2s;
@@ -142,4 +144,77 @@
   padding: 20px;
   font-weight: 500;
   color: #666; /* opcional: --text-light */
+}
+
+@media (max-width: 768px) {
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
+  }
+
+  .typeExpenseRow {
+    background: rgba(244, 67, 54, 0.1) !important;
+    border-color: rgba(244, 67, 54, 0.3) !important; 
+  }
+
+  .typeRevenueRow {
+    background: rgba(76, 175, 80, 0.1) !important;
+    border-color: rgba(76, 175, 80, 0.3) !important;
+  }
+
+  .typeInvestmentRow {
+    background: rgba(33, 150, 243, 0.1) !important;
+    border-color: rgba(33, 150, 243, 0.3) !important;
+  }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    background: transparent !important; 
+    border-radius: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    text-align: right;
+  }
+
+  .table td:last-child {
+    border-bottom: none;
+    padding-top: 16px;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .table td::before {
+    content: attr(data-label); 
+    font-weight: 600;
+    color: var(--text-light); 
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .table td:nth-child(1)::before { content: "Descrição"; }
+  .table td:nth-child(2)::before { content: "Categoria"; }
+  .table td:nth-child(3)::before { content: "Tipo"; }
+  .table td:nth-child(4)::before { content: "Valor";  color: var(--text-main);}
+  .table td:nth-child(5)::before { content: "Data"; }
+
+  .valueCell {
+    font-size: 1.1rem; 
+  }
+  
+  .table td:nth-child(1) {
+     font-weight: 600;
+     font-size: 1rem;
+  }
 }

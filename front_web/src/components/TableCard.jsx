@@ -1,27 +1,20 @@
 import React from "react";
-import styles from "../styles/Card/TableCard.module.css"; // Card padrão
-
+import styles from "../styles/Card/TableCard.module.css";
 
 export default function TableCard({ title, icon, columns = [], data = [] }) {
- const formatDate = (value) => {
+  const formatDate = (value) => {
     if (!value) return value;
-
-    // Pega só a parte da data, ignorando horário
-    const datePart = value.split("T")[0]; // "2025-11-22"
+    const datePart = value.split("T")[0];
     const [year, month, day] = datePart.split("-");
-
-    // Meses por extenso em pt-BR
     const months = [
       "janeiro", "fevereiro", "março", "abril", "maio", "junho",
       "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
     ];
-
     return `${parseInt(day)} de ${months[parseInt(month) - 1]} de ${year}`;
   };
 
   return (
     <div className={styles.card}>
-      
       {(title || icon) && (
         <div className={styles.header}>
           <span className={styles.title}>{title}</span>
@@ -29,7 +22,6 @@ export default function TableCard({ title, icon, columns = [], data = [] }) {
         </div>
       )}
 
-      {/* Wrapper correto para tabelas */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
@@ -49,24 +41,25 @@ export default function TableCard({ title, icon, columns = [], data = [] }) {
               </tr>
             ) : (
               data.map((row, i) => {
+                // Tenta identificar o tipo (assumindo que está na coluna 2, índice 2)
+                // Se a ordem das colunas mudar, ajuste este índice
                 const type = String(row[2] || "").toUpperCase();
 
-                let rowClass =
-                  type === "DESPESA" || type === "CASA_DE_APOSTA"
-                    ? styles.typeExpenseRow
-                    : type === "RECEITA"
-                    ? styles.typeRevenueRow
-                    : type === "INVESTIMENTO"
-                    ? styles.typeInvestmentRow
-                    : "";
+                let rowClass = "";
+                if (type === "DESPESA" || type === "CASA_DE_APOSTA") rowClass = styles.typeExpenseRow;
+                else if (type === "RECEITA") rowClass = styles.typeRevenueRow;
+                else if (type === "INVESTIMENTO") rowClass = styles.typeInvestmentRow;
 
                 return (
                   <tr key={i} className={rowClass}>
                     {row.map((value, j) => {
-                      // Valor formatado
+                      // Pega o nome da coluna para usar no mobile (Ex: "Valor", "Data")
+                      const label = columns[j] || "";
+
+                      // Formatação específica para Valor (coluna 3)
                       if (j === 3) {
                         return (
-                          <td key={j} className={styles.valueCell}>
+                          <td key={j} className={styles.valueCell} data-label={label}>
                             R$
                             {Number(value).toLocaleString("pt-BR", {
                               minimumFractionDigits: 2,
@@ -76,12 +69,13 @@ export default function TableCard({ title, icon, columns = [], data = [] }) {
                         );
                       }
 
-                      // Data formatada
+                      // Formatação específica para Data (coluna 4)
                       if (j === 4) {
-                        return <td key={j}>{formatDate(value)}</td>;
+                        return <td key={j} data-label={label}>{formatDate(value)}</td>;
                       }
 
-                      return <td key={j}>{value}</td>;
+                      // Padrão
+                      return <td key={j} data-label={label}>{value}</td>;
                     })}
                   </tr>
                 );
