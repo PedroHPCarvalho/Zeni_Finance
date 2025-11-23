@@ -89,4 +89,31 @@ body {
   background-color: var(--bg);
   color: var(--text);
   overflow-x: hidden; /* evita rolagem lateral indesejada */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+  --bg-white: #1F2937; 
+  --bg-light: #111827; 
+  --bg-header: #1F2937; 
+  
+  --text-main: #F3F4F6;
+  --text-light: #9CA3AF; 
+  --text-footer: #6B7280;
+
+  --bg-cta-border: #374151; 
+  --bg-card-shadow: rgba(0, 0, 0, 0.5); 
+  --bg-card-hover-shadow: rgba(0, 0, 0, 0.7);
+
+  --bg-light-hover: rgba(255, 255, 255, 0.05); 
+  --overlay-bg: rgba(0,0,0,0.7); 
+
+  --warning-bg: #431407; 
+  --warning-text: #fdba74; 
+  
+  --danger: #ef4444;
+  --alert-bg: #450a0a;
+  --alert-link-color: #fca5a5;
+
+  color-scheme: dark;
 }

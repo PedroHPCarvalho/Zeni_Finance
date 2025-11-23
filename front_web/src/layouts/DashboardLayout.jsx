@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Outlet, Link } from "react-router-dom";
-import { LogOut, Menu, LayoutDashboard, Table, Moon, X } from "lucide-react";
+import { LogOut, Menu, LayoutDashboard, Table, Moon, Sun, X } from "lucide-react";
 import styles from "../styles/DashboardLayout/DashboardLayout.module.css";
 import Logo from "../assets/Logo.png";
 import { useMe } from "../hooks/useMe";
@@ -20,10 +20,12 @@ export default function DashboardLayout() {
     if (window.innerWidth <= 768) setSidebarOpen(false);
   }, [location]);
 
-  // Aplica modo noturno
   useEffect(() => {
-    if (darkMode) document.body.classList.add("dark-mode");
-    else document.body.classList.remove("dark-mode");
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
   }, [darkMode]);
 
   const handleLogout = () => console.log("Logout");
@@ -32,9 +34,8 @@ export default function DashboardLayout() {
     const newValue = !darkMode;
     setDarkMode(newValue);
     localStorage.setItem("darkMode", newValue);
+    setDropdownOpen(false); 
   };
-
-  
 
   // Calcula iniciais do usuário
   const getUserInitials = () => {
@@ -103,10 +104,15 @@ export default function DashboardLayout() {
 
             {dropdownOpen && (
               <div className={styles.dropdown}>
-                <div className={styles.dropdownHeader}>{!loading && user?.name ? user.name : "Usuário"}</div>
+                <div className={styles.dropdownHeader}>
+                  {!loading && user?.name ? user.name : "Usuário"}
+                </div>
+                
                 <button className={styles.dropdownItem} onClick={toggleDarkMode}>
-                  <Moon size={18} /> <span>Modo Noturno</span>
+                  {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+                  <span>{darkMode ? "Modo Claro" : "Modo Noturno"}</span>
                 </button>
+
                 <button className={styles.dropdownItem} onClick={handleLogout}>
                   <LogOut size={18} /> <span className={styles.logout}>Sair</span>
                 </button>

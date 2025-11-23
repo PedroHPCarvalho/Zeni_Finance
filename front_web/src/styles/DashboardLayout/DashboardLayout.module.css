@@ -74,7 +74,7 @@
   display: none;
   background: none;
   border: none;
-  color: white;
+  color: var(--text-main);
 }
 
 @media (max-width: 768px) {
@@ -128,7 +128,7 @@
 
 .link:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .link.active {
@@ -143,11 +143,12 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-color: var(--bg-light);
 }
 
 .header {
   height: 70px;
-  background: #fff;
+  background-color: var(--bg-light);
   border-bottom: 1px solid #e0e0e0;
   display: flex;
   align-items: center;
@@ -160,7 +161,7 @@
 
 .menuBtn {
   background: none;
-  color: #003d3d;
+  color: var(--text-main);
   border: none;
   padding: 8px;
   cursor: pointer;
@@ -168,7 +169,7 @@
 }
 
 .menuBtn:hover {
-  background: #f0f0f0;
+  background-color: var(--bg-light);
 }
 
 /* CONTENT */
@@ -179,11 +180,14 @@
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
+  background-color: var(--bg-light);
 }
 
 /* USER MENU */
 .userMenu {
   position: relative;
+  background-color: var(--bg-light);
+  color: var(--text-main);
 }
 
 .userBtn {
@@ -237,7 +241,7 @@
   position: absolute;
   right: 0;
   top: 55px;
-  background: #ffffff;
+  background-color: var(--bg-light);
   border-radius: 12px;
   width: 220px;
   overflow: hidden;
@@ -256,7 +260,7 @@
   font-size: 1rem;
   padding: 14px 16px;
   border-bottom: 1px solid #f0f0f0;
-  background: #fafafa;
+  background-color: var(--bg-light);
 }
 
 .dropdownItem {
@@ -266,11 +270,11 @@
   gap: 10px;
   width: 100%;
   border: none;
-  background: transparent;
+  background-color: transparent;
   cursor: pointer;
   transition: 0.15s ease;
   font-size: 0.95rem;
-  color: #000;
+  color: var(--text-main);
 }
 
 .dropdownItem svg {
@@ -278,7 +282,7 @@
 }
 
 .dropdownItem:hover {
-  background: #f3f7f7;
+ background-color: var(--bg-light-hover);
 }
 
 .logout {
