@@ -103,7 +103,7 @@ public class FinancialRegistersController {
     @GetMapping("/list/paged")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Page<FinancialRegistersResponseDTO>> list(@AuthenticationPrincipal User user, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("dateRegister").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<FinancialRegisters> registersPage = financialRegistersService.listFinancRegistersByUserId(user, pageable);
         Page<FinancialRegistersResponseDTO> dtoPage = registersPage.map(financialRegisterResponseDTOMapper::financialRegistersToDTO);
         return ResponseEntity.ok(dtoPage);
@@ -117,7 +117,7 @@ public class FinancialRegistersController {
         return ResponseEntity.ok().body(dtoResume);
     }
 
-    @GetMapping("/categoryresume")
+        @GetMapping("/categoryresume")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<CategoryResumeDTO>> getCategoryResume(@AuthenticationPrincipal User user){
         List<CategoryResumeDTO> listCategoryResume = financialRegistersService.getCategoryResume(user.getId());

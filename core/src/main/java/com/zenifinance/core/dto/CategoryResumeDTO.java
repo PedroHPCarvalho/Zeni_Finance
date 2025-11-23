@@ -3,6 +3,7 @@ package com.zenifinance.core.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
 @Data
@@ -11,4 +12,6 @@ import java.math.BigDecimal;
 public class CategoryResumeDTO {
     private String category;
     private BigDecimal total;
+    private String mes;
+    private Integer ano;
 }

@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MonthResumeInvestmentDTO {
-    private String category;
-    private Double valor_investido;
     private String mes;
     private Integer ano;
+    private Double totalAportes;
+    private Double totalResultados;
 }

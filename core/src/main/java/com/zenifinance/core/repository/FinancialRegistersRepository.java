@@ -17,7 +17,7 @@ import java.util.List;
 
 @Repository
 public interface FinancialRegistersRepository extends JpaRepository<FinancialRegisters, Long> {
-    List<FinancialRegisters> findByidUser (User user);
+    List<FinancialRegisters> findByIdUser(User user);
 
     @Query(value = """
             SELECT
@@ -30,12 +30,24 @@ public interface FinancialRegistersRepository extends JpaRepository<FinancialReg
     FinancialRegisterResumeDTO findFinancialRegisterResumeByUserId(@Param("userId") Long userId);
 
     @Query(value = """
-            SELECT new com.zenifinance.core.dto.CategoryResumeDTO(fr.category, SUM(fr.value))
-            FROM FinancialRegisters fr
-            WHERE fr.typeRegister = 'DESPESA' AND fr.idUser.id = :userId
-            GROUP BY fr.category
-            """)
-    List<CategoryResumeDTO> findCategoryResumeByUserId(@Param("userId") Long userId);
+        SELECT 
+            fr.category AS category,
+            SUM(fr.value) AS total_value,
+            TO_CHAR(fr.date_register, 'Mon') AS mes,
+            EXTRACT(YEAR FROM fr.date_register) AS ano
+        FROM financial_registers fr
+        WHERE fr.type_register = 'DESPESA'
+          AND fr.id_user = :userId
+        GROUP BY 
+            fr.category,
+            TO_CHAR(fr.date_register, 'Mon'),
+            EXTRACT(YEAR FROM fr.date_register),
+            EXTRACT(MONTH FROM fr.date_register)
+        ORDER BY
+            EXTRACT(YEAR FROM fr.date_register),
+            EXTRACT(MONTH FROM fr.date_register)
+    """, nativeQuery = true)
+    List<Object[]> findCategoryResumeByUserId(@Param("userId") Long userId);
 
     @Query(value = """
         SELECT 
@@ -57,24 +69,23 @@ public interface FinancialRegistersRepository extends JpaRepository<FinancialReg
 
     @Query(value = """
         SELECT
-            category,
-            CAST(SUM(value) AS DOUBLE PRECISION) AS valor_investido,
             TO_CHAR(date_register, 'Mon') AS mes,
-            EXTRACT(YEAR FROM date_register) AS ano
+            EXTRACT(YEAR FROM date_register) AS ano,
+            SUM(CASE WHEN type_register = 'DESPESA' THEN value ELSE 0 END) AS total_aportes,
+            SUM(CASE WHEN type_register = 'RECEITA' THEN value ELSE 0 END) AS total_resultados
         FROM financial_registers
-        WHERE id_user = :userId 
-          AND category = 'INVESTIMENTOS' 
-          AND type_register = 'RECEITA'
+        WHERE id_user = :userId
+          AND category = 'INVESTIMENTOS'
         GROUP BY 
-            category,
-            TO_CHAR(date_register, 'Mon'),
+            EXTRACT(YEAR FROM date_register),
             EXTRACT(MONTH FROM date_register),
-            EXTRACT(YEAR FROM date_register)
+            TO_CHAR(date_register, 'Mon')
         ORDER BY 
             EXTRACT(YEAR FROM date_register),
             EXTRACT(MONTH FROM date_register)
     """, nativeQuery = true)
     List<Object[]> findMonthResumeInvestByUserId(@Param("userId") Long userId);
 
-    Page<FinancialRegisters> findByidUser(User user, Pageable pageable);
+    Page<FinancialRegisters> findByIdUser(User user, Pageable pageable);
+
 }

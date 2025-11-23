@@ -1,8 +1,8 @@
 .card {
-  background: #f4f4f4;
+  background: var(--bg-light);
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 15px var(--bg-card-shadow);
   border: 1px solid rgba(255,255,255,0.05);
   display: flex;
   flex-direction: column;
@@ -10,11 +10,12 @@
   width: 100%;
   min-height: 340px;
   box-sizing: border-box;
+  transition: 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+  box-shadow: 0 10px 22px var(--bg-card-hover-shadow);
 }
 
 .header {
@@ -25,18 +26,17 @@
 
 .title {
   font-size: 15px;
-  color: #0b0c0c;
+  color: var(--text-main);
   font-weight: 600;
   opacity: 0.8;
 }
 
 .icon {
-  color: #00d1b2;
+  color: var(--primary);
   font-size: 22px;
 }
 
 /* ===== TABELA ===== */
-
 .tableWrapper {
   width: 100%;
   overflow-x: auto;
@@ -56,26 +56,26 @@
 .table td {
   padding: 12px 16px;
   border-radius: 8px;
-  background: #fff;
-  color: #022c2c;
+  background: var(--bg-white);
+  color: var(--text-main);
   font-weight: 500;
 }
 
 .table tbody tr:hover td {
-  background: rgba(33, 150, 243, 0.1);
+  background: rgba(33, 150, 243, 0.1); /* poderia criar variável para hover de linha */
 }
 
 /* Fundo por tipo */
 .typeExpenseRow td {
-  background: rgba(244, 67, 54, 0.1);
+  background: rgba(244, 67, 54, 0.1); /* poderia usar variável: --card-expense-bg com alpha */
 }
 
 .typeRevenueRow td {
-  background: rgba(76, 175, 80, 0.1);
+  background: rgba(76, 175, 80, 0.1); /* poderia criar --card-income-bg com alpha */
 }
 
 .typeInvestmentRow td {
-  background: rgba(33, 150, 243, 0.1);
+  background: rgba(33, 150, 243, 0.1); /* poderia criar --card-investment-bg */
 }
 
 .valueCell {
@@ -85,6 +85,6 @@
 .emptyText {
   text-align: center;
   padding: 20px;
-  color: #999;
+  color: var(--text-light);
   font-style: italic;
 }

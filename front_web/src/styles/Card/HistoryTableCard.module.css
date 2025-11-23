@@ -1,24 +1,25 @@
 .card {
-  background: #f4f4f4;
+  background: var(--bg-light);
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 15px var(--bg-card-shadow);
   border: 1px solid rgba(255,255,255,0.05);
   display: flex;
   flex-direction: column;
   gap: 16px;
   width: 100%;
   box-sizing: border-box;
+  transition: 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+  box-shadow: 0 10px 22px var(--bg-card-hover-shadow);
 }
 
 .title {
   font-size: 15px;
-  color: #0b0c0c;
+  color: var(--text-main);
   font-weight: 600;
   opacity: 0.8;
 }
@@ -35,7 +36,7 @@
 }
 
 .table thead th {
-  background: #e8e8e8;
+  background: #e8e8e8; /* opcional: criar variável --table-header-bg */
   padding: 12px;
   text-align: left;
   font-weight: 600;
@@ -48,17 +49,17 @@
 
 .table td {
   padding: 12px;
-  background: #fff;
+  background: var(--bg-white);
   border-radius: 8px;
-  color: #022c2c;
+  color: var(--text-main);
   font-weight: 500;
 }
 
 .table tbody tr:hover td {
-  background: rgba(2, 68, 35, 0.016);
+  background: rgba(33, 150, 243, 0.016); /* opcional: --table-hover-bg */
 }
 
-/* TIPOS */
+/* TIPOS DE LINHA */
 .typeExpenseRow td {
   background: rgba(244, 67, 54, 0.1);
 }
@@ -101,11 +102,11 @@
 }
 
 .iconBtn svg {
-  color: #2196f3;
+  color: #2196f3; /* opcional: --icon-primary-color */
 }
 
 .iconBtnDelete svg {
-  color: #f44336;
+  color: #f44336; /* opcional: --icon-danger-color */
 }
 
 /* PAGINAÇÃO */
@@ -120,15 +121,15 @@
   padding: 8px 14px;
   border-radius: 10px;
   border: none;
-  background-color: #00d1b2;
-  color: white;
+  background-color: var(--btn-primary-bg);
+  color: var(--bg-white);
   cursor: pointer;
   font-weight: 600;
   transition: background 0.2s;
 }
 
 .pagination button:hover {
-  background-color: #00a58d;
+  background-color: var(--btn-primary-bg-hover);
 }
 
 .pagination button:disabled {
@@ -140,5 +141,5 @@
   text-align: center;
   padding: 20px;
   font-weight: 500;
-  color: #666;
+  color: #666; /* opcional: --text-light */
 }

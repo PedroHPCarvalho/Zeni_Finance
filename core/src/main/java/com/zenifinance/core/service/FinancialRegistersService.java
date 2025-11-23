@@ -34,7 +34,6 @@ public class FinancialRegistersService {
 
     public FinancialRegisters createRegister(FinancialRegisters financialRegisters, User user){
         financialRegisters.setIdUser(user);
-        financialRegisters.setDateCreateRegister(LocalDateTime.now());
         return financialRegistersRepository.save(financialRegisters);
     }
 
@@ -50,7 +49,7 @@ public class FinancialRegistersService {
     }
 
     public List<FinancialRegisters> listFinancRegistersByUserId(User user){
-        List<FinancialRegisters> listRegistersOfUser = financialRegistersRepository.findByidUser(user);
+        List<FinancialRegisters> listRegistersOfUser = financialRegistersRepository.findByIdUser(user);
         return listRegistersOfUser;
     }
 
@@ -76,9 +75,17 @@ public class FinancialRegistersService {
         return financialRegistersRepository.findFinancialRegisterResumeByUserId(userId.getId());
     }
 
-    public List<CategoryResumeDTO> getCategoryResume (Long userId){
-        return financialRegistersRepository.findCategoryResumeByUserId(userId);
+    public List<CategoryResumeDTO> getCategoryResume(Long userId) {
+        List<Object[]> rows = financialRegistersRepository.findCategoryResumeByUserId(userId);
+
+        return rows.stream().map(r -> new CategoryResumeDTO(
+                (String) r[0],                 // category
+                (BigDecimal) r[1],            // total_value (vem como BigDecimal!)
+                (String) r[2],                // mes
+                ((Number) r[3]).intValue()    // ano
+        )).toList();
     }
+
 
     public List<MonthResumeDTO> getMonthResume(Long userId) {
         List<Object[]> results = financialRegistersRepository.findMonthResumeByUserId(userId);
@@ -95,15 +102,15 @@ public class FinancialRegistersService {
         List<Object[]> results = financialRegistersRepository.findMonthResumeInvestByUserId(userId);
 
         return results.stream().map(row -> new MonthResumeInvestmentDTO(
-                (String) row[0],                    // category
-                ((Number) row[1]).doubleValue(),// valor_investido
-                (String) row[2],                    // mes
-                ((Number) row[3]).intValue()        // ano
+                (String) row[0],                 // mes
+                ((Number) row[1]).intValue(),    // ano
+                ((Number) row[2]).doubleValue(), // total_aportes
+                ((Number) row[3]).doubleValue()  // total_resultados
         )).toList();
     }
 
     public Page<FinancialRegisters> listFinancRegistersByUserId(User user, Pageable pageable) {
-        return financialRegistersRepository.findByidUser(user, pageable);
+        return financialRegistersRepository.findByIdUser(user, pageable);
     }
 }
 
