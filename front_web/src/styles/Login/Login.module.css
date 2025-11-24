@@ -190,10 +190,16 @@
 }
 
 .login_error {
-  color: #d93025;
+  color: #b71c1c; /* texto vermelho escuro */
+  background-color: #ffebee; /* fundo vermelho claro/rosa */
+  border: 1px solid #f44336; /* borda vermelha */
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
   font-size: 0.9rem;
+  width: 100%; /* ocupa toda a largura do formulário */
+  box-sizing: border-box; /* garante que padding não aumente o tamanho */
   text-align: center;
-  margin-top: 15px;
 }
 
 @media (max-width: 768px) {

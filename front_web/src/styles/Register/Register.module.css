@@ -351,3 +351,25 @@
     gap: 0;
   }
 }
+
+.register_error {
+  color: #b71c1c; /* vermelho escuro */
+  background-color: #ffebee; /* fundo vermelho claro */
+  border: 1px solid #f44336; /* borda vermelha */
+  padding: 12px 15px; /* um pouco mais de padding */
+  margin-bottom: 20px; /* mais espaço abaixo do erro */
+  border-radius: 8px; /* bordas arredondadas */
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* espaço entre ícone e texto */
+}
+
+.register_error::before {
+  content: "⚠️";
+  font-size: 1.1rem;
+}
