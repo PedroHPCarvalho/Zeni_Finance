@@ -7,7 +7,7 @@ import Logo from "../../assets/Logo.png";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, loading, error } = useLogin();
+  const { login, loading, error, setError } = useLogin();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -15,25 +15,19 @@ export default function Login() {
   });
 
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    if (error) setError(null); // limpa mensagem de erro enquanto digita
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { ok, result } = await login({
-      email: formData.email,
-      password: formData.password
-    });
+    const { ok } = await login(formData);
 
     if (ok) {
-      navigate("/dashboard"); // 🔥 login funcional
-    } else {
-      alert(result?.error || "Credenciais inválidas!");
+      navigate("/dashboard");
     }
+    // erro já é exibido pelo <p className={styles.login_error}>
   };
 
   return (
@@ -59,6 +53,8 @@ export default function Login() {
           </div>
 
           <form onSubmit={handleSubmit} className={styles.login_form}>
+            {error && <p className={styles.login_error}>{error}</p>}
+
             <div className={styles.input_group}>
               <label htmlFor="email">Email</label>
               <input
@@ -90,8 +86,6 @@ export default function Login() {
             <button type="submit" className={styles.login_btn} disabled={loading}>
               {loading ? "ENTRANDO..." : "ENTRAR"}
             </button>
-
-            {error && <p className={styles.login_error}>{error}</p>}
 
             <p className={styles.register_loginText}>
               Não tem conta? <a href="/register">Registre-se</a>

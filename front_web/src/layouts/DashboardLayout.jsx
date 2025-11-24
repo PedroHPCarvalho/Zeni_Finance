@@ -30,6 +30,7 @@ export default function DashboardLayout() {
   const handleLogout = useCallback(() => {
     setDropdownOpen(false);
     localStorage.removeItem("token");
+    localStorage.removeItem("darkMode");
     navigate("/login", { replace: true });
   }, [navigate]);
 

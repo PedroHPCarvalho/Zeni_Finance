@@ -11,18 +11,22 @@ export function useLogin() {
 
     try {
       const response = await api.post(API_ENDPOINTS.login, credentials);
+      const { token } = response.data;
 
-      const { token, user } = response.data;
+      localStorage.setItem("token", token);
 
-      if (token) {
-        localStorage.setItem("token", token); // 🔥 Agora só salva aqui
-        return { ok: true, result: { token, user } };
+      return { ok: true, result: { token } };
+    } catch (err) {
+      let msg = "Ocorreu um erro ao tentar fazer login.";
+
+      if (err.response?.status === 401) {
+        msg = "Email ou senha incorretos.";
+      } else if (err.response?.data?.error) {
+        msg = err.response.data.error;
+      } else if (err.request) {
+        msg = "Não foi possível conectar ao servidor.";
       }
 
-      return { ok: false, result: { error: "Token não retornado" } };
-
-    } catch (err) {
-      const msg = err.response?.data?.error || "Erro ao fazer login";
       setError(msg);
       return { ok: false, result: { error: msg } };
     } finally {
@@ -30,5 +34,5 @@ export function useLogin() {
     }
   };
 
-  return { login, loading, error };
+  return { login, loading, error, setError };
 }
