@@ -6,28 +6,31 @@ import { useLogin } from "../../hooks/useLogin";
 import Logo from "../../assets/Logo.png";
 
 export default function Login() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { login, loading, error } = useLogin();
+
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
 
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
- 
+
     const { ok, result } = await login({
       email: formData.email,
       password: formData.password
     });
 
-    if (ok && result.token) {
-      localStorage.setItem("token", result.token);
-      navigate("/dashboard");
+    if (ok) {
+      navigate("/dashboard"); // 🔥 login funcional
     } else {
       alert(result?.error || "Credenciais inválidas!");
     }
@@ -35,21 +38,17 @@ export default function Login() {
 
   return (
     <div className={styles.login_root}>
-      
       <section className={styles.left_side}>
         <div className={styles.hero_content}>
-           
-           <div className={styles.zen_brand_container}>
-             <img src={Logo} alt="Logo Zeni" className={styles.hero_logo_img} />
-             <h1 className={styles.zen_title}>ZENI</h1>
-           </div>
-           
+          <div className={styles.zen_brand_container}>
+            <img src={Logo} alt="Logo Zeni" className={styles.hero_logo_img} />
+            <h1 className={styles.zen_title}>ZENI</h1>
+          </div>
         </div>
       </section>
 
       <main className={styles.right_side}>
         <div className={styles.form_container}>
-            
           <div className={styles.brand_header}>
             <img src={Logo} alt="Logo Zeni" className={styles.logo_img_small} />
           </div>
@@ -60,7 +59,6 @@ export default function Login() {
           </div>
 
           <form onSubmit={handleSubmit} className={styles.login_form}>
-            
             <div className={styles.input_group}>
               <label htmlFor="email">Email</label>
               <input

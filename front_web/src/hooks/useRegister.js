@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api, { API_ENDPOINTS } from "../../config/api"; // 👈 Importando corretamente
+import api, { API_ENDPOINTS } from "../../config/api";
 
 export function useRegister() {
   const [loading, setLoading] = useState(false);
@@ -8,13 +8,18 @@ export function useRegister() {
   const register = async (data) => {
     setLoading(true);
     setError(null);
+
     try {
       const response = await api.post(API_ENDPOINTS.register, data);
+
       return { ok: true, result: response.data };
+
     } catch (err) {
-      const msg = err.response?.data?.error || "Erro ao cadastrar usuário";
+      const msg = err.response?.data?.error || "Erro ao cadastrar usuário.";
       setError(msg);
+
       return { ok: false, result: { error: msg } };
+
     } finally {
       setLoading(false);
     }
