@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "/", // usa o nginx em produção ou o proxy do Vite em dev
+  baseURL: "https://zeni-bff.victorioushill-8ccd4751.brazilsouth.azurecontainerapps.io",
   headers: {
     "Content-Type": "application/json",
   },
