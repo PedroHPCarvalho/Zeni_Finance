@@ -55,13 +55,11 @@ const BarChartSkeleton = () => (
 const LineChartSkeleton = () => (
   <div style={{ padding: "20px", height: "320px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
     <div style={{ position: "relative", flex: 1, display: "flex", alignItems: "center" }}>
-
        <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", justifyContent: "space-between", zIndex: 0 }}>
           {[...Array(5)].map((_, i) => (
              <div key={i} style={{ borderBottom: "1px dashed rgba(255,255,255,0.1)", height: "1px", width: "100%" }}></div>
           ))}
        </div>
-
        <svg style={{ width: "100%", height: "100%", zIndex: 1 }} preserveAspectRatio="none" viewBox="0 0 100 50">
          <polyline
             points="0,50 10,40 20,45 30,30 40,35 50,20 60,25 70,10 80,15 90,5 100,20"
@@ -95,17 +93,29 @@ const PieChartSkeleton = () => (
   </div>
 );
 
-const ListSkeleton = () => (
-  <div style={{ padding: 20 }}>
-    {[...Array(5)].map((_, i) => (
-      <div key={i} style={{ display: "flex", alignItems: "center", marginBottom: 20 }}>
-        <Skeleton width={40} height={40} style={{ borderRadius: "50%", marginRight: 16, flexShrink: 0 }} />
-        <div style={{ flex: 1 }}>
-           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-              <Skeleton width={120} height={14} />
-              <Skeleton width={60} height={14} />
-           </div>
-           <Skeleton width="100%" height={8} />
+const TopCategoryListSkeleton = () => (
+  <div style={{ padding: "20px" }}>
+    {[...Array(4)].map((_, i) => (
+      <div 
+        key={i} 
+        style={{ 
+          display: "flex", 
+          alignItems: "center", 
+          marginBottom: 12, 
+          padding: "16px", 
+          borderRadius: "12px", 
+          backgroundColor: "rgba(255,255,255,0.03)", 
+          border: "1px solid rgba(255,255,255,0.05)"
+        }}
+      >
+        <Skeleton width={24} height={24} style={{ marginRight: 16, opacity: 0.3, borderRadius: 4 }} />
+        <div style={{ position: "relative", width: 42, height: 42, marginRight: 16, flexShrink: 0 }}>
+            <Skeleton width="100%" height="100%" style={{ borderRadius: "50%" }} />
+            <div style={{ position: "absolute", inset: 6, background: "var(--bg-card, #1e1e1e)", borderRadius: "50%" }}></div>
+        </div>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+           <Skeleton width={120} height={14} style={{ borderRadius: 4 }} />
+           <Skeleton width={80} height={12} style={{ borderRadius: 4 }} />
         </div>
       </div>
     ))}
@@ -228,6 +238,9 @@ export default function Dashboard() {
             50% { opacity: 0.7; }
             100% { opacity: 0.3; }
           }
+          .recharts-wrapper {
+            outline: none !important;
+          }
         `}
       </style>
 
@@ -317,7 +330,7 @@ export default function Dashboard() {
 
         {loadingCat ? (
            <ContentCard title="Top Categorias de Gastos">
-             <ListSkeleton />
+             <TopCategoryListSkeleton />
            </ContentCard>
         ) : (
            <TopCategoriesCard 

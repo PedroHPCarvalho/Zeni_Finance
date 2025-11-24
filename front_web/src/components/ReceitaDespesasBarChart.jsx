@@ -45,6 +45,16 @@ function ReceitaDespesasBarChartComponent({ data = [], height = 320 }) {
 
   return (
     <div style={{ width: "100%", height }}>
+      <style>
+        {`
+          .recharts-wrapper, 
+          .recharts-surface, 
+          .recharts-layer {
+            outline: none !important;
+          }
+        `}
+      </style>
+
       <ResponsiveContainer width="100%" height="100%">
         <BarChart 
           data={memoData}
@@ -53,7 +63,7 @@ function ReceitaDespesasBarChartComponent({ data = [], height = 320 }) {
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
 
           <XAxis
-            dataKey="xLabel"    // 🔥 aqui corrigido!
+            dataKey="xLabel"
             tick={{ fontSize: 12 }}
             tickLine={false}
             axisLine={false}
@@ -67,7 +77,7 @@ function ReceitaDespesasBarChartComponent({ data = [], height = 320 }) {
           />
 
           <Tooltip
-            cursor={{ fill: "transparent" }}
+            cursor={false}
             formatter={(v) =>
               `R$ ${Number(v).toLocaleString("pt-BR", {
                 minimumFractionDigits: 2,
@@ -90,6 +100,7 @@ function ReceitaDespesasBarChartComponent({ data = [], height = 320 }) {
             radius={[4, 4, 0, 0]}
             maxBarSize={50}
             isAnimationActive={false}
+            activeBar={false} 
           />
 
           <Bar
@@ -99,6 +110,7 @@ function ReceitaDespesasBarChartComponent({ data = [], height = 320 }) {
             radius={[4, 4, 0, 0]}
             maxBarSize={50}
             isAnimationActive={false}
+            activeBar={false} 
           />
         </BarChart>
       </ResponsiveContainer>
