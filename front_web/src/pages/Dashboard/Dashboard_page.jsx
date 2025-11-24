@@ -22,7 +22,7 @@ const Skeleton = ({ height, width, style, className }) => (
   <div
     className={className}
     style={{
-      backgroundColor: "#e0e0e0",
+      backgroundColor: "rgba(255, 255, 255, 0.1)", 
       borderRadius: "4px",
       width: width || "100%",
       height: height || "100%",
@@ -58,7 +58,7 @@ const LineChartSkeleton = () => (
 
        <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", justifyContent: "space-between", zIndex: 0 }}>
           {[...Array(5)].map((_, i) => (
-             <div key={i} style={{ borderBottom: "1px dashed #e0e0e0", height: "1px", width: "100%" }}></div>
+             <div key={i} style={{ borderBottom: "1px dashed rgba(255,255,255,0.1)", height: "1px", width: "100%" }}></div>
           ))}
        </div>
 
@@ -66,7 +66,7 @@ const LineChartSkeleton = () => (
          <polyline
             points="0,50 10,40 20,45 30,30 40,35 50,20 60,25 70,10 80,15 90,5 100,20"
             fill="none"
-            stroke="#e0e0e0"
+            stroke="rgba(255,255,255,0.1)"
             strokeWidth="2"
             vectorEffect="non-scaling-stroke"
             style={{ animation: "skeleton-loading 1.5s infinite" }}
@@ -85,7 +85,7 @@ const PieChartSkeleton = () => (
   <div style={{ padding: 20, height: 320, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
     <div style={{ position: "relative", width: 200, height: 200 }}>
        <Skeleton style={{ borderRadius: "50%", width: "100%", height: "100%" }} />
-       <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 120, height: 120, background: "#fff", borderRadius: "50%" }}></div>
+       <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 120, height: 120, background: "var(--bg-card, #1e1e1e)", borderRadius: "50%" }}></div>
     </div>
     <div style={{ display: "flex", gap: 16, marginTop: 24 }}>
        <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Skeleton width={12} height={12} style={{ borderRadius: "50%" }} /><Skeleton width={60} height={10} /></div>
@@ -113,7 +113,7 @@ const ListSkeleton = () => (
 );
 
 const TableSkeleton = () => (
-   <div style={{ background: "#fff", padding: 20, borderRadius: 12 }}>
+   <div style={{ background: "var(--bg-card, #fff)", padding: 20, borderRadius: 12 }}>
       <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
           <Skeleton width={32} height={32} style={{ borderRadius: 8 }} />
           <Skeleton height={32} width={200} />
@@ -224,9 +224,9 @@ export default function Dashboard() {
       <style>
         {`
           @keyframes skeleton-loading {
-            0% { opacity: 0.6; }
-            50% { opacity: 0.3; }
-            100% { opacity: 0.6; }
+            0% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.3; }
           }
         `}
       </style>
@@ -244,9 +244,9 @@ export default function Dashboard() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 24, marginBottom: 24 }}>
         {loadingResume ? (
           <>
-            <div style={{ height: 120, background: "#fff", borderRadius: 12, padding: 20 }}><Skeleton height={40} width={100} style={{ marginBottom: 16 }}/><Skeleton height={32} width={150} /></div>
-            <div style={{ height: 120, background: "#fff", borderRadius: 12, padding: 20 }}><Skeleton height={40} width={100} style={{ marginBottom: 16 }}/><Skeleton height={32} width={150} /></div>
-            <div style={{ height: 120, background: "#fff", borderRadius: 12, padding: 20 }}><Skeleton height={40} width={100} style={{ marginBottom: 16 }}/><Skeleton height={32} width={150} /></div>
+            <div style={{ height: 120, background: "var(--bg-card, #fff)", borderRadius: 12, padding: 20 }}><Skeleton height={40} width={100} style={{ marginBottom: 16 }}/><Skeleton height={32} width={150} /></div>
+            <div style={{ height: 120, background: "var(--bg-card, #fff)", borderRadius: 12, padding: 20 }}><Skeleton height={40} width={100} style={{ marginBottom: 16 }}/><Skeleton height={32} width={150} /></div>
+            <div style={{ height: 120, background: "var(--bg-card, #fff)", borderRadius: 12, padding: 20 }}><Skeleton height={40} width={100} style={{ marginBottom: 16 }}/><Skeleton height={32} width={150} /></div>
           </>
         ) : (
           <>
@@ -291,7 +291,7 @@ export default function Dashboard() {
           {loadingInv ? (
              <LineChartSkeleton />
           ) : filteredInvestments.length === 0 ? (
-            <div style={{ padding: 20 }}>Nenhum dado encontrado.</div>
+            <div style={{ padding: 20, color: 'var(--text-main)' }}>Nenhum dado encontrado.</div>
           ) : (
             <ErrorBoundary>
               <Suspense fallback={<LineChartSkeleton />}>

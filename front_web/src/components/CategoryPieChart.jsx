@@ -95,7 +95,7 @@ function CategoryBarChart({ data = [], filterMonth = null, filterYear = null }) 
         width: "100%",
         height: containerHeight,
         padding: "4px 0",
-        color: "var(--text-main)" // cor do texto respeitando CSS
+        color: "var(--text-main)" 
       }}
     >
       <ResponsiveContainer width="100%" height="100%">
@@ -120,18 +120,21 @@ function CategoryBarChart({ data = [], filterMonth = null, filterYear = null }) 
             tickFormatter={formatCategoryName}
           />
           <Tooltip
+            cursor={{ fill: "rgba(255,255,255,0.05)" }}
             formatter={(value) => {
               const rounded = Math.round(value);
               const percent = Math.round((value / totalSum) * 100);
               return `R$ ${rounded.toLocaleString("pt-BR")} • ${percent}%`;
             }}
             contentStyle={{
-              backgroundColor: "var(--bg-white)",
-              color: "var(--text-main)",
+              backgroundColor: "var(--bg-light)",
               borderRadius: 8,
               border: "none",
-              boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
+              boxShadow: "0px 4px 12px rgba(0,0,0,0.3)",
+              color: "var(--text-main)"
             }}
+            itemStyle={{ color: "var(--text-main)" }}
+            labelStyle={{ color: "var(--text-main)", fontWeight: "bold" }}
           />
           <Bar dataKey="total" barSize={barHeight} radius={[0, 0, 0, 0]}>
             {formatted.map((entry, i) => (

@@ -74,6 +74,7 @@ function ReceitaDespesasBarChartComponent({ data = [], height = 320 }) {
               })}`
             }
             contentStyle={{
+              backgroundColor: "var(--bg-light)",
               borderRadius: "8px",
               border: "none",
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
