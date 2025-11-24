@@ -48,7 +48,7 @@ function CategoryBarChart({ data = [], filterMonth = null, filterYear = null }) 
   }, [data, filterMonth, filterYear]);
 
   if (!formatted.length)
-    return <div style={{ padding: 20 }}>Nenhum dado disponível</div>;
+    return <div style={{ padding: 20, color:'var(--text-light)' }}>Nenhum dado disponível</div>;
 
   const totalSum = formatted.reduce((sum, item) => sum + item.total, 0);
 
