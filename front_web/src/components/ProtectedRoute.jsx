@@ -1,11 +1,21 @@
 // ProtectedRoute.jsx
-import React from "react";
-import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 
 export default function ProtectedRoute({ children }) {
-  const token = localStorage.getItem("token");
+  const location = useLocation();
+  const [isAuth, setIsAuth] = useState(null);
 
-  if (!token) {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsAuth(!!token); // true/false
+  }, [location.pathname]); // verifica a CADA mudança de rota
+
+  if (isAuth === null) {
+    return null; // evita piscar o layout
+  }
+
+  if (!isAuth) {
     return <Navigate to="/login" replace />;
   }
 
