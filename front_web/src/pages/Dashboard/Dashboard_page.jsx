@@ -1,7 +1,3 @@
-// Dashboard.jsx
-// ======================================================================
-// IMPORTS
-// ======================================================================
 import React, { useState, useEffect, Suspense } from "react";
 import { ArrowUpRight, ArrowDownRight, PiggyBank, Clock } from "lucide-react";
 
@@ -18,19 +14,13 @@ import { useMonthResume } from "../../hooks/useMonthResume.js";
 import { useInvestments } from "../../hooks/useInvestments";
 import { usePaginatedFetch } from "../../hooks/usePaginatedFetch.js";
 
-const CategoryPieChart = React.lazy(() =>
-  import("../../components/CategoryPieChart")
-);
-const ReceitaDespesasBarChart = React.lazy(() =>
-  import("../../components/ReceitaDespesasBarChart")
-);
-const InvestimentosLineChart = React.lazy(() =>
-  import("../../components/InvesimentosLineChart")
-);
+const CategoryPieChart = React.lazy(() => import("../../components/CategoryPieChart"));
+const ReceitaDespesasBarChart = React.lazy(() => import("../../components/ReceitaDespesasBarChart"));
+const InvestimentosLineChart = React.lazy(() => import("../../components/InvesimentosLineChart"));
 
-// ======================================================================
-// Small Error Boundary
-// ======================================================================
+// ================================
+// ErrorBoundary para charts
+// ================================
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -47,51 +37,35 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// ======================================================================
-// DASHBOARD
-// ======================================================================
+// ================================
+// Dashboard
+// ================================
 export default function Dashboard() {
   const columns = ["Descrição", "Categoria", "Tipo", "Valor", "Data"];
 
   // hooks
   const { dataCards } = useCards();
   const { categories } = useCategory();
-  const { dataRegistries, loading, error } = usePaginatedFetch(0, 5);
+  const { dataRegistries, loading } = usePaginatedFetch(0, 5);
+  const { monthResume, loading: loadingResume } = useMonthResume();
+  const { investments, loading: loadingInv } = useInvestments();
 
-  const tableData = Array.isArray(dataRegistries?.content)
-    ? dataRegistries.content.map((reg) => [
-        reg.description,
-        reg.category,
-        reg.typeRegister,
-        reg.value,
-        reg.dateRegister,
-      ])
-    : [];
-
-  const {
-    monthResume,
-    loading: loadingResume,
-    error: errorResume,
-  } = useMonthResume();
-
-  const {
-    investments,
-    loading: loadingInv,
-    error: errorInv,
-  } = useInvestments();
-
-  // filtro atual
+  // Filtros
   const [filters, setFilters] = useState({ mes: null, ano: null });
 
-  // dados exibidos
+  // Dados filtrados
+  const [filteredCards, setFilteredCards] = useState({ sumEntry: 0, sumExit: 0, balanceNow: 0 });
   const [filteredData, setFilteredData] = useState([]);
   const [filteredInvestments, setFilteredInvestments] = useState([]);
-  const [filteredCategories, setFilteredCategories] = useState([]);
 
-  // inicializa dados ao carregar API
+  // Inicializa dados
   useEffect(() => {
     if (!loadingResume && Array.isArray(monthResume)) {
       setFilteredData(monthResume.slice(-12));
+
+      const sumEntry = monthResume.reduce((acc, i) => acc + (i.receitas || 0), 0);
+      const sumExit = monthResume.reduce((acc, i) => acc + (i.despesas || 0), 0);
+      setFilteredCards({ sumEntry, sumExit, balanceNow: sumEntry - sumExit });
     }
   }, [loadingResume, monthResume]);
 
@@ -101,65 +75,32 @@ export default function Dashboard() {
     }
   }, [loadingInv, investments]);
 
-  useEffect(() => {
-    if (Array.isArray(categories)) setFilteredCategories(categories);
-  }, [categories]);
-
   // ================================
-  //   HANDLE FILTER
+  // Handle Filter
   // ================================
   const handleFilter = (filter) => {
-    if (!filter) {
-      setFilters({ mes: null, ano: null });
-      setFilteredData(monthResume.slice(-12));
-      setFilteredInvestments(investments);
-      setFilteredCategories(categories);
-      return;
-    }
-
-    const { mes, ano } = filter;
+    const mes = filter?.mes || null;
+    const ano = filter?.ano ? Number(filter.ano) : null;
     setFilters({ mes, ano });
 
-    const resumeResult = monthResume.filter((i) => {
-      const okM = mes ? i.mes === mes : true;
-      const okA = ano ? Number(i.ano) === Number(ano) : true;
-      return okM && okA;
-    });
+    const filteredResume = monthResume.filter(i =>
+      (mes ? i.mes === mes : true) && (ano ? Number(i.ano) === ano : true)
+    );
 
-    const invResult = investments.filter((i) => {
-      const okM = mes ? i.mes === mes : true;
-      const okA = ano ? Number(i.ano) === Number(ano) : true;
-      return okM && okA;
-    });
+    const filteredInv = investments.filter(i =>
+      (mes ? i.mes === mes : true) && (ano ? Number(i.ano) === ano : true)
+    );
 
-    const catResult = categories.filter((i) => {
-      const okM = mes ? i.mes === mes : true;
-      const okA = ano ? Number(i.ano) === Number(ano) : true;
-      return okM && okA;
-    });
+    const sumEntry = filteredResume.reduce((acc, i) => acc + (i.receitas || 0), 0);
+    const sumExit = filteredResume.reduce((acc, i) => acc + (i.despesas || 0), 0);
 
-    setFilteredData(resumeResult);
-    setFilteredInvestments(invResult);
-    setFilteredCategories(catResult);
+    setFilteredData(filteredResume);
+    setFilteredInvestments(filteredInv);
+    setFilteredCards({ sumEntry, sumExit, balanceNow: sumEntry - sumExit });
   };
 
-  const ChartFallback = (
-    <div
-      style={{
-        height: 320,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: 14,
-        color: "#777",
-      }}
-    >
-      Carregando gráfico...
-    </div>
-  );
-
   // ================================
-  //   CASAS DE APOSTA - ALERTA
+  // Gambling Alert
   // ================================
   const [showGamblingAlert, setShowGamblingAlert] = useState(false);
   const [gamblingAmount, setGamblingAmount] = useState(0);
@@ -167,11 +108,8 @@ export default function Dashboard() {
   useEffect(() => {
     if (Array.isArray(dataRegistries?.content) && dataRegistries.content.length > 0) {
       const recentRecords = dataRegistries.content.slice(0, 5);
-
       const gamblingRecords = recentRecords.filter(
-        (r) =>
-          r.category === "CASA_DE_APOSTA" ||
-          r.category === "BETS_E_JOGOS_DE_AZAR"
+        r => r.category === "CASA_DE_APOSTA" || r.category === "BETS_E_JOGOS_DE_AZAR"
       );
 
       if (gamblingRecords.length > 0) {
@@ -185,138 +123,71 @@ export default function Dashboard() {
     }
   }, [dataRegistries]);
 
-  // ======================================================================
-  // RENDER
-  // ======================================================================
+  const ChartFallback = (
+    <div style={{ height: 320, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, color: "#777" }}>
+      Carregando gráfico...
+    </div>
+  );
+
+  // ================================
+  // Table Data
+  // ================================
+  const tableData = Array.isArray(dataRegistries?.content)
+    ? dataRegistries.content.map(reg => [reg.description, reg.category, reg.typeRegister, reg.value, reg.dateRegister])
+    : [];
+
+  // ================================
+  // Render
+  // ================================
   return (
     <>
-      {/* Card Apostas */}
+      {/* Alerta Apostas */}
       {showGamblingAlert && (
         <div style={{ marginBottom: 24 }}>
-          <GamblingAlertCard
-            amount={gamblingAmount}
-            onClose={() => setShowGamblingAlert(false)}
-          />
+          <GamblingAlertCard amount={gamblingAmount} onClose={() => setShowGamblingAlert(false)} />
         </div>
       )}
-
-      {/* Cards */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-          gap: 24,
-          marginBottom: 24,
-        }}
-      >
-        <StatCard
-          title="Receitas"
-          value={`R$ ${
-            dataCards?.sumEntry?.toLocaleString?.("pt-BR", {
-              minimumFractionDigits: 2,
-            }) ?? "0,00"
-          }`}
-          icon={<ArrowUpRight />}
-          variant="income"
-        />
-
-        <StatCard
-          title="Despesas"
-          value={`R$ ${
-            dataCards?.sumExit?.toLocaleString?.("pt-BR", {
-              minimumFractionDigits: 2,
-            }) ?? "0,00"
-          }`}
-          icon={<ArrowDownRight />}
-          variant="expense"
-        />
-
-        <StatCard
-          title="Saldo"
-          value={`R$ ${
-            dataCards?.balanceNow?.toLocaleString?.("pt-BR", {
-              minimumFractionDigits: 2,
-            }) ?? "0,00"
-          }`}
-          icon={<PiggyBank />}
-          variant="balance"
-        />
-      </div>
 
       {/* Filter */}
       <div style={{ marginBottom: 12 }}>
         <FilterCard onFilter={handleFilter} />
       </div>
 
+      {/* StatCards */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 24, marginBottom: 24 }}>
+        <StatCard title="Receitas" value={`R$ ${filteredCards.sumEntry.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`} icon={<ArrowUpRight />} variant="income" />
+        <StatCard title="Despesas" value={`R$ ${filteredCards.sumExit.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`} icon={<ArrowDownRight />} variant="expense" />
+        <StatCard title="Saldo" value={`R$ ${filteredCards.balanceNow.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`} icon={<PiggyBank />} variant="balance" />
+      </div>
+
+
       {/* Charts */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-          gap: 24,
-        }}
-      >
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))", gap: 24 }}>
         <ContentCard title="Receitas vs Despesas">
-          {loadingResume ? (
-            <div style={{ padding: 20 }}>Carregando dados...</div>
-          ) : filteredData.length === 0 ? (
-            <div style={{ padding: 20 }}>Nenhum dado disponível.</div>
-          ) : (
-            <ErrorBoundary>
-              <Suspense fallback={ChartFallback}>
-                <ReceitaDespesasBarChart data={filteredData} />
-              </Suspense>
-            </ErrorBoundary>
-          )}
+          {loadingResume ? <div style={{ padding: 20 }}>Carregando dados...</div>
+            : filteredData.length === 0 ? <div style={{ padding: 20 }}>Nenhum dado disponível.</div>
+            : <ErrorBoundary><Suspense fallback={ChartFallback}><ReceitaDespesasBarChart data={filteredData} /></Suspense></ErrorBoundary>}
         </ContentCard>
 
         <ContentCard title="Evolução Patrimonial">
-          {loadingInv ? (
-            <div style={{ padding: 20 }}>Carregando investimentos...</div>
-          ) : filteredInvestments.length === 0 ? (
-            <div style={{ padding: 20 }}>Nenhum dado encontrado.</div>
-          ) : (
-            <ErrorBoundary>
-              <Suspense fallback={ChartFallback}>
-                <InvestimentosLineChart data={filteredInvestments} />
-              </Suspense>
-            </ErrorBoundary>
-          )}
+          {loadingInv ? <div style={{ padding: 20 }}>Carregando investimentos...</div>
+            : filteredInvestments.length === 0 ? <div style={{ padding: 20 }}>Nenhum dado encontrado.</div>
+            : <ErrorBoundary><Suspense fallback={ChartFallback}><InvestimentosLineChart data={filteredInvestments} /></Suspense></ErrorBoundary>}
         </ContentCard>
       </div>
 
       {/* Categories */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-          gap: 24,
-          marginTop: 24,
-        }}
-      >
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))", gap: 24, marginTop: 24 }}>
         <ContentCard title="Distribuição por Categoria">
-          <ErrorBoundary>
-            <Suspense fallback={ChartFallback}>
-              <CategoryPieChart data={filteredCategories || []} />
-            </Suspense>
-          </ErrorBoundary>
+          <ErrorBoundary><Suspense fallback={ChartFallback}><CategoryPieChart data={categories || []} /></Suspense></ErrorBoundary>
         </ContentCard>
 
-        <TopCategoriesCard
-          title="Top Categorias de Gastos"
-          data={filteredCategories || []}
-          type="DESPESA"
-        />
+        <TopCategoriesCard title="Top Categorias de Gastos" data={categories || []} type="DESPESA" />
       </div>
 
       {/* Table */}
       <div style={{ marginTop: 24 }}>
-        <TableCard
-          title="Registros Recentes"
-          icon={<Clock />}
-          columns={columns}
-          data={tableData}
-        />
+        <TableCard title="Registros Recentes" icon={<Clock />} columns={columns} data={tableData} />
       </div>
     </>
   );

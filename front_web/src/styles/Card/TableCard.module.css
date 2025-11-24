@@ -1,22 +1,33 @@
+/* ============================= */
+/*     TABLE CARD — PADRONIZADO  */
+/* ============================= */
+
 .card {
   background: var(--bg-light);
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 6px 15px var(--bg-card-shadow);
-  border: 1px solid var(--border-color);
+  box-shadow: 0 6px 15px var(--bg-card-hover-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
   display: flex;
   flex-direction: column;
   gap: 16px;
+
   width: 100%;
   min-height: 340px;
+
   box-sizing: border-box;
-  transition: 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 22px var(--bg-card-hover-shadow);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
 }
+
+/* ============================= */
+/* HEADER */
+/* ============================= */
 
 .header {
   display: flex;
@@ -36,6 +47,10 @@
   font-size: 22px;
 }
 
+/* ============================= */
+/* TABELA DESKTOP */
+/* ============================= */
+
 .tableWrapper {
   width: 100%;
   overflow-x: auto;
@@ -49,7 +64,7 @@
 }
 
 .table th {
-  display: none; /* Oculto no design deste card específico desktop, conforme seu original */
+  display: none; /* Mantido como no layout original */
 }
 
 .table td {
@@ -60,12 +75,22 @@
   font-weight: 500;
 }
 
-/* Cores Desktop (apenas na célula) */
-.typeExpenseRow td { background: rgba(244, 67, 54, 0.1); }
-.typeRevenueRow td { background: rgba(76, 175, 80, 0.1); }
-.typeInvestmentRow td { background: rgba(33, 150, 243, 0.1); }
+/* Cores Desktop */
+.typeExpenseRow td {
+  background: rgba(244, 67, 54, 0.1);
+}
 
-.valueCell { font-weight: 600; }
+.typeRevenueRow td {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.typeInvestmentRow td {
+  background: rgba(33, 150, 243, 0.1);
+}
+
+.valueCell {
+  font-weight: 600;
+}
 
 .emptyText {
   text-align: center;
@@ -74,6 +99,9 @@
   font-style: italic;
 }
 
+/* ============================= */
+/* MOBILE */
+/* ============================= */
 
 @media (max-width: 768px) {
   .table thead {
@@ -83,17 +111,21 @@
   .table tbody tr {
     display: flex;
     flex-direction: column;
+
     margin-bottom: 16px;
-    border-radius: 12px;
     padding: 16px;
+
+    background: var(--bg-light);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    border: 1px solid var(--border-color);
-    background-color: var(--bg-light); 
   }
 
+  /* Cores Mobile */
   .typeExpenseRow {
     background: rgba(244, 67, 54, 0.1) !important;
-    border-color: rgba(244, 67, 54, 0.3) !important; 
+    border-color: rgba(244, 67, 54, 0.3) !important;
   }
 
   .typeRevenueRow {
@@ -110,11 +142,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     padding: 10px 0;
-    background: transparent !important; 
+    background: transparent !important;
+
+    text-align: right;
     border-radius: 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    text-align: right;
   }
 
   .table td:last-child {
@@ -122,21 +156,23 @@
   }
 
   .table td::before {
-    content: attr(data-label); 
+    content: attr(data-label);
     font-weight: 600;
-    color: var(--text-light); 
+    color: var(--text-light);
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
+  /* Valor mais destacado */
   .valueCell {
-    font-size: 1.1rem; 
+    font-size: 1.1rem;
     color: var(--text-main);
   }
-  
+
+  /* Primeira célula (Categoria) */
   .table td:nth-child(1) {
-     font-weight: 600;
-     font-size: 1rem;
+    font-weight: 600;
+    font-size: 1rem;
   }
 }

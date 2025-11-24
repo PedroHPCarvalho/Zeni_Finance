@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../styles/Card/HistoryTableCard.module.css";
 import { Edit, Trash2 } from "lucide-react";
+import { getCategoryLabel } from "../utils/categories";
 
 export default function HistoryTableCard({
   data,
@@ -20,10 +21,9 @@ export default function HistoryTableCard({
     if (currentPage < totalPages - 1) onPageChange(currentPage + 1);
   };
 
-  // Função para formatar data igual à TableCard
   const formatDate = (value) => {
     if (!value) return value;
-    const datePart = value.split("T")[0]; // "2025-11-22"
+    const datePart = value.split("T")[0];
     const [year, month, day] = datePart.split("-");
 
     const months = [
@@ -34,7 +34,6 @@ export default function HistoryTableCard({
     return `${parseInt(day)} de ${months[parseInt(month) - 1]} de ${year}`;
   };
 
-  // Verifica se algum registro tem categoria "Investimentos"
   const hasInvestmentCategory = content.some(
     (r) => r.category?.toUpperCase() === "INVESTIMENTOS"
   );
@@ -56,7 +55,7 @@ export default function HistoryTableCard({
             </tr>
           </thead>
 
-         <tbody>
+          <tbody>
             {content.length === 0 ? (
               <tr>
                 <td colSpan={6} className={styles.emptyText}>
@@ -75,15 +74,21 @@ export default function HistoryTableCard({
                 return (
                   <tr key={row.id} className={rowClass}>
                     <td>{row.description}</td>
-                    <td>{row.category}</td>
+
+                    {/* 👇 CATEGORIA BONITA AQUI */}
+                    <td>{getCategoryLabel(row.category)}</td>
+
                     <td>{row.typeRegister}</td>
+
                     <td className={styles.valueCell}>
                       R${" "}
                       {Number(row.value).toLocaleString("pt-BR", {
                         minimumFractionDigits: 2,
                       })}
                     </td>
-                    <td>{formatDate(row.dateRegister)}</td> {/* 🔥 Data formatada */}
+
+                    <td>{formatDate(row.dateRegister)}</td>
+
                     <td className={styles.actionsCell}>
                       <button onClick={() => onEdit(row)} className={styles.iconBtn}>
                         <Edit size={18} />
@@ -107,7 +112,7 @@ export default function HistoryTableCard({
         <span>
           Página {currentPage + 1} de {totalPages || 1}
         </span>
-        <button  style={{ color: 'white' }} onClick={handleNext} disabled={currentPage >= totalPages - 1}>
+        <button style={{ color: "white" }} onClick={handleNext} disabled={currentPage >= totalPages - 1}>
           Próxima
         </button>
       </div>
