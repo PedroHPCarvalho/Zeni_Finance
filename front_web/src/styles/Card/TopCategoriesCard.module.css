@@ -9,6 +9,7 @@
   box-shadow: 0 6px 15px var(--bg-card-hover-shadow);
   border: 1px solid rgba(255,255,255,0.05);
   overflow: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* HEADER */
@@ -47,11 +48,9 @@
   display: flex;
   align-items: center;
   padding: 12px 16px;
-
   background: var(--bg-white);
   border-radius: 14px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-
   gap: 14px;
   transition: 0.2s;
 }
@@ -78,6 +77,7 @@
 .rank {
   font-size: 1rem;
   font-weight: 700;
+  color: var(--text-main);
 }
 
 .gold { color: #f7b700; }
@@ -99,6 +99,7 @@
   transform: translate(-50%, -50%);
   font-size: 1rem;
   font-weight: 700;
+  color: var(--text-main);
 }
 
 /* TEXTO */
@@ -113,10 +114,32 @@
 .category {
   font-size: 1rem;
   font-weight: 700;
+  color: var(--text-main);
 }
 
 .value {
   font-size: 0.95rem;
   color: var(--text-light);
   font-weight: 600;
+}
+
+/* DARK MODE AUTOMÁTICO */
+body.dark-mode .card {
+  background: var(--bg-light);
+}
+
+body.dark-mode .card .title,
+body.dark-mode .card .category,
+body.dark-mode .card .value,
+body.dark-mode .card .percentLabel,
+body.dark-mode .card .rank {
+  color: var(--text-main);
+}
+
+body.dark-mode .card .item {
+  background: var(--bg-white);
+}
+
+body.dark-mode .card .item:hover {
+  background: var(--bg-light-hover);
 }
