@@ -1,3 +1,4 @@
+// ManualRegisterCard.jsx
 import React, { useState } from "react";
 import styles from "../styles/Card/ManualRegisterCard.module.css";
 import { useManualRegister } from "../hooks/useManualRegister";
@@ -18,13 +19,13 @@ export default function ManualRegisterCard({ onSubmit }) {
   const [typeRegister, setTypeRegister] = useState("");
   const [value, setValue] = useState("");
   const [dateRegister, setDateRegister] = useState("");
-  const [message, setMessage] = useState(null); // { type: 'success' | 'error', text: string }
+  const [message, setMessage] = useState(null);
 
   const { sendManualRegister, loading } = useManualRegister();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (loading) return; // evita duplas submissões
+    if (loading) return;
 
     if (!description || !category || !typeRegister || !value) {
       setMessage({ type: "error", text: "Preencha todos os campos obrigatórios." });
@@ -34,27 +35,14 @@ export default function ManualRegisterCard({ onSubmit }) {
 
     const date = dateRegister || new Date().toISOString().split("T")[0];
 
-    const payload = {
-      description,
-      category,
-      value: Number(value),
-      typeRegister,
-      dateRegister: date,
-    };
-
+    const payload = { description, category, value: Number(value), typeRegister, dateRegister: date };
     const result = await sendManualRegister(payload);
 
     if (result) {
-      onSubmit?.(); // dispara o refetch
+      onSubmit?.();
       setMessage({ type: "success", text: "Registro inserido com sucesso!" });
+      setDescription(""); setCategory(""); setTypeRegister(""); setValue(""); setDateRegister("");
       setTimeout(() => setMessage(null), 3000);
-
-      // limpar inputs
-      setDescription("");
-      setCategory("");
-      setTypeRegister("");
-      setValue("");
-      setDateRegister("");
     } else {
       setMessage({ type: "error", text: "Erro ao registrar!" });
       setTimeout(() => setMessage(null), 3000);
@@ -63,8 +51,7 @@ export default function ManualRegisterCard({ onSubmit }) {
 
   return (
     <div className={styles.card}>
-      <span className={styles.title}>Registrar gasto manualmente</span>
-
+      <h2 className={styles.title}>Registrar gasto manualmente</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.field}>
           <label>Descrição</label>
@@ -80,29 +67,17 @@ export default function ManualRegisterCard({ onSubmit }) {
         <div className={styles.row}>
           <div className={styles.field}>
             <label>Categoria</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              disabled={loading}
-            >
+            <select value={category} onChange={(e) => setCategory(e.target.value)} disabled={loading}>
               <option value="">Selecione...</option>
-              {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
+              {CATEGORIES.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
             </select>
           </div>
 
           <div className={styles.field}>
             <label>Tipo</label>
-            <select
-              value={typeRegister}
-              onChange={(e) => setTypeRegister(e.target.value)}
-              disabled={loading}
-            >
+            <select value={typeRegister} onChange={(e) => setTypeRegister(e.target.value)} disabled={loading}>
               <option value="">Selecione...</option>
-              {TYPES.map((t) => (
-                <option key={t} value={t}>{t}</option>
-              ))}
+              {TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
         </div>
@@ -110,23 +85,12 @@ export default function ManualRegisterCard({ onSubmit }) {
         <div className={styles.row}>
           <div className={styles.field}>
             <label>Valor</label>
-            <input
-              type="number"
-              placeholder="0.00"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              disabled={loading}
-            />
+            <input type="number" placeholder="0.00" value={value} onChange={(e) => setValue(e.target.value)} disabled={loading} />
           </div>
 
           <div className={styles.field}>
             <label>Data</label>
-            <input
-              type="date"
-              value={dateRegister}
-              onChange={(e) => setDateRegister(e.target.value)}
-              disabled={loading}
-            />
+            <input type="date" value={dateRegister} onChange={(e) => setDateRegister(e.target.value)} disabled={loading} />
           </div>
         </div>
 
@@ -136,11 +100,7 @@ export default function ManualRegisterCard({ onSubmit }) {
       </form>
 
       {message && (
-        <div
-          className={`${styles.message} ${
-            message.type === "success" ? styles.successMsg : styles.errorMsg
-          }`}
-        >
+        <div className={`${styles.message} ${message.type === "success" ? styles.successMsg : styles.errorMsg}`}>
           {message.type === "success" ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
           <span>{message.text}</span>
         </div>

@@ -1,14 +1,15 @@
+/* ManualRegisterCard.module.css */
 .card {
   background: var(--bg-light);
   border-radius: 16px;
-  padding: 20px;
+  padding: 24px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
   box-shadow: 0 6px 15px var(--bg-card-shadow);
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: 0.2s ease;
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
@@ -17,10 +18,9 @@
 }
 
 .title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--text-main);
-  opacity: 0.85;
 }
 
 .form {
@@ -38,7 +38,7 @@
 label {
   font-size: 14px;
   font-weight: 600;
-  color: var(--primary-dark);
+  color: var(--text-main);
   margin-bottom: 6px;
 }
 
@@ -49,6 +49,7 @@ select {
   border-radius: 10px;
   border: 1px solid var(--bg-cta-border);
   background: var(--bg-white);
+  color: var(--text-main);
   transition: 0.2s ease;
 }
 
@@ -56,17 +57,21 @@ input:focus,
 select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 5px rgba(0, 150, 243, 0.35); /* pode criar variável --focus-shadow */
+  box-shadow: 0 0 5px rgba(0,150,243,0.35);
 }
 
 .row {
   display: flex;
   gap: 14px;
-  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
 }
 
 .submit {
-  margin-top: 10px;
   padding: 14px;
   border-radius: 12px;
   border: none;
@@ -84,36 +89,27 @@ select:focus {
 .message {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 500;
   font-size: 0.95rem;
-  margin-top: 16px;
-  opacity: 0;
-  animation: fadeIn 0.3s forwards;
+  margin-top: 12px;
+  animation: fadeIn 0.25s forwards;
 }
 
 .successMsg {
-  background-color: #e6ffed; /* opcional: criar --msg-success-bg */
-  color: #2b7a0b;           /* opcional: criar --msg-success-text */
+  background-color: #e6ffed;
+  color: #2b7a0b;
   border: 1px solid #2b7a0b;
 }
 
 .errorMsg {
-  background-color: #ffe6e6; /* opcional: criar --msg-error-bg */
-  color: #a00;               /* opcional: criar --msg-error-text */
+  background-color: #ffe6e6;
+  color: #a00;
   border: 1px solid #a00;
 }
 
 @keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-@media (max-width: 768px) {
-  .row {
-    flex-direction: column;
-  }
+  to { opacity: 1; }
 }
