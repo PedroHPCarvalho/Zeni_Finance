@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import {
-  LineChart,
+  ComposedChart,
+  Bar,
   Line,
   XAxis,
   YAxis,
@@ -22,82 +23,97 @@ const MONTH_MAP = {
   Sep: 8, Oct: 9, Nov: 10, Dec: 11,
 };
 
-function InvestimentosLineChartComponent({ data = [], height = 320 }) {
+export default function InvestmentChart({ data = [], height = 320 }) {
   const memoData = useMemo(() => {
     return (data || [])
       .map((d) => {
         const mes = typeof d.mes === "string" ? d.mes : "";
         const ano = Number(d.ano) || 0;
-
-        const monthIndex = MONTH_MAP[mes] ?? 0; // evita crash
+        const monthIndex = MONTH_MAP[mes] ?? 0;
 
         return {
           ...d,
-          receitas: Number(d.receitas) || 0,
-          despesas: Number(d.despesas) || 0,
+          aportes: Number(d.aportes) || 0,
+          retiradas: Number(d.retiradas) || 0,
+          carteira: Number(d.carteira) || 0,
           xLabel: `${mes}/${ano}`,
-          sortValue: new Date(ano, monthIndex, 1)
+          sortValue: new Date(ano, monthIndex, 1),
         };
       })
       .sort((a, b) => a.sortValue - b.sortValue)
       .slice(-12);
   }, [data]);
 
+  if (!memoData.length) {
+    return <p style={{ textAlign: "center", padding: "12px" }}>Sem dados de investimentos.</p>;
+  }
+
   return (
     <div style={{ width: "100%", height }}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart
+        <ComposedChart
           data={memoData}
-          margin={{ top: 20, right: 20, bottom: 10, left: 10 }}
+          margin={{ top: 10, right: 10, bottom: 0, left: -20 }}
         >
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e0e0e0" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
 
           <XAxis
             dataKey="xLabel"
-            tick={{ fontSize: 12, fill: "#666" }}
+            tick={{ fontSize: 12 }}
             tickLine={false}
             axisLine={false}
-            dy={10}
           />
 
           <YAxis
-            tickFormatter={formatYAxis}
-            tick={{ fontSize: 12, fill: "#666" }}
+            tick={{ fontSize: 12 }}
             tickLine={false}
             axisLine={false}
-            width={40}
+            tickFormatter={formatYAxis}
           />
 
           <Tooltip
-            cursor={{ stroke: "#2196F3", strokeWidth: 1, strokeDasharray: "4 4" }}
+            cursor={{ fill: "transparent" }}
             formatter={(v) =>
-              `R$ ${Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`
+              `R$ ${Number(v).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+              })}`
             }
             contentStyle={{
-              backgroundColor: "#fff",
               borderRadius: "8px",
               border: "none",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             }}
           />
 
           <Legend wrapperStyle={{ paddingTop: "10px" }} />
 
-          <Line
-            type="monotone"
-            dataKey="valor_investido"
-            name="Investimentos"
-            stroke="#2196F3"
-            strokeWidth={3}
-            dot={{ r: 4, strokeWidth: 2, stroke: "#2196F3", fill: "#fff" }}
-            activeDot={{ r: 6, strokeWidth: 0, fill: "#2196F3" }}
+          <Bar
+            dataKey="aportes"
+            name="Aportes"
+            fill="#3b82f6"
+            radius={[4, 4, 0, 0]}
+            maxBarSize={50}
             isAnimationActive={false}
           />
-        </LineChart>
+
+          <Bar
+            dataKey="retiradas"
+            name="Retiradas"
+            fill="#fbbf24"
+            radius={[4, 4, 0, 0]}
+            maxBarSize={50}
+            isAnimationActive={false}
+          />
+
+          <Line
+            type="monotone"
+            dataKey="carteira"
+            stroke="#a855f7"
+            strokeWidth={3}
+            name="Carteira"
+          />
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );
 }
-
-
-export default React.memo(InvestimentosLineChartComponent);
