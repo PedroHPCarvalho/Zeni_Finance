@@ -588,11 +588,11 @@
   .home_hero { height: auto; padding-top: 120px; padding-bottom: 80px; }
   .gambling_cta_box { flex-direction: column; text-align: center; }
   .footer_content { flex-direction: column; text-align: center; }
-  .home_navButtons .btn_outline { display: none; }
+  /* .home_navButtons .btn_outline { display: none; } */
 }
 
 /* Pequenos Celulares */
 @media (max-width: 480px) {
-  .home_navButtons .btn_outline { display: none; }
+  /* .home_navButtons .btn_outline { display: none; } */
   .home_logoText { display: block; font-size: 18px; }
 }
