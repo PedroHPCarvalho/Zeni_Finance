@@ -1,14 +1,84 @@
 
 :root {
-  --bg: #f4f4f4;
-  --text: #333;
-  --accent: #00a6a6;
-  --dark: #0b0c0c;
-  --font-sans: "Roboto", "Poppins", system-ui, sans-serif;
+  /* cores primárias */
+  --primary: #00897B;
+  --primary-dark: #00695C;
+  --primary-light: #E0F2F1;
+  --accent: #00897B;
+
+  /* textos */
+  --text-main: #1F2937;
+  --text-light: #6B7280;
+  --text-footer: #9CA3AF;
+  --text-footer-link: #D1D5DB;
+
+  /* fundos */
+  --bg-light: #F9FAFB;
+  --bg-white: #FFFFFF;
+  --bg-header: #111827;
+  --bg-hero-text: #e2e2e2;
+  --bg-cta-border: #E5E7EB;
+  --bg-card-shadow: rgba(0, 0, 0, 0.02);
+  --bg-card-hover-shadow: rgba(0, 0, 0, 0.1);
+
+  /* bot / hero */
+  --bot-bg: var(--primary-dark);
+  --bot-feature-bg: rgba(255, 255, 255, 0.1);
+  --bot-feature-bg-hover: rgba(255, 255, 255, 0.15);
+  --bot-feature-border: rgba(255,255,255,0.2);
+
+  /* botões */
+  --btn-primary-bg: #00D1B2;
+  --btn-primary-bg-hover: var(--primary-dark);
+  --btn-outline-bg-hover: var(--primary-light);
+  --btn-whatsapp-bg: #128C7E;
+  --btn-whatsapp-bg-hover: #267F74;
+  --btn-hero-bg-hover: #07ad9d;
+
+  /* outros */
+  --warning-bg: #FFF7ED;
+  --warning-border: #FFEDD5;
+  --warning-text: #9A3412;
+
+  /* novas variáveis para modals/overlays */
+  --overlay-bg: rgba(0,0,0,0.38);
+  --danger: #e63946;
+  --danger-dark: #cc2f3b;
+  --bg-light-hover: rgba(0,0,0,0.05);
+
+    /* card variants */
+  --card-income-bg: #16a34a;
+  --card-expense-bg: #dc2626;
+  --card-balance-bg: #c99b10;
+  --card-alert-bg: #eab308;
+
+  --card-income-color: #ffffff;
+  --card-expense-color: #ffffff;
+  --card-balance-color: #ffffff;
+  --card-alert-color: #1f2937;
+
+  --danger: #f44336;
+  --danger-dark: #c62828;
+  --danger-alt: #952020;
+  --danger-text: #7a1d1d;
+  --danger-hover-bg: rgba(198, 40, 40, 0.1);
+  --alert-link-bg: #ffe1e1;
+  --alert-link-color: #a62121;
+  --alert-link-hover: #ffcece;
+  --alert-bg: #fff3f3;
+  /* icon container */
+  --icon-bg: rgba(255, 255, 255, 0.25);
+
+  --border-color: #E5E7EB;
+  --table-head-bg: #e8e8e8;
+  --label-color: #00695C;
 }
+
+
 
 * {
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 html, body, #root {
@@ -23,4 +93,55 @@ body {
   background-color: var(--bg);
   color: var(--text);
   overflow-x: hidden; /* evita rolagem lateral indesejada */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+  --bg-white: #1F2937; 
+  --bg-light: #111827; 
+  --bg-header: #1F2937; 
+  
+  --text-main: #F3F4F6;
+  --text-light: #9CA3AF; 
+  --text-footer: #6B7280;
+
+  --bg-cta-border: #374151; 
+  --bg-card-shadow: rgba(0, 0, 0, 0.5); 
+  --bg-card-hover-shadow: rgba(0, 0, 0, 0.7);
+
+  --bg-light-hover: rgba(255, 255, 255, 0.05); 
+  --overlay-bg: rgba(0,0,0,0.7); 
+
+  --warning-bg: #431407; 
+  --warning-text: #fdba74; 
+  
+  --danger: #ef4444;
+  --alert-bg: #450a0a;
+  --alert-link-color: #fca5a5;
+
+  color-scheme: dark;
+
+  --border-color: #374151;
+  --table-head-bg: #374151;
+
+  --btn-primary-bg: var(--primary-dark); 
+  --btn-primary-bg-hover: var(--primary);
+
+  --label-color: #FFFFFF;
+}
+
+input,
+select,
+textarea,
+button,
+table,
+th,
+td,
+hr {
+  border-color: var(--border-color);
+}
+
+label {
+  color: var(--label-color);
+  font-weight: 500; 
 }

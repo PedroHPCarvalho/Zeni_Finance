@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api, { API_ENDPOINTS } from "../../config/api"; // 👈 Importando corretamente
+import api, { API_ENDPOINTS } from "../../config/api";
 
 export function useRegister() {
   const [loading, setLoading] = useState(false);
@@ -8,17 +8,29 @@ export function useRegister() {
   const register = async (data) => {
     setLoading(true);
     setError(null);
+
     try {
-      const response = await api.post(API_ENDPOINTS.register, data);
-      return { ok: true, result: response.data };
+      await api.post(API_ENDPOINTS.register, data);
+      return { ok: true };
     } catch (err) {
-      const msg = err.response?.data?.error || "Erro ao cadastrar usuário";
+      let msg = "Não foi possível concluir o cadastro. Verifique os dados e tente novamente.";
+
+      if (err.response) {
+        if (err.response.status === 400) {
+          msg = "Dados inválidos. Verifique os campos e tente novamente.";
+        } else if (err.response.status === 409) {
+          msg = "Não foi possível concluir o cadastro. Verifique os dados e tente novamente."; // genérico
+        }
+      } else if (err.request) {
+        msg = "Não foi possível conectar ao servidor. Tente novamente mais tarde.";
+      }
+
       setError(msg);
-      return { ok: false, result: { error: msg } };
+      return { ok: false };
     } finally {
       setLoading(false);
     }
   };
 
-  return { register, loading, error };
+  return { register, loading, error, setError };
 }

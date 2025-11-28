@@ -13,7 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Segurança
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-dev-key-change-me")
 DEBUG = os.environ.get("DJANGO_DEBUG", "True").lower() in ("1", "true", "yes")
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,bff").split(",")
+ALLOWED_HOSTS = os.environ.get(
+    "ALLOWED_HOSTS",
+    "localhost,bff,zeni-bff.victorioushill-8ccd4751.brazilsouth.azurecontainerapps.io"
+).split(",")
 
 # Apps instalados
 INSTALLED_APPS = [

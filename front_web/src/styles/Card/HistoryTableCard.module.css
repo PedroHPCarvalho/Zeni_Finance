@@ -1,0 +1,221 @@
+.card {
+  background: var(--bg-light);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  border: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px var(--bg-card-hover-shadow);
+}
+
+.title {
+  font-size: 15px;
+  color: var(--text-main);
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table thead th {
+  background-color: var(--table-head-bg);
+  color: var(--text-main);
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.table tbody tr + tr {
+  margin-top: 6px;
+}
+
+.table td {
+  padding: 12px;
+  background: var(--bg-white);
+  border-radius: 8px;
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.table tbody tr:hover td {
+  background: rgba(33, 150, 243, 0.016); /* opcional: --table-hover-bg */
+}
+
+/* TIPOS DE LINHA */
+.typeExpenseRow td {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.typeRevenueRow td {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.typeInvestmentRow td {
+  background: rgba(33, 150, 243, 0.1);
+}
+
+.valueCell {
+  font-weight: 600;
+}
+
+/* AÇÕES */
+.actionsCell {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.iconBtn,
+.iconBtnDelete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.iconBtn:hover {
+  background: rgba(33, 150, 243, 0.15);
+}
+
+.iconBtnDelete:hover {
+  background: rgba(244, 67, 54, 0.15);
+}
+
+.iconBtn svg {
+  color: #2196f3; /* opcional: --icon-primary-color */
+}
+
+.iconBtnDelete svg {
+  color: #f44336; /* opcional: --icon-danger-color */
+}
+
+/* PAGINAÇÃO */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  color: var(--text-main);
+}
+
+.pagination button {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  background-color: var(--btn-primary-bg);
+  color: #666;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.pagination button:hover {
+  background-color: var(--btn-primary-bg-hover);
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.emptyText {
+  text-align: center;
+  padding: 20px;
+  font-weight: 500;
+  color: #666; /* opcional: --text-light */
+}
+
+@media (max-width: 768px) {
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
+  }
+
+  .typeExpenseRow {
+    background: rgba(244, 67, 54, 0.1) !important;
+    border-color: rgba(244, 67, 54, 0.3) !important; 
+  }
+
+  .typeRevenueRow {
+    background: rgba(76, 175, 80, 0.1) !important;
+    border-color: rgba(76, 175, 80, 0.3) !important;
+  }
+
+  .typeInvestmentRow {
+    background: rgba(33, 150, 243, 0.1) !important;
+    border-color: rgba(33, 150, 243, 0.3) !important;
+  }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    background: transparent !important; 
+    border-radius: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    text-align: right;
+  }
+
+  .table td:last-child {
+    border-bottom: none;
+    padding-top: 16px;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .table td::before {
+    content: attr(data-label); 
+    font-weight: 600;
+    color: var(--text-light); 
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .table td:nth-child(1)::before { content: "Descrição"; }
+  .table td:nth-child(2)::before { content: "Categoria"; }
+  .table td:nth-child(3)::before { content: "Tipo"; }
+  .table td:nth-child(4)::before { content: "Valor";  color: var(--text-main);}
+  .table td:nth-child(5)::before { content: "Data"; }
+
+  .valueCell {
+    font-size: 1.1rem; 
+  }
+  
+  .table td:nth-child(1) {
+     font-weight: 600;
+     font-size: 1rem;
+  }
+}
+
