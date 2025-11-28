@@ -1,19 +1,28 @@
 .card {
-  background: #fff3f3;
-  border-left: 4px solid #F44336;
-  border-radius: 12px;
-  padding: 16px;
+  background-color: var(--bg-white); 
+  border-left: 4px solid #f44336;
+  border-radius: 14px;
+  padding: 16px; /* um pouco mais de espaço */
   display: flex;
   flex-direction: column;
+  animation: fadeIn 0.18s ease;
+  font-family: 'Inter', sans-serif;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: 600;
   color: #c62828;
   margin-bottom: 8px;
+}
+
+.alertTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 16px; /* maior destaque */
 }
 
 .header button {
@@ -21,9 +30,57 @@
   border: none;
   cursor: pointer;
   color: #c62828;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.header button:hover {
+  background-color: rgba(198, 40, 40, 0.1);
 }
 
 .content {
-  color: #822222;
-  font-weight: 500;
+  color: #7a1d1d;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* espaçamento mais consistente */
+  font-size: 14.5px; /* ligeiramente maior */
+  line-height: 1.45; /* melhora a leitura */
+}
+
+.content p {
+  margin: 0; /* remove margens extras */
+  padding: 2px 0; /* padding leve entre parágrafos */
+}
+
+.alertText strong {
+  font-weight: 600;
+  color: #b71c1c; /* destaque para partes importantes */
+}
+
+.helpText {
+  font-weight: 600;
+  color: #952020;
+  margin-top: 4px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.links a {
+  background: #ffe1e1;
+  padding: 7px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  color: #a62121;
+  transition: background 0.15s ease;
+}
+
+.links a:hover {
+  background: #ffcece;
 }

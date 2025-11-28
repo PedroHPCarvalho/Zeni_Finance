@@ -1,5 +1,8 @@
+// ManualRegisterCard.jsx
 import React, { useState } from "react";
 import styles from "../styles/Card/ManualRegisterCard.module.css";
+import { useManualRegister } from "../hooks/useManualRegister";
+import { CheckCircle, AlertCircle } from "lucide-react";
 
 const CATEGORIES = [
   "ALIMENTACAO", "TRANSPORTE", "MORADIA", "SAUDE", "EDUCACAO",
@@ -16,82 +19,92 @@ export default function ManualRegisterCard({ onSubmit }) {
   const [typeRegister, setTypeRegister] = useState("");
   const [value, setValue] = useState("");
   const [dateRegister, setDateRegister] = useState("");
+  const [message, setMessage] = useState(null);
 
-  const handleSubmit = (e) => {
+  const { sendManualRegister, loading } = useManualRegister();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
 
     if (!description || !category || !typeRegister || !value) {
-      alert("Preencha todos os campos obrigatórios.");
+      setMessage({ type: "error", text: "Preencha todos os campos obrigatórios." });
+      setTimeout(() => setMessage(null), 3000);
       return;
     }
 
     const date = dateRegister || new Date().toISOString().split("T")[0];
 
-    const payload = [
-      {
-        description,
-        category,
-        value: Number(value),
-        typeRegister,
-        dateRegister: date
-      }
-    ];
+    const payload = { description, category, value: Number(value), typeRegister, dateRegister: date };
+    const result = await sendManualRegister(payload);
 
-    onSubmit(payload);
-
-    // Resetar campos
-    setDescription("");
-    setCategory("");
-    setTypeRegister("");
-    setValue("");
-    setDateRegister("");
+    if (result) {
+      onSubmit?.();
+      setMessage({ type: "success", text: "Registro inserido com sucesso!" });
+      setDescription(""); setCategory(""); setTypeRegister(""); setValue(""); setDateRegister("");
+      setTimeout(() => setMessage(null), 3000);
+    } else {
+      setMessage({ type: "error", text: "Erro ao registrar!" });
+      setTimeout(() => setMessage(null), 3000);
+    }
   };
 
   return (
     <div className={styles.card}>
-      <span className={styles.title}>Registrar gasto manualmente</span>
+      <h2 className={styles.title}>Registrar gasto manualmente</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Descrição"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          required
-        >
-          <option value="">Categoria</option>
-          {CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
-          ))}
-        </select>
-        <select
-          value={typeRegister}
-          onChange={(e) => setTypeRegister(e.target.value)}
-          required
-        >
-          <option value="">Tipo de Registro</option>
-          {TYPES.map((t) => (
-            <option key={t} value={t}>{t}</option>
-          ))}
-        </select>
-        <input
-          type="number"
-          placeholder="Valor"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          required
-        />
-        <input
-          type="date"
-          value={dateRegister}
-          onChange={(e) => setDateRegister(e.target.value)}
-        />
-        <button type="submit">Registrar</button>
+        <div className={styles.field}>
+          <label>Descrição</label>
+          <input
+            type="text"
+            placeholder="Ex: Mercado, Uber..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            disabled={loading}
+          />
+        </div>
+
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <label>Categoria</label>
+            <select value={category} onChange={(e) => setCategory(e.target.value)} disabled={loading}>
+              <option value="">Selecione...</option>
+              {CATEGORIES.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
+            </select>
+          </div>
+
+          <div className={styles.field}>
+            <label>Tipo</label>
+            <select value={typeRegister} onChange={(e) => setTypeRegister(e.target.value)} disabled={loading}>
+              <option value="">Selecione...</option>
+              {TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <label>Valor</label>
+            <input type="number" placeholder="0.00" value={value} onChange={(e) => setValue(e.target.value)} disabled={loading} />
+          </div>
+
+          <div className={styles.field}>
+            <label>Data</label>
+            <input type="date" value={dateRegister} onChange={(e) => setDateRegister(e.target.value)} disabled={loading} />
+          </div>
+        </div>
+
+        <button type="submit" className={styles.submit} disabled={loading}>
+          {loading ? "Registrando..." : "Registrar"}
+        </button>
       </form>
+
+      {message && (
+        <div className={`${styles.message} ${message.type === "success" ? styles.successMsg : styles.errorMsg}`}>
+          {message.type === "success" ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
+          <span>{message.text}</span>
+        </div>
+      )}
     </div>
   );
 }

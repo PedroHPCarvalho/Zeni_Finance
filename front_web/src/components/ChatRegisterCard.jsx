@@ -1,55 +1,65 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "../styles/Card/ChatRegisterCard.module.css";
+import { useChatRegister } from "../hooks/useChatRegister";
 
-export default function ChatRegisterCard({ onSubmit }) {
-  const [messages, setMessages] = useState([]); // histórico de mensagens
+export default function ChatRegisterCard({ onRefetch }) {
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef(null);
 
-  // Scroll automático para a última mensagem
+  const inputRef = useRef(null);
+  const chatWindowRef = useRef(null); // ref do container de mensagens
+
+  const { sendToIA } = useChatRegister();
+
+  // scroll automático apenas do chat
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages]); // roda sempre que mensagens mudarem
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || loading) return;
 
-    const userMessage = { sender: "user", text: input };
-    setMessages(prev => [...prev, userMessage]);
+    const userText = input;
     setInput("");
     setLoading(true);
 
-    try {
-      // Aqui você chamaria a função de IA para processar a mensagem
-      // Ex: const responseText = await sendToAI(input);
-      const responseText = `Processado IA: "${input}"`; // mock temporário
+    // mensagem do usuário
+    setMessages((prev) => [
+      ...prev,
+      {
+        sender: "user",
+        text: userText,
+        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      },
+    ]);
 
-      const aiMessage = { sender: "ai", text: responseText };
-      setMessages(prev => [...prev, aiMessage]);
+    // envia para IA
+    const success = await sendToIA(userText);
 
-      // Exemplo de criar registro a partir da resposta
-      onSubmit([
-        {
-          description: "Gasto detectado IA",
-          category: "ALIMENTACAO",
-          value: 100,
-          typeRegister: "DESPESA",
-          dateRegister: new Date().toISOString(),
-        }
-      ]);
+    // mensagem do bot
+    setMessages((prev) => [
+      ...prev,
+      {
+        sender: "ai",
+        text: success ? "Registro detectado! Já inseri no seu Histórico." : "Ops! Não consegui processar o registro.",
+        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      },
+    ]);
 
-    } catch (err) {
-      console.error(err);
-    }
+    // refetch do histórico
+    if (success && onRefetch) await onRefetch();
 
     setLoading(false);
+
+    // mantém o foco no textarea
+    inputRef.current?.focus();
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey && !loading) {
       e.preventDefault();
       handleSend();
     }
@@ -57,30 +67,44 @@ export default function ChatRegisterCard({ onSubmit }) {
 
   return (
     <div className={styles.card}>
-      <span className={styles.title}>Registrar gastos via Chatbot</span>
-      <div className={styles.chatWindow}>
-        {messages.map((msg, idx) => (
+      <div className={styles.header}>
+        <div className={styles.botAvatar}>🤖</div>
+        <div>
+          <p className={styles.botName}>ZeniBot - Inserir Registro</p>
+          <span className={styles.botStatus}>Online</span>
+        </div>
+      </div>
+
+      {/* Container do chat com scroll */}
+      <div className={styles.chatWindow} ref={chatWindowRef}>
+        {messages.map((msg, i) => (
           <div
-            key={idx}
-            className={`${styles.message} ${
-              msg.sender === "user" ? styles.userMessage : styles.aiMessage
-            }`}
+            key={i}
+            className={`${styles.message} ${msg.sender === "user" ? styles.userMessage : styles.aiMessage}`}
           >
-            {msg.text}
+            <div className={styles.msgText}>{msg.text}</div>
+            <div className={styles.msgTime}>{msg.time}</div>
           </div>
         ))}
-        <div ref={messagesEndRef} />
+
+        {loading && (
+          <div className={`${styles.message} ${styles.aiMessage}`}>
+            <div className={styles.typing}><span></span><span></span><span></span></div>
+          </div>
+        )}
       </div>
+
       <div className={styles.inputArea}>
         <textarea
-          placeholder="Digite seu gasto..."
+          ref={inputRef}
+          placeholder="Descreva seu gasto... (Ex: 'gastei 30 reais no mercado')"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           disabled={loading}
         />
-        <button onClick={handleSend} disabled={loading}>
-          {loading ? "Processando..." : "Enviar"}
+        <button onClick={handleSend} disabled={loading} onMouseDown={(e) => e.preventDefault()}>
+          {loading ? "..." : "Enviar"}
         </button>
       </div>
     </div>

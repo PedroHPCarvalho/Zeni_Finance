@@ -1,142 +1,108 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { LogOut, Menu, LayoutDashboard, Table, PiggyBank, User, Moon, Settings } from "lucide-react";
+// DashboardLayout.jsx (remova aqui qualquer redirect/cheque de token)
+import React, { useState, useEffect, useCallback } from "react";
+import { useLocation, Outlet, Link, useNavigate } from "react-router-dom";
+import { LogOut, Menu, LayoutDashboard, Table, Moon, Sun, X } from "lucide-react";
 import styles from "../styles/DashboardLayout/DashboardLayout.module.css";
 import Logo from "../assets/Logo.png";
+import { useMe } from "../hooks/useMe";
 
-export default function DashboardLayout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [user, setUser] = useState(null);
+export default function DashboardLayout() {
+  const navigate = useNavigate();
   const location = useLocation();
+
+  const { user, loading } = useMe();
+
+  const [sidebarOpen, setSidebarOpen] = useState(() => (typeof window !== "undefined" ? window.innerWidth > 768 : true));
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("darkMode") === "true" : false));
 
   const isActive = (path) => location.pathname.startsWith(path);
 
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("darkMode") === "true";
-  });
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth <= 768) setSidebarOpen(false);
+  }, [location]);
 
   useEffect(() => {
-  fetch("/me")
-    .then(async (res) => {
-      if (!res.ok) return null; // evita crash
-      return await res.json();
-    })
-    .then(data => setUser(data))
-    .catch(() => setUser(null));
-  }, []);
+    if (darkMode) document.body.classList.add("dark-mode");
+    else document.body.classList.remove("dark-mode");
+  }, [darkMode]);
 
-  const handleLogout = () => {
-    console.log("Logout");
-  };
+  const handleLogout = useCallback(() => {
+    setDropdownOpen(false);
+    localStorage.removeItem("token");
+    localStorage.removeItem("darkMode");
+    navigate("/login", { replace: true });
+  }, [navigate]);
 
   const toggleDarkMode = () => {
-    const newValue = !darkMode;
-    setDarkMode(newValue);
-    localStorage.setItem("darkMode", newValue);
+    const next = !darkMode;
+    setDarkMode(next);
+    localStorage.setItem("darkMode", next);
+    setDropdownOpen(false);
   };
 
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
+  const getUserInitials = () => {
+    if (user?.name) {
+      return user.name.split(" ").map((n) => n[0].toUpperCase()).slice(0, 2).join("");
     }
-  }, [darkMode]);
-  
+    return "U";
+  };
+
   return (
     <div className={styles.container}>
+      {sidebarOpen && typeof window !== "undefined" && window.innerWidth <= 768 && (
+        <div className={styles.overlay} onClick={() => setSidebarOpen(false)} />
+      )}
 
-      {/* SIDEBAR */}
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : styles.closed}`}>
+        {/* ... seu sidebar unchanged ... */}
         <div className={styles.logo}>
-          <img src={Logo} alt="Zeni" className={styles.logoIcon} />
-          {sidebarOpen && <span className={styles.logoText}>Zeni Finance</span>}
+          <div className={styles.logoContent}>
+            <img src={Logo} alt="Zeni" className={styles.logoIcon} />
+            <span className={`${styles.logoText} ${!sidebarOpen ? styles.hideText : ""}`}>Zeni Finance</span>
+          </div>
+          <button className={styles.closeMobileBtn} onClick={() => setSidebarOpen(false)}><X size={24} /></button>
         </div>
 
         <nav className={styles.menu}>
-        <a
-          className={`${styles.link} ${isActive("/dashboard") ? styles.active : ""}`}
-          href="/dashboard"
-        >
-          <LayoutDashboard size={20} />
-          {sidebarOpen && <span>Dashboard</span>}
-        </a>
-
-        <a
-          className={`${styles.link} ${isActive("/registers") ? styles.active : ""}`}
-          href="/registers"
-        >
-          <Table size={20} />
-          {sidebarOpen && <span>Registros</span>}
-        </a>
-      </nav>
+          <Link className={`${styles.link} ${isActive("/dashboard") ? styles.active : ""}`} to="/dashboard">
+            <LayoutDashboard size={20} />
+            <span className={!sidebarOpen ? styles.hideText : ""}>Dashboard</span>
+          </Link>
+          <Link className={`${styles.link} ${isActive("/registers") ? styles.active : ""}`} to="/registers">
+            <Table size={20} />
+            <span className={!sidebarOpen ? styles.hideText : ""}>Registros</span>
+          </Link>
+        </nav>
       </aside>
 
-      {/* MAIN */}
       <div className={styles.main}>
-
-        {/* HEADER */}
         <header className={styles.header}>
-          <button
-            className={styles.menuBtn}
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            <Menu size={24} />
-          </button>
+          <button className={styles.menuBtn} onClick={() => setSidebarOpen(!sidebarOpen)}><Menu size={24} /></button>
 
-          {/* MENU DO USUÁRIO */}
           <div className={styles.userMenu}>
-            <button
-              className={styles.userBtn}
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-            >
-              {/* Avatar com iniciais */}
-              <div className={styles.userAvatar}>
-                {user?.name ? user.name[0].toUpperCase() : "U"}
-              </div>
+            <button className={styles.userBtn} onClick={() => setDropdownOpen(!dropdownOpen)}>
+              <div className={styles.userAvatar}>{getUserInitials()}</div>
             </button>
 
             {dropdownOpen && (
               <div className={styles.dropdown}>
-                
-                {/* Cabeçalho com nome */}
-                <div className={styles.dropdownHeader}>
-                  {user?.name || "Usuário"}
-                </div>
+                <div className={styles.dropdownHeader}>{!loading && user?.name ? user.name : "Usuário"}</div>
 
-                <button className={styles.dropdownItem}>
-                  <User size={18} />
-                  <span>Perfil</span>
+                <button className={styles.dropdownItem} onClick={toggleDarkMode}>
+                  {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+                  <span>{darkMode ? "Modo Claro" : "Modo Noturno"}</span>
                 </button>
 
-                <button className={styles.dropdownItem}>
-                  <Settings size={18} />
-                  <span>Configurações</span>
-                </button>
-
-                <button
-                  className={styles.dropdownItem}
-                  onClick={toggleDarkMode}
-                >
-                  <Moon size={18} />
-                  <span>Modo Noturno</span>
-                </button>
-
-                <button
-                  className={styles.dropdownItem}
-                  onClick={handleLogout}
-                >
-                  <LogOut size={18} />
-                  <span className={styles.logout}>Sair</span>
+                <button className={styles.dropdownItem} onClick={handleLogout}>
+                  <LogOut size={18} /> <span className={styles.logout}>Sair</span>
                 </button>
               </div>
             )}
           </div>
         </header>
 
-        {/* CONTENT */}
-        <div className={styles.content}>{children}</div>
+        <div className={styles.content}><Outlet /></div>
       </div>
     </div>
   );

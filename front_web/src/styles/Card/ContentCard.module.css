@@ -1,32 +1,24 @@
 .card {
-  background: #f4f4f4;
+  background: var(--bg-light);
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 6px 15px var(--bg-card-hover-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 
   display: flex;
   flex-direction: column;
   gap: 12px;
 
   width: 100%;
+  min-height: 340px;
+  align-items: stretch;
 
-  min-height: 340px;  
-  align-items: stretch; 
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
-.children {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
 }
 
 .header {
@@ -37,20 +29,27 @@
 
 .title {
   font-size: 15px;
-  color: #0b0c0c;
+  color: var(--text-main);
   font-weight: 600;
   opacity: 0.8;
 }
 
 .icon {
-  color: #00d1b2;
+  color: var(--btn-primary-bg);
   font-size: 22px;
 }
 
 .value {
   font-size: 28px;
-  font-weight: bold;
-  color: #00f5d4;
+  font-weight: 700;
+  color: var(--btn-primary-bg);
+}
+
+.children {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chartContainer {

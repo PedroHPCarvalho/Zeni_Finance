@@ -1,29 +1,52 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Trophy } from "lucide-react";
+import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import styles from "../styles/Card/TopCategoriesCard.module.css";
+import { getCategoryLabel } from "../utils/categories";
 
-export default function TopCategoriesCard({ title, data = [], type = "DESPESA" }) {
-  // Calcular total geral
-  const total = data.reduce((sum, item) => sum + item.total, 0);
+export default function TopCategoriesCard({
+  title,
+  data = [],
+  type = "DESPESA",
+  filterMonth = null,
+  filterYear = null,
+}) {
+  const aggregated = useMemo(() => {
+    if (!data || data.length === 0) return [];
 
-  // Função para cor do tipo
-  const getTypeColor = () => {
-    switch (type.toUpperCase()) {
-      case "DESPESA":
-        return "#F44336"; // vermelho
-      case "RECEITA":
-        return "#4CAF50"; // verde
-      case "INVESTIMENTO":
-        return "#2196F3"; // azul
-      default:
-        return "#999";
-    }
+    const filteredData = data.filter((item) => {
+      if (filterMonth && filterYear) {
+        return item.mes === filterMonth && item.ano === filterYear;
+      }
+      return true;
+    });
+
+    const grouped = filteredData.reduce((acc, item) => {
+      const key = item.category;
+      if (!acc[key]) acc[key] = 0;
+      acc[key] += item.total;
+      return acc;
+    }, {});
+
+    return Object.keys(grouped).map((category) => ({
+      category,
+      label: getCategoryLabel(category),
+      total: grouped[category],
+    }));
+  }, [data, filterMonth, filterYear]);
+
+  const total = aggregated.reduce((sum, item) => sum + item.total, 0);
+
+  const typeColors = {
+    DESPESA: "#F44336",
+    RECEITA: "#4CAF50",
+    INVESTIMENTO: "#2196F3",
   };
+  const color = typeColors[type.toUpperCase()] || "#999";
 
-  const color = getTypeColor();
-
-  // Ordenar do maior para o menor
-  const sorted = [...data].sort((a, b) => b.total - a.total);
+  const sorted = [...aggregated]
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 5); // <-- SOMENTE OS 5 PRIMEIROS
 
   return (
     <div className={styles.card}>
@@ -31,38 +54,67 @@ export default function TopCategoriesCard({ title, data = [], type = "DESPESA" }
         <span className={styles.title}>{title}</span>
       </div>
 
-      <div className={styles.list}>
-        {sorted.map((item, index) => {
-          const percent = ((item.total / total) * 100).toFixed(1);
-          return (
-            <div key={index} className={styles.item}>
-              <div className={styles.icon}>
-                {index === 0 && <Trophy size={20} className={styles.gold} />}
-                {index === 1 && <Trophy size={20} className={styles.silver} />}
-                {index === 2 && <Trophy size={20} className={styles.bronze} />}
-              </div>
+      <div className={styles.children}>
+        <div className={styles.list}>
+          {sorted.map((item, index) => {
+            const percent = total > 0 ? (item.total / total) * 100 : 0;
 
-              <div className={styles.info}>
-                <span className={styles.category}>{item.category}</span>
-                <span className={styles.value}>
-                  R${" "}
-                  {Number(item.total).toLocaleString("pt-BR", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}{" "}
-                  ({percent}%)
-                </span>
-              </div>
+            return (
+              <div
+                key={index}
+                className={`${styles.item} ${
+                  index === 0 ? styles.firstItem : ""
+                }`}
+              >
+                <div className={styles.rankWrapper}>
+                  {index <= 2 ? (
+                    <Trophy
+                      className={
+                        index === 0
+                          ? styles.gold
+                          : index === 1
+                          ? styles.silver
+                          : styles.bronze
+                      }
+                    />
+                  ) : (
+                    <span className={styles.rank}>#{index + 1}</span>
+                  )}
+                </div>
 
-              <div className={styles.barWrapper}>
-                <div
-                  className={styles.bar}
-                  style={{ width: `${percent}%`, backgroundColor: color }}
-                />
+                <div className={styles.miniDonut}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[{ value: percent }, { value: 100 - percent }]}
+                        innerRadius="55%"
+                        outerRadius="100%"
+                        dataKey="value"
+                      >
+                        <Cell fill={color} />
+                        <Cell fill="#eee" />
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+
+                  <span className={styles.percentLabel}>
+                    {percent.toFixed(0)}%
+                  </span>
+                </div>
+
+                <div className={styles.info}>
+                  <span className={styles.category}>{item.label}</span>
+                  <span className={styles.value}>
+                    R$
+                    {item.total.toLocaleString("pt-BR", {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

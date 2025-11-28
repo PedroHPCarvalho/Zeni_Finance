@@ -2,27 +2,29 @@ import { useEffect, useState } from "react";
 import { useAuthToken } from "./useUser";
 import api, { API_ENDPOINTS } from "../../config/api";
 
-export function useMonthResume(){
+export function useMonthResume() {
   const [monthResume, setMonthResume] = useState([]);
+  const [loading, setLoading] = useState(true);
   const headers = useAuthToken();
 
-  useEffect(() =>{
+  useEffect(() => {
+    if (!headers) return;
+
     async function fetchResumeMonth() {
-      try{
-        const response = await api.get(API_ENDPOINTS.mouthResume, { headers });
-        console.log("monthResume -> response.data:", response.data);
-        if(Array.isArray(response.data)){
-          setMonthResume(response.data);
-        } else {
-          console.warn("Resposta inesperada da API, retornando lista vazia");
-          setMonthResume([]);
-        } 
+      try {
+        const { data } = await api.get(API_ENDPOINTS.mouthResume, { headers });
+
+        setMonthResume(Array.isArray(data) ? data : []);
       } catch (err) {
-        console.log("Erro ao carregar dados:", err);
+        console.error("Erro ao carregar mês:", err);
         setMonthResume([]);
+      } finally {
+        setLoading(false);
       }
     }
+
     fetchResumeMonth();
-  }, []);
-  return { monthResume };
+  }, [headers]);
+
+  return { monthResume, loading };
 }

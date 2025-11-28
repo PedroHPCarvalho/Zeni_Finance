@@ -1,76 +1,145 @@
 .card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  background: var(--bg-light);
+  border-radius: 18px;
   padding: 16px;
+  width: 100%;
+  height: 670px; 
   display: flex;
   flex-direction: column;
+  box-shadow: 0 6px 15px var(--bg-card-hover-shadow);
+  border: 1px solid rgba(255,255,255,0.05);
+  overflow: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* HEADER */
 .header {
-  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .title {
   font-size: 18px;
-  font-weight: 600;
-  color: #022c2c;
+  font-weight: 700;
+  color: var(--text-main);
 }
 
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.icon {
-  width: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.gold {
-  color: #FFD700;
-}
-.silver {
-  color: #C0C0C0;
-}
-.bronze {
-  color: #CD7F32;
-}
-
-.info {
+/* CONTAINER DA LISTA */
+.children {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
+.list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  gap: 8px;
+}
+
+/* CADA ITEM */
+.item {
+  flex: 1;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg-white);
+  border-radius: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  gap: 14px;
+  transition: 0.2s;
+}
+
+.item:hover {
+  transform: translateX(6px);
+  background: var(--bg-light-hover);
+}
+
+/* PRIMEIRO ITEM */
+.firstItem {
+  border-left: 4px solid var(--warning-bg);
+  background: rgba(255, 193, 7, 0.15);
+}
+
+/* RANK */
+.rankWrapper {
+  width: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rank {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.gold { color: #f7b700; }
+.silver { color: #c5c5c5; }
+.bronze { color: #cd7f32; }
+
+/* DONUT */
+.miniDonut {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.percentLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* TEXTO */
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+}
+
 .category {
-  font-weight: 600;
-  color: #022c2c;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
 }
 
 .value {
-  font-size: 13px;
-  color: #555;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  font-weight: 600;
 }
 
-.barWrapper {
-  width: 120px;
-  height: 8px;
-  background: #eee;
-  border-radius: 4px;
-  overflow: hidden;
+/* DARK MODE AUTOMÁTICO */
+body.dark-mode .card {
+  background: var(--bg-light);
 }
 
-.bar {
-  height: 100%;
-  border-radius: 4px;
+body.dark-mode .card .title,
+body.dark-mode .card .category,
+body.dark-mode .card .value,
+body.dark-mode .card .percentLabel,
+body.dark-mode .card .rank {
+  color: var(--text-main);
+}
+
+body.dark-mode .card .item {
+  background: var(--bg-white);
+}
+
+body.dark-mode .card .item:hover {
+  background: var(--bg-light-hover);
 }

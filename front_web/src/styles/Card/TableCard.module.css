@@ -1,82 +1,178 @@
+/* ============================= */
+/*     TABLE CARD — PADRONIZADO  */
+/* ============================= */
+
 .card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-  padding: 16px;
-  margin-bottom: 24px;
+  background: var(--bg-light);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 15px var(--bg-card-hover-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
   display: flex;
   flex-direction: column;
+  gap: 16px;
+
+  width: 100%;
+  min-height: 340px;
+
+  box-sizing: border-box;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+}
+
+/* ============================= */
+/* HEADER */
+/* ============================= */
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
 }
 
 .title {
-  font-size: 18px;
+  font-size: 15px;
+  color: var(--text-main);
   font-weight: 600;
-  color: #022c2c;
+  opacity: 0.8;
 }
 
 .icon {
+  color: var(--primary);
   font-size: 22px;
-  color: #2196F3;
 }
 
+/* ============================= */
+/* TABELA DESKTOP */
+/* ============================= */
+
 .tableWrapper {
+  width: 100%;
   overflow-x: auto;
 }
 
 .table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 8px; /* espaço entre linhas */
+  border-spacing: 0 8px;
   font-size: 14px;
 }
 
 .table th {
-  display: none; /* header escondido para visual mais clean */
+  display: none; /* Mantido como no layout original */
 }
 
 .table td {
   padding: 12px 16px;
   border-radius: 8px;
-  color: #022c2c;
+  background: var(--bg-white);
+  color: var(--text-main);
   font-weight: 500;
 }
 
-.table tbody tr {
-  transition: background 0.2s;
+/* Cores Desktop */
+.typeExpenseRow td {
+  background: rgba(244, 67, 54, 0.1);
 }
 
-.table tbody tr:hover {
-  background: rgba(33, 150, 243, 0.1); /* hover azul suave */
+.typeRevenueRow td {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.typeInvestmentRow td {
+  background: rgba(33, 150, 243, 0.1);
+}
+
+.valueCell {
+  font-weight: 600;
 }
 
 .emptyText {
   text-align: center;
   padding: 20px;
-  color: #999;
+  color: var(--text-light);
   font-style: italic;
 }
 
-/* Fundo colorido por tipo de registro */
-.typeExpenseRow {
-  background: rgba(244, 67, 54, 0.1); /* vermelho suave */
-}
+/* ============================= */
+/* MOBILE */
+/* ============================= */
 
-.typeRevenueRow {
-  background: rgba(76, 175, 80, 0.1); /* verde suave */
-}
+@media (max-width: 768px) {
+  .table thead {
+    display: none;
+  }
 
-.typeInvestmentRow {
-  background: rgba(33, 150, 243, 0.1); /* azul suave */
-}
+  .table tbody tr {
+    display: flex;
+    flex-direction: column;
 
-/* Valor destacado */
-.valueCell {
-  font-weight: 600;
+    margin-bottom: 16px;
+    padding: 16px;
+
+    background: var(--bg-light);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  /* Cores Mobile */
+  .typeExpenseRow {
+    background: rgba(244, 67, 54, 0.1) !important;
+    border-color: rgba(244, 67, 54, 0.3) !important;
+  }
+
+  .typeRevenueRow {
+    background: rgba(76, 175, 80, 0.1) !important;
+    border-color: rgba(76, 175, 80, 0.3) !important;
+  }
+
+  .typeInvestmentRow {
+    background: rgba(33, 150, 243, 0.1) !important;
+    border-color: rgba(33, 150, 243, 0.3) !important;
+  }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px 0;
+    background: transparent !important;
+
+    text-align: right;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .table td:last-child {
+    border-bottom: none;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Valor mais destacado */
+  .valueCell {
+    font-size: 1.1rem;
+    color: var(--text-main);
+  }
+
+  /* Primeira célula (Categoria) */
+  .table td:nth-child(1) {
+    font-weight: 600;
+    font-size: 1rem;
+  }
 }

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,7 +34,6 @@ public class FinancialRegistersService {
 
     public FinancialRegisters createRegister(FinancialRegisters financialRegisters, User user){
         financialRegisters.setIdUser(user);
-        financialRegisters.setDateCreateRegister(LocalDateTime.now());
         return financialRegistersRepository.save(financialRegisters);
     }
 
@@ -49,7 +49,7 @@ public class FinancialRegistersService {
     }
 
     public List<FinancialRegisters> listFinancRegistersByUserId(User user){
-        List<FinancialRegisters> listRegistersOfUser = financialRegistersRepository.findByidUser(user);
+        List<FinancialRegisters> listRegistersOfUser = financialRegistersRepository.findByIdUser(user);
         return listRegistersOfUser;
     }
 
@@ -75,28 +75,42 @@ public class FinancialRegistersService {
         return financialRegistersRepository.findFinancialRegisterResumeByUserId(userId.getId());
     }
 
-    public List<CategoryResumeDTO> getCategoryResume (Long userId){
-        return financialRegistersRepository.findCategoryResumeByUserId(userId);
+    public List<CategoryResumeDTO> getCategoryResume(Long userId) {
+        List<Object[]> rows = financialRegistersRepository.findCategoryResumeByUserId(userId);
+
+        return rows.stream().map(r -> new CategoryResumeDTO(
+                (String) r[0],                 // category
+                (BigDecimal) r[1],            // total_value (vem como BigDecimal!)
+                (String) r[2],                // mes
+                ((Number) r[3]).intValue()    // ano
+        )).toList();
     }
+
 
     public List<MonthResumeDTO> getMonthResume(Long userId) {
         List<Object[]> results = financialRegistersRepository.findMonthResumeByUserId(userId);
 
-        return results.stream()
-                .map(obj -> new MonthResumeDTO(
-                        (String) obj[0],
-                        ((Number) obj[1]).doubleValue(), // expenses
-                        ((Number) obj[2]).doubleValue()  // revenue
-                ))
-                .toList();
+        return results.stream().map(row -> new MonthResumeDTO(
+                (String) row[1],      // ano
+                ((BigDecimal) row[2]).doubleValue(), // mes (TO_CHAR)
+                ((BigDecimal) row[3]).doubleValue(), // despesas
+                ((Number) row[0]).intValue()  // receitas
+                )).toList();
     }
 
-    public List<MonthResumeInvestmentDTO> getMonthResumeInvestment(Long userId){
-        return financialRegistersRepository.findMonthResumeInvestByUserId(userId);
+    public List<MonthResumeInvestmentDTO> getMonthResumeInvestment(Long userId) {
+        List<Object[]> results = financialRegistersRepository.findMonthResumeInvestByUserId(userId);
+
+        return results.stream().map(row -> new MonthResumeInvestmentDTO(
+                (String) row[0],                 // mes
+                ((Number) row[1]).intValue(),    // ano
+                ((Number) row[2]).doubleValue(), // total_aportes
+                ((Number) row[3]).doubleValue()  // total_resultados
+        )).toList();
     }
 
     public Page<FinancialRegisters> listFinancRegistersByUserId(User user, Pageable pageable) {
-        return financialRegistersRepository.findByidUser(user, pageable);
+        return financialRegistersRepository.findByIdUser(user, pageable);
     }
 }
 

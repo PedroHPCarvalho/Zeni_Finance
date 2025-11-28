@@ -1,16 +1,30 @@
 import React from "react";
 import styles from "../styles/Card/TableCard.module.css";
+import { getCategoryLabel } from "../utils/categories";
 
-export default function CardTable({ title, icon, columns = [], data = [] }) {
+export default function TableCard({ title, icon, columns = [], data = [] }) {
+  const formatDate = (value) => {
+    if (!value) return value;
+    const datePart = value.split("T")[0];
+    const [year, month, day] = datePart.split("-");
+
+    const months = [
+      "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+      "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+    ];
+
+    return `${parseInt(day)} de ${months[parseInt(month) - 1]} de ${year}`;
+  };
+
   return (
     <div className={styles.card}>
-      {/* Header */}
-      <div className={styles.header}>
-        <span className={styles.title}>{title}</span>
-        {icon && <span className={styles.icon}>{icon}</span>}
-      </div>
+      {(title || icon) && (
+        <div className={styles.header}>
+          <span className={styles.title}>{title}</span>
+          {icon && <span className={styles.icon}>{icon}</span>}
+        </div>
+      )}
 
-      {/* Table */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
@@ -30,40 +44,44 @@ export default function CardTable({ title, icon, columns = [], data = [] }) {
               </tr>
             ) : (
               data.map((row, i) => {
-                // Definir classe da linha inteira de forma segura
-                let rowClass = "";
-                const type = typeof row[2] === "string" ? row[2].toUpperCase() : "";
+                const type = String(row[2] || "").toUpperCase();
 
-                switch (type) {
-                  case "DESPESA":
-                  case "CASA_DE_APOSTA": // tratar casas de aposta como despesa
-                    rowClass = styles.typeExpenseRow;
-                    break;
-                  case "RECEITA":
-                    rowClass = styles.typeRevenueRow;
-                    break;
-                  case "INVESTIMENTO":
-                    rowClass = styles.typeInvestmentRow;
-                    break;
-                  default:
-                    rowClass = "";
-                }
+                let rowClass = "";
+                if (type === "DESPESA" || type === "CASA_DE_APOSTA") rowClass = styles.typeExpenseRow;
+                else if (type === "RECEITA") rowClass = styles.typeRevenueRow;
+                else if (type === "INVESTIMENTO") rowClass = styles.typeInvestmentRow;
 
                 return (
                   <tr key={i} className={rowClass}>
                     {row.map((value, j) => {
-                      // Coluna de valor formatado
+                      const label = columns[j] || "";
+
                       if (j === 3) {
                         return (
-                          <td key={j} className={styles.valueCell}>
-                            R$ {Number(value).toLocaleString("pt-BR", {
+                          <td key={j} className={styles.valueCell} data-label={label}>
+                            R$
+                            {Number(value).toLocaleString("pt-BR", {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             })}
                           </td>
                         );
                       }
-                      return <td key={j}>{value}</td>;
+
+                      if (j === 4) {
+                        return <td key={j} data-label={label}>{formatDate(value)}</td>;
+                      }
+
+                      // 👇 CORREÇÃO AQUI — NOME BONITO
+                      if (j === 1) {
+                        return (
+                          <td key={j} data-label={label}>
+                            {getCategoryLabel(value)}
+                          </td>
+                        );
+                      }
+
+                      return <td key={j} data-label={label}>{value}</td>;
                     })}
                   </tr>
                 );

@@ -1,77 +1,100 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "../styles/Card/HistoryTableCard.module.css";
 import { Edit, Trash2 } from "lucide-react";
+import { getCategoryLabel } from "../utils/categories";
 
-export default function HistoryTableCard({ data, onEdit, onDelete }) {
+export default function HistoryTableCard({
+  data,
+  currentPage,
+  totalPages,
+  onPageChange,
+  onEdit,
+  onDelete,
+}) {
   const content = data?.content || [];
-  const totalElements = data?.totalElements || 0;
-  const pageSize = data?.pageable?.pageSize || 10;
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageContent, setPageContent] = useState([]);
+  const handlePrev = () => {
+    if (currentPage > 0) onPageChange(currentPage - 1);
+  };
 
-  useEffect(() => {
-    const start = currentPage * pageSize;
-    const end = start + pageSize;
-    setPageContent(content.slice(start, end));
-  }, [currentPage, pageSize, content]);
+  const handleNext = () => {
+    if (currentPage < totalPages - 1) onPageChange(currentPage + 1);
+  };
 
-  const totalPages = Math.ceil(totalElements / pageSize);
+  const formatDate = (value) => {
+    if (!value) return value;
+    const datePart = value.split("T")[0];
+    const [year, month, day] = datePart.split("-");
 
-  const handlePrev = () => currentPage > 0 && setCurrentPage(currentPage - 1);
-  const handleNext = () => currentPage < totalPages - 1 && setCurrentPage(currentPage + 1);
+    const months = [
+      "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+      "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+    ];
+
+    return `${parseInt(day)} de ${months[parseInt(month) - 1]} de ${year}`;
+  };
+
+  const hasInvestmentCategory = content.some(
+    (r) => r.category?.toUpperCase() === "INVESTIMENTOS"
+  );
 
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${hasInvestmentCategory ? styles.cardInvestment : ""}`}>
       <span className={styles.title}>Histórico de Registros</span>
 
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>ID</th>
               <th>Descrição</th>
               <th>Categoria</th>
               <th>Tipo</th>
               <th>Valor</th>
               <th>Data</th>
-              <th>Ações</th>
+              <th style={{ textAlign: "center" }}>Ações</th>
             </tr>
           </thead>
+
           <tbody>
-            {pageContent.length === 0 ? (
+            {content.length === 0 ? (
               <tr>
-                <td colSpan={7} className={styles.emptyText}>
+                <td colSpan={6} className={styles.emptyText}>
                   Nenhum registro encontrado.
                 </td>
               </tr>
             ) : (
-              pageContent.map((row) => {
+              content.map((row) => {
+                const isInvestmentCategory = row.category?.toUpperCase() === "INVESTIMENTOS";
+
                 let rowClass = "";
-                const type = row.typeRegister?.toUpperCase();
-                switch (type) {
-                  case "DESPESA": rowClass = styles.typeExpenseRow; break;
-                  case "RECEITA": rowClass = styles.typeRevenueRow; break;
-                  case "INVESTIMENTO": rowClass = styles.typeInvestmentRow; break;
-                  default: rowClass = "";
-                }
+                if (isInvestmentCategory) rowClass = styles.typeInvestmentRow;
+                else if (row.typeRegister?.toUpperCase() === "DESPESA") rowClass = styles.typeExpenseRow;
+                else if (row.typeRegister?.toUpperCase() === "RECEITA") rowClass = styles.typeRevenueRow;
 
                 return (
                   <tr key={row.id} className={rowClass}>
-                    <td>{row.id}</td>
                     <td>{row.description}</td>
-                    <td>{row.category}</td>
+
+                    {/* 👇 CATEGORIA BONITA AQUI */}
+                    <td>{getCategoryLabel(row.category)}</td>
+
                     <td>{row.typeRegister}</td>
+
                     <td className={styles.valueCell}>
-                      R$ {Number(row.value).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      R${" "}
+                      {Number(row.value).toLocaleString("pt-BR", {
+                        minimumFractionDigits: 2,
+                      })}
                     </td>
-                    <td>{row.dateRegister?.split("T")[0]}</td>
-                    <td className={styles.actions}>
-                      <button onClick={() => onEdit(row)} className={styles.editBtn}>
-                        <Edit size={16} />
+
+                    <td>{formatDate(row.dateRegister)}</td>
+
+                    <td className={styles.actionsCell}>
+                      <button onClick={() => onEdit(row)} className={styles.iconBtn}>
+                        <Edit size={18} />
                       </button>
-                      <button onClick={() => onDelete(row.id)} className={styles.deleteBtn}>
-                        <Trash2 size={16} />
+                      <button onClick={() => onDelete(row.id)} className={styles.iconBtnDelete}>
+                        <Trash2 size={18} />
                       </button>
                     </td>
                   </tr>
@@ -83,9 +106,15 @@ export default function HistoryTableCard({ data, onEdit, onDelete }) {
       </div>
 
       <div className={styles.pagination}>
-        <button onClick={handlePrev} disabled={currentPage === 0}>Anterior</button>
-        <span>Página {currentPage + 1} de {totalPages || 1}</span>
-        <button onClick={handleNext} disabled={currentPage >= totalPages - 1}>Próxima</button>
+        <button onClick={handlePrev} disabled={currentPage === 0}>
+          Anterior
+        </button>
+        <span>
+          Página {currentPage + 1} de {totalPages || 1}
+        </span>
+        <button style={{ color: "white" }} onClick={handleNext} disabled={currentPage >= totalPages - 1}>
+          Próxima
+        </button>
       </div>
     </div>
   );

@@ -1,18 +1,44 @@
+/* CARD */
 .card {
-  background: #f4f4f4;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.05);
-
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.18);
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-
+  gap: 14px;
   width: 100%;
-  min-height: 140px; /* pequeno para KPI */
+  min-height: 120px;
+  transition: 0.25s ease;
 }
 
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+}
+
+/* VARIANTS */
+.income {
+  background: var(--card-income-bg);
+  color: var(--card-income-color);
+}
+
+.expense {
+  background: var(--card-expense-bg);
+  color: var(--card-expense-color);
+}
+
+.balance {
+  background: var(--card-balance-bg);
+  color: var(--card-balance-color);
+}
+
+.alert {
+  background: var(--card-alert-bg);
+  color: var(--card-alert-color);
+}
+
+/* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
@@ -20,19 +46,27 @@
 }
 
 .title {
-  font-size: 15px;
-  color: #0b0c0c;
+  font-size: 14px;
   font-weight: 600;
-  opacity: 0.8;
+  opacity: 0.95;
 }
 
-.icon {
-  color: #00d1b2;
-  font-size: 22px;
+/* ÍCONE */
+.iconContainer {
+  background: var(--icon-bg);
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
 }
 
+.iconContainer svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* VALOR (compactado para milhões) */
 .value {
   font-size: 28px;
-  font-weight: bold;
-  color: #00a6a6;
+  font-weight: 800;
+  letter-spacing: -1px;
 }

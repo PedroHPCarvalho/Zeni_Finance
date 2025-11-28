@@ -1,0 +1,99 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #00000060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.25s ease;
+}
+
+.modal {
+  background-color: var(--bg-white); 
+  width: 380px;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px #0003;
+  position: relative;
+  animation: scaleIn 0.25s ease;
+  text-align: center;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  opacity: 0.5;
+}
+.closeBtn:hover {
+  opacity: 1;
+}
+
+.iconTrash {
+  color: #e63946;
+  margin-bottom: 8px;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 22px;
+  color: var(--text-main);
+}
+
+p {
+  font-size: 14px;
+  color: #555;
+  margin: 8px 0 20px;
+  color: var(--text-main);
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.cancel {
+  flex: 1;
+  margin-right: 8px;
+  background: #ddd;
+  padding: 10px 0;
+  color: red;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.cancel:hover {
+  background: #ccc;
+}
+
+.confirm {
+  flex: 1;
+  margin-left: 8px;
+  background: #e63946;
+  color: white;
+  padding: 10px 0;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.confirm:hover {
+  background: #cc2f3b;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
