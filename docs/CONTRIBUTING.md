@@ -222,4 +222,4 @@ git pull origin main
 
 ## 12. Conclusão
 
-Este guia destina-se a padronizar e otimizar a colaboração do time, mantendo o fluxo de trabalho consistente e o código de alta qualidade. Siga as orientações aqui descritas para contribuir de forma eficaz no desenvolvimento do projeto MotorPlace.
+Este guia destina-se a padronizar e otimizar a colaboração do time, mantendo o fluxo de trabalho consistente e o código de alta qualidade. Siga as orientações aqui descritas para contribuir de forma eficaz no desenvolvimento do projeto Zeni Finance.
